@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://mechanical_lever_scene"]
+
+[ext_resource type="Script" path="res://scripts/objects/MechanicalLever.gd" id="1_lever"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_base"]
+albedo_color = Color(0.2, 0.22, 0.26, 1)
+metallic = 0.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_base"]
+material = SubResource("StandardMaterial3D_base")
+size = Vector3(0.5, 0.4, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_handle"]
+albedo_color = Color(0.8, 0.7, 0.2, 1)
+metallic = 0.9
+roughness = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_handle"]
+material = SubResource("StandardMaterial3D_handle")
+top_radius = 0.04
+bottom_radius = 0.04
+height = 0.65
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_interact"]
+radius = 1.3
+
+[node name="MechanicalLever" type="Node3D"]
+script = ExtResource("1_lever")
+
+[node name="BaseMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("BoxMesh_base")
+
+[node name="HandleMesh" type="MeshInstance3D" parent="BaseMesh"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, 0, 0.3, 0)
+mesh = SubResource("CylinderMesh_handle")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+light_color = Color(1, 0.8, 0.2, 1)
+light_energy = 0.8
+omni_range = 2.0
+
+[node name="InteractArea" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+shape = SubResource("SphereShape3D_interact")

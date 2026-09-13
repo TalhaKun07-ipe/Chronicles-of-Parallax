@@ -1,0 +1,750 @@
+{
+  "unique_designs": 30,
+  "files_per_size": 31,
+  "frames": [
+    {
+      "filename": "john_rod_0d_point.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            29,
+            29,
+            35,
+            35
+          ],
+          "ground_baseline": null
+        },
+        "128": {
+          "alpha_bounds": [
+            58,
+            58,
+            70,
+            70
+          ],
+          "ground_baseline": null
+        }
+      }
+    },
+    {
+      "filename": "john_rod_0d_pulse.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            23,
+            23,
+            41,
+            41
+          ],
+          "ground_baseline": null
+        },
+        "128": {
+          "alpha_bounds": [
+            46,
+            46,
+            82,
+            82
+          ],
+          "ground_baseline": null
+        }
+      }
+    },
+    {
+      "filename": "john_rod_1d_rod.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            17,
+            30,
+            47,
+            33
+          ],
+          "ground_baseline": null
+        },
+        "128": {
+          "alpha_bounds": [
+            34,
+            60,
+            94,
+            67
+          ],
+          "ground_baseline": null
+        }
+      }
+    },
+    {
+      "filename": "john_rod_1d_rod_active.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            13,
+            29,
+            51,
+            34
+          ],
+          "ground_baseline": null
+        },
+        "128": {
+          "alpha_bounds": [
+            26,
+            59,
+            102,
+            69
+          ],
+          "ground_baseline": null
+        }
+      }
+    },
+    {
+      "filename": "john_rod_25d_back.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            22,
+            6,
+            42,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            43,
+            11,
+            84,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_25d_front.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            19,
+            4,
+            44,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            38,
+            7,
+            89,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_25d_idle.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            22,
+            3,
+            41,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            45,
+            7,
+            83,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_25d_turn.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            21,
+            4,
+            42,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            43,
+            8,
+            85,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_25d_walk_1.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            20,
+            4,
+            44,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            39,
+            8,
+            88,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_25d_walk_2.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            21,
+            5,
+            42,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            44,
+            11,
+            84,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_2d_crouch.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            22,
+            18,
+            42,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            44,
+            37,
+            83,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_2d_idle.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            22,
+            3,
+            42,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            43,
+            7,
+            84,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_2d_jump.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            19,
+            5,
+            45,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            38,
+            10,
+            89,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_2d_land.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            14,
+            22,
+            49,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            29,
+            45,
+            98,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_2d_walk_1.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            19,
+            3,
+            45,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            38,
+            7,
+            89,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_2d_walk_2.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            22,
+            3,
+            42,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            44,
+            7,
+            84,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_2d_walk_3.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            18,
+            4,
+            46,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            36,
+            7,
+            91,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_2d_walk_4.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            20,
+            4,
+            44,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            40,
+            7,
+            88,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_3d_back_idle.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            23,
+            4,
+            41,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            46,
+            7,
+            81,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_3d_back_walk_1.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            22,
+            4,
+            41,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            44,
+            7,
+            84,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_3d_back_walk_2.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            23,
+            3,
+            40,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            47,
+            7,
+            80,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_3d_front_idle.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            21,
+            3,
+            43,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            43,
+            7,
+            85,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_3d_front_walk_1.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            23,
+            3,
+            40,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            47,
+            7,
+            80,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_3d_front_walk_2.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            22,
+            3,
+            42,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            43,
+            7,
+            84,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_3d_iso_idle.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            23,
+            4,
+            41,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            45,
+            10,
+            82,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_3d_iso_walk_1.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            21,
+            3,
+            43,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            43,
+            6,
+            85,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_3d_iso_walk_2.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            21,
+            5,
+            42,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            43,
+            9,
+            85,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_3d_side_idle.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            25,
+            3,
+            39,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            49,
+            6,
+            78,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_3d_side_walk_1.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            20,
+            4,
+            43,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            41,
+            8,
+            87,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_3d_side_walk_2.png",
+      "alias_of": null,
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            22,
+            3,
+            42,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            43,
+            7,
+            84,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    },
+    {
+      "filename": "john_rod_idle.png",
+      "alias_of": "john_rod_3d_front_idle.png",
+      "sizes": {
+        "64": {
+          "alpha_bounds": [
+            21,
+            3,
+            43,
+            56
+          ],
+          "ground_baseline": 56
+        },
+        "128": {
+          "alpha_bounds": [
+            43,
+            7,
+            85,
+            112
+          ],
+          "ground_baseline": 112
+        }
+      }
+    }
+  ]
+}

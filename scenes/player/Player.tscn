@@ -1,0 +1,63 @@
+[gd_scene load_steps=6 format=3 uid="uid://player_degrees_escape"]
+
+[ext_resource type="Script" path="res://scripts/player/Player.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/player/RewindController.gd" id="2_rewind"]
+[ext_resource type="Texture2D" uid="uid://john_rod_idle_tex" path="res://assets/sprites/john_rod_idle.png" id="3_idle_tex"]
+[ext_resource type="Texture2D" uid="uid://drop_shadow_tex" path="res://assets/sprites/drop_shadow.png" id="4_shadow_tex"]
+[ext_resource type="Texture2D" uid="uid://john_rod_pulse_tex" path="res://assets/sprites/john_rod_0d_pulse.png" id="5_pulse_tex"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_player"]
+size = Vector3(0.5, 1.2, 0.5)
+
+[node name="Player" type="CharacterBody3D" groups=["player"]]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource("BoxShape3D_player")
+
+[node name="Shadow" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.02, 0)
+texture_filter = 1
+texture = ExtResource("4_shadow_tex")
+pixel_size = 0.008
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.58, 0)
+billboard = 2
+texture_filter = 1
+texture = ExtResource("3_idle_tex")
+pixel_size = 0.012
+
+[node name="PulseEffect" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+visible = false
+billboard = 2
+texture_filter = 1
+texture = ExtResource("5_pulse_tex")
+pixel_size = 0.008
+
+[node name="GhostPreview" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+visible = false
+modulate = Color(1, 1, 1, 0.4)
+billboard = 2
+texture_filter = 1
+pixel_size = 0.0055
+
+[node name="ChargeOrb" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+visible = false
+billboard = 1
+texture_filter = 1
+texture = ExtResource("5_pulse_tex")
+modulate = Color(0.2, 0.9, 1, 0.9)
+pixel_size = 0.007
+
+[node name="RewindController" type="Node" parent="."]
+script = ExtResource("2_rewind")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+

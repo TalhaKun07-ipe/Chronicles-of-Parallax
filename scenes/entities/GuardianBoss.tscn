@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://guardian_boss_scene"]
+
+[ext_resource type="Script" path="res://scripts/boss/GuardianBoss.gd" id="1_boss"]
+[ext_resource type="Texture2D" uid="uid://pillar_trim_tex" path="res://assets/textures/pillar_trim.png" id="2_boss_tex"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_core"]
+size = Vector3(1.2, 1.2, 1.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sweep"]
+size = Vector3(4.0, 0.5, 3.0)
+
+[node name="GuardianBoss" type="CharacterBody3D" groups=["boss"]]
+script = ExtResource("1_boss")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+billboard = 1
+texture_filter = 0
+texture = ExtResource("2_boss_tex")
+pixel_size = 0.006
+
+[node name="BrokenClockSymbol" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+billboard = 1
+modulate = Color(1, 0.4, 0.4, 0.9)
+pixel_size = 0.003
+
+[node name="ExposedCoreArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExposedCoreArea"]
+shape = SubResource("BoxShape3D_core")
+
+[node name="SweepHitbox" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SweepHitbox"]
+shape = SubResource("BoxShape3D_sweep")

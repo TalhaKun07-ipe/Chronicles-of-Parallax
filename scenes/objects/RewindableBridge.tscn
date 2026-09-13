@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://rewindable_bridge_scene"]
+
+[ext_resource type="Script" path="res://scripts/mechanics/RewindableBridge.gd" id="1_bridge"]
+[ext_resource type="Texture2D" uid="uid://bridge_intact_tex" path="res://assets/textures/bridge_intact.png" id="2_intact_tex"]
+[ext_resource type="Texture2D" uid="uid://bridge_cracked_tex" path="res://assets/textures/bridge_cracked.png" id="3_cracked_tex"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_intact"]
+albedo_texture = ExtResource("2_intact_tex")
+texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cracked"]
+albedo_texture = ExtResource("3_cracked_tex")
+texture_filter = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_bridge"]
+size = Vector3(2.5, 0.3, 1.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bridge"]
+size = Vector3(2.5, 0.3, 1.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_trigger"]
+size = Vector3(2.4, 0.4, 1.2)
+
+[node name="RewindableBridge" type="Node3D"]
+script = ExtResource("1_bridge")
+
+[node name="MeshIntact" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_intact")
+mesh = SubResource("BoxMesh_bridge")
+
+[node name="MeshCracked" type="MeshInstance3D" parent="."]
+visible = false
+material_override = SubResource("StandardMaterial3D_cracked")
+mesh = SubResource("BoxMesh_bridge")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_bridge")
+
+[node name="TriggerArea" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("BoxShape3D_trigger")

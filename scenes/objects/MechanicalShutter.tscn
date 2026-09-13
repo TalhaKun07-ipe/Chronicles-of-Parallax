@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://mechanical_shutter_scene"]
+
+[ext_resource type="Script" path="res://scripts/objects/MechanicalShutter.gd" id="1_shutter"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_metal"]
+albedo_color = Color(0.25, 0.28, 0.35, 1)
+metallic = 0.8
+roughness = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_shutter"]
+material = SubResource("StandardMaterial3D_metal")
+size = Vector3(1.4, 2.4, 0.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_shutter"]
+size = Vector3(1.4, 2.4, 0.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_crush"]
+size = Vector3(1.6, 2.2, 0.6)
+
+[node name="MechanicalShutter" type="StaticBody3D"]
+collision_layer = 1
+collision_mask = 2
+script = ExtResource("1_shutter")
+
+[node name="ShutterMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+mesh = SubResource("BoxMesh_shutter")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("BoxShape3D_shutter")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0.3)
+light_color = Color(1, 0.2, 0.1, 1)
+light_energy = 0.8
+omni_range = 3.0
+
+[node name="CrushArea" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CrushArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("BoxShape3D_crush")

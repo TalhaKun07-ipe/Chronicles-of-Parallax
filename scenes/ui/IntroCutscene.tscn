@@ -1,0 +1,148 @@
+[gd_scene load_steps=5 format=3 uid="uid://intro_cutscene_scene"]
+
+[ext_resource type="Script" path="res://scripts/ui/IntroCutscene.gd" id="1_intro"]
+[ext_resource type="Texture2D" uid="uid://intro_panel_1" path="res://assets/intro/intro_panel_1.png" id="2_panel1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_border"]
+bg_color = Color(0.05, 0.035, 0.02, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.66, 0.47, 0.16, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="IntroCutscene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_intro")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="PanelContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 40.0
+offset_bottom = 385.0
+grow_horizontal = 2
+
+[node name="CenterPanel" type="PanelContainer" parent="PanelContainer"]
+custom_minimum_size = Vector2(560, 315)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_border")
+
+[node name="PanelTexture" type="TextureRect" parent="PanelContainer/CenterPanel"]
+texture_filter = 0
+layout_mode = 2
+texture = ExtResource("2_panel1")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StoryTextContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -225.0
+offset_bottom = -75.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="TextLabel" type="Label" parent="StoryTextContainer"]
+custom_minimum_size = Vector2(760, 100)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.90, 0.65, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/line_spacing = 6
+theme_override_font_sizes/font_size = 20
+text = "Long ago..."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="PromptLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -340.0
+offset_top = -45.0
+offset_right = -25.0
+offset_bottom = -15.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.65, 0.55, 0.40, 1)
+theme_override_font_sizes/font_size = 13
+text = "[SPACE / ENTER] Continue  |  [ESC] Skip"
+horizontal_alignment = 2
+
+[node name="TitleContainer" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -120.0
+offset_right = 350.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="TitleContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_colors/font_shadow_color = Color(0.66, 0.47, 0.16, 0.8)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 54
+text = "DEGREES OF ESCAPE"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="TitleContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.65, 0.45, 1)
+theme_override_font_sizes/font_size = 18
+text = "A Dimensional Odyssey"
+horizontal_alignment = 1
+
+[node name="StartPrompt" type="Label" parent="TitleContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "[ PRESS SPACE OR ENTER TO BEGIN ]"
+horizontal_alignment = 1
+
+[node name="FadeRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

@@ -1,0 +1,15 @@
+# Godot 4 engine cache and imports (DO NOT commit - generated locally on each machine)
+.godot/
+
+# Exported binaries and packages
+*.translation
+*.pck
+*.apk
+*.aab
+*.exe
+*.zip
+
+# OS / Editor temporary files
+.DS_Store
+Thumbs.db
+*.tmp
