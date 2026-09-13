@@ -2,43 +2,68 @@
 
 **GameJam Submission for Intra BUET Robo Challenge 2026**  
 **Theme:** *Degree of Freedom*  
-**Engine:** Godot Engine 4.3+ (GL Compatibility)  
-**Target Viewport:** 320×180 (Crisp Retro Pixel Scaling)
+**Engine:** Godot Engine 4.3+ / 4.7+ (GL Compatibility)  
+**Target Viewport:** 320×180 (Crisp Retro Pixel Scaling)  
+**Repository:** [https://github.com/TalhaKun07-ipe/Degrees-of-Escape](https://github.com/TalhaKun07-ipe/Degrees-of-Escape)
 
 📖 **Full Technical Documentation & Continuous Dev Log:**  
-👉 **[GAME_DEV_LOG.md](file:///c:/Users/USER/Desktop/game%20making/Degrees_of_Escape/GAME_DEV_LOG.md)** *(Contains the master game design bible, GDScript architecture index, narrative script, sprite specifications, mathematical formulas, and session-by-session changelog).*
+👉 **[GAME_DEV_LOG.md](file:///c:/Users/USER/Desktop/game%20making/Degrees_of_Escape/GAME_DEV_LOG.md)** *(Master design bible, GDScript architecture index, narrative script, sprite specifications, mathematical formulas, and session changelog).*
 
 ---
 
-## 🎮 Concept & How the Theme is Used
-An explorer is stripped of all movement, reduced to a **0D point** inside an ancient cavern. By activating an ancient mystical watch, you progressively recover spatial and temporal **Degrees of Freedom**:
-* **0D (Point):** No directional movement. Pulse the watch core with `[SPACE]`.
-* **1D (Line):** Forward/backward travel on glowing cyan conduit rails with `[A]` / `[D]`.
-* **2D (Plane):** Classic 2D platformer movement + jumping (`[A]/[D]` + `[SPACE]`) on a fixed 2D plane.
-* **2.5D (Layers):** Discrete depth lanes. Step between foreground and background tracks at marked pads using `[W]` / `[S]`.
-* **3D (Volume):** Full continuous 3D movement (`[WASD]` + `[SPACE]`) around massive pillars and geometry.
-* **4D (Time Rewind):** Hold `[R]` to rewind recent history (up to 4.0 seconds) to restore collapsed bridges while the time-resistant Guardian continues in real-time.
+## 🎮 Core Concept & Revised Mechanics
+
+> *"Learn to combine space; earn control over time."*
+
+John Rod falls into an ancient subterranean vault. His Chrono-Lens is damaged—temporal rewind (4D) is locked. However, all three spatial dimensions are available from the start:
+* **1D (Line):** Compress into pure forward/backward travel along glowing cyan conduit rails (`[A]` / `[D]`). Slip under barricades, through narrow gaps, and along power lines.
+* **2D (Plane):** Flatten onto an orthographic vertical plane (`[A]/[D]` + `[SPACE]`). Jump on runic inscription platforms that are intangible in 3D. Position preserves your exact depth coordinate when exiting!
+* **3D (Volume):** Unfold into full 3D space (`[WASD]` + `[SPACE]`). Walk around pillars, navigate cavern corridors, and carry heavy energy cores.
+* **4D (Time Rewind):** Locked until defeating the ancient Guardian in the Crucible. Defeating the boss restores temporal control (`Hold [R]`) to escape the collapsing facility!
 
 ---
 
 ## 🕹️ Controls Guide
 | Action | Keybinding | Notes |
 | :--- | :--- | :--- |
-| **Move / Navigate** | `W`, `A`, `S`, `D` / Arrow Keys | Moves along the active dimension's constraints |
-| **Jump / Pulse** | `Space` | Jumps in 2D/3D; pulses watch core in 0D |
-| **Cycle Dimensions** | `Q` (Prev) / `E` (Next) | Cycles unlocked dimensions |
-| **Direct Select** | `1`, `2`, `3`, `4` | 1D, 2D, 2.5D, 3D |
-| **Time Rewind** | **Hold `R`** | Rewinds player and bridge states |
-| **Strike Core** | `F` | Strikes the exposed Guardian core |
+| **Move / Navigate** | `W`, `A`, `S`, `D` / Arrow Keys | Moves along active dimensional constraints |
+| **Jump** | `Space` | Jump on 2D runic ledges and 3D terrain |
+| **1D Rail Dimension** | `1` | Enters conduit line (snaps to rail track) |
+| **2D Plane Dimension** | `2` | Locks $Z$-depth; enables 2D platforming & runic solids |
+| **3D Volume Dimension** | `3` | Full 3D exploration and pillar bypass |
+| **Time Rewind (4D)** | **Hold `R`** | *Unlocked after defeating the Guardian* |
+| **Interact / Toggle Info** | `F8` | Shows / hides on-screen dimensional debug guide |
 | **Pause Menu** | `Escape` | In-game pause |
 
 ---
 
-## 🚀 How to Run and Edit in Godot
-1. Open **Godot 4.3+**.
-2. Click **Import** and browse to this folder: `c:\Users\USER\Desktop\game making\Degrees_of_Escape`.
-3. Select `project.godot` and click **Import & Edit**.
-4. Press **F5** to play!
+## 👥 How to Work with Friends via GitHub
+
+Git and GitHub manage collaboration asynchronously rather than Google Docs style real-time editing. Here is how your team can work cleanly without corrupting scenes:
+
+### 1. Clone the Project
+```bash
+git clone https://github.com/TalhaKun07-ipe/Degrees-of-Escape.git
+```
+Then open **Godot 4.3+**, click **Import**, select `project.godot`, and click **Import & Edit**.
+
+### 2. Best Practice Workflow
+* **Work in Feature Branches:**
+  ```bash
+  git checkout -b feature/chamber-1-design
+  ```
+* **Divide Work by Files:**
+  * Friend A works on `scenes/levels/Chamber_1.tscn` & its script.
+  * Friend B works on `scenes/objects/NewHazard.tscn` or audio.
+  * *Tip:* Avoid having two people modify the exact same `.tscn` file at the same time to prevent scene merge conflicts.
+* **Push & Pull Regularly:**
+  ```bash
+  git pull origin master
+  git add .
+  git commit -m "Added Chamber 1 logic"
+  git push origin feature/chamber-1-design
+  ```
+* **Merge via Pull Requests on GitHub:** Review changes and merge cleanly into `master`.
 
 ---
 
@@ -46,3 +71,4 @@ An explorer is stripped of all movement, reduced to a **0D point** inside an anc
 * **Code & Architecture:** Antigravity AI & Human Team pair-programming.
 * **Pixel Art & Textures:** Generated with AI image synthesis tools and custom procedural shaders.
 * **Audio:** Procedural audio synthesis via Godot `AudioStreamWAV` and custom sound design.
+
