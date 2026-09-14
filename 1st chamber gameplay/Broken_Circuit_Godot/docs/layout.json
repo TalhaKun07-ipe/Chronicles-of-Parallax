@@ -1,0 +1,3271 @@
+{
+  "units": "meters",
+  "axes": {
+    "x": "progression right",
+    "y": "up",
+    "z": "depth; rear is negative"
+  },
+  "palette": {
+    "void": "140C04",
+    "deep": "261708",
+    "shadow": "3B220B",
+    "stone": "66421F",
+    "paver": "785026",
+    "edge": "9E743B",
+    "ochre": "C29F5C",
+    "gold": "D4AF67",
+    "light": "EBD8B0",
+    "rail": "70B9AF",
+    "rune_off": "564125",
+    "rune_on": "D9B779"
+  },
+  "boxes": [
+    {
+      "name": "LandingSlab",
+      "position": [
+        -10.4,
+        -0.55,
+        0
+      ],
+      "size": [
+        5.2,
+        1.1,
+        8
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "CourtyardSlab",
+      "position": [
+        4.35,
+        -0.55,
+        0
+      ],
+      "size": [
+        17.3,
+        1.1,
+        8
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_0_0",
+      "position": [
+        -12.175,
+        0.006,
+        -3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_0_1",
+      "position": [
+        -12.175,
+        0.006,
+        -1.5999999999999999
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_0_2",
+      "position": [
+        -12.175,
+        0.006,
+        2.220446049250313e-16
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_0_3",
+      "position": [
+        -12.175,
+        0.006,
+        1.6000000000000008
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_0_4",
+      "position": [
+        -12.175,
+        0.006,
+        3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_1_0",
+      "position": [
+        -10.525,
+        0.006,
+        -3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_1_1",
+      "position": [
+        -10.525,
+        0.006,
+        -1.5999999999999999
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_1_2",
+      "position": [
+        -10.525,
+        0.006,
+        2.220446049250313e-16
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_1_3",
+      "position": [
+        -10.525,
+        0.006,
+        1.6000000000000008
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_1_4",
+      "position": [
+        -10.525,
+        0.006,
+        3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_2_0",
+      "position": [
+        -8.875,
+        0.006,
+        -3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_2_1",
+      "position": [
+        -8.875,
+        0.006,
+        -1.5999999999999999
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_2_2",
+      "position": [
+        -8.875,
+        0.006,
+        2.220446049250313e-16
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_2_3",
+      "position": [
+        -8.875,
+        0.006,
+        1.6000000000000008
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_2_4",
+      "position": [
+        -8.875,
+        0.006,
+        3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_3_0",
+      "position": [
+        -7.924999999999999,
+        0.006,
+        -3.2
+      ],
+      "size": [
+        0.20499999999999913,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_3_1",
+      "position": [
+        -7.924999999999999,
+        0.006,
+        -1.5999999999999999
+      ],
+      "size": [
+        0.20499999999999913,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_3_2",
+      "position": [
+        -7.924999999999999,
+        0.006,
+        2.220446049250313e-16
+      ],
+      "size": [
+        0.20499999999999913,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_3_3",
+      "position": [
+        -7.924999999999999,
+        0.006,
+        1.6000000000000008
+      ],
+      "size": [
+        0.20499999999999913,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m13_3_4",
+      "position": [
+        -7.924999999999999,
+        0.006,
+        3.2
+      ],
+      "size": [
+        0.20499999999999913,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_0_0",
+      "position": [
+        -3.4749999999999996,
+        0.006,
+        -3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_0_1",
+      "position": [
+        -3.4749999999999996,
+        0.006,
+        -1.5999999999999999
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_0_2",
+      "position": [
+        -3.4749999999999996,
+        0.006,
+        2.220446049250313e-16
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_0_3",
+      "position": [
+        -3.4749999999999996,
+        0.006,
+        1.6000000000000008
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_0_4",
+      "position": [
+        -3.4749999999999996,
+        0.006,
+        3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_1_0",
+      "position": [
+        -1.825,
+        0.006,
+        -3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_1_1",
+      "position": [
+        -1.825,
+        0.006,
+        -1.5999999999999999
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_1_2",
+      "position": [
+        -1.825,
+        0.006,
+        2.220446049250313e-16
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_1_3",
+      "position": [
+        -1.825,
+        0.006,
+        1.6000000000000008
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_1_4",
+      "position": [
+        -1.825,
+        0.006,
+        3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_2_0",
+      "position": [
+        -0.17500000000000004,
+        0.006,
+        -3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_2_1",
+      "position": [
+        -0.17500000000000004,
+        0.006,
+        -1.5999999999999999
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_2_2",
+      "position": [
+        -0.17500000000000004,
+        0.006,
+        2.220446049250313e-16
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_2_3",
+      "position": [
+        -0.17500000000000004,
+        0.006,
+        1.6000000000000008
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_2_4",
+      "position": [
+        -0.17500000000000004,
+        0.006,
+        3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_3_0",
+      "position": [
+        1.4749999999999999,
+        0.006,
+        -3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_3_1",
+      "position": [
+        1.4749999999999999,
+        0.006,
+        -1.5999999999999999
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_3_2",
+      "position": [
+        1.4749999999999999,
+        0.006,
+        2.220446049250313e-16
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_3_3",
+      "position": [
+        1.4749999999999999,
+        0.006,
+        1.6000000000000008
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_3_4",
+      "position": [
+        1.4749999999999999,
+        0.006,
+        3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_4_0",
+      "position": [
+        3.125,
+        0.006,
+        -3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_4_1",
+      "position": [
+        3.125,
+        0.006,
+        -1.5999999999999999
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_4_2",
+      "position": [
+        3.125,
+        0.006,
+        2.220446049250313e-16
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_4_3",
+      "position": [
+        3.125,
+        0.006,
+        1.6000000000000008
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_4_4",
+      "position": [
+        3.125,
+        0.006,
+        3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_5_0",
+      "position": [
+        4.7749999999999995,
+        0.006,
+        -3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_5_1",
+      "position": [
+        4.7749999999999995,
+        0.006,
+        -1.5999999999999999
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_5_2",
+      "position": [
+        4.7749999999999995,
+        0.006,
+        2.220446049250313e-16
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_5_3",
+      "position": [
+        4.7749999999999995,
+        0.006,
+        1.6000000000000008
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_5_4",
+      "position": [
+        4.7749999999999995,
+        0.006,
+        3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_6_0",
+      "position": [
+        6.425,
+        0.006,
+        -3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_6_1",
+      "position": [
+        6.425,
+        0.006,
+        -1.5999999999999999
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_6_2",
+      "position": [
+        6.425,
+        0.006,
+        2.220446049250313e-16
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_6_3",
+      "position": [
+        6.425,
+        0.006,
+        1.6000000000000008
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_6_4",
+      "position": [
+        6.425,
+        0.006,
+        3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_7_0",
+      "position": [
+        8.075,
+        0.006,
+        -3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_7_1",
+      "position": [
+        8.075,
+        0.006,
+        -1.5999999999999999
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_7_2",
+      "position": [
+        8.075,
+        0.006,
+        2.220446049250313e-16
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_7_3",
+      "position": [
+        8.075,
+        0.006,
+        1.6000000000000008
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_7_4",
+      "position": [
+        8.075,
+        0.006,
+        3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_8_0",
+      "position": [
+        9.725,
+        0.006,
+        -3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_8_1",
+      "position": [
+        9.725,
+        0.006,
+        -1.5999999999999999
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_8_2",
+      "position": [
+        9.725,
+        0.006,
+        2.220446049250313e-16
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_8_3",
+      "position": [
+        9.725,
+        0.006,
+        1.6000000000000008
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_8_4",
+      "position": [
+        9.725,
+        0.006,
+        3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_9_0",
+      "position": [
+        11.375,
+        0.006,
+        -3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_9_1",
+      "position": [
+        11.375,
+        0.006,
+        -1.5999999999999999
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_9_2",
+      "position": [
+        11.375,
+        0.006,
+        2.220446049250313e-16
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_9_3",
+      "position": [
+        11.375,
+        0.006,
+        1.6000000000000008
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_9_4",
+      "position": [
+        11.375,
+        0.006,
+        3.2
+      ],
+      "size": [
+        1.605,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_10_0",
+      "position": [
+        12.600000000000001,
+        0.006,
+        -3.2
+      ],
+      "size": [
+        0.7549999999999989,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_10_1",
+      "position": [
+        12.600000000000001,
+        0.006,
+        -1.5999999999999999
+      ],
+      "size": [
+        0.7549999999999989,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_10_2",
+      "position": [
+        12.600000000000001,
+        0.006,
+        2.220446049250313e-16
+      ],
+      "size": [
+        0.7549999999999989,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_10_3",
+      "position": [
+        12.600000000000001,
+        0.006,
+        1.6000000000000008
+      ],
+      "size": [
+        0.7549999999999989,
+        0.04,
+        1.55
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Paver_m4.3_10_4",
+      "position": [
+        12.600000000000001,
+        0.006,
+        3.2
+      ],
+      "size": [
+        0.7549999999999989,
+        0.04,
+        1.55
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "LeftBoundary",
+      "position": [
+        -13.2,
+        3,
+        0
+      ],
+      "size": [
+        0.4,
+        6,
+        8.6
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": false,
+      "group": ""
+    },
+    {
+      "name": "RightBoundary",
+      "position": [
+        13.2,
+        3,
+        0
+      ],
+      "size": [
+        0.4,
+        6,
+        8.6
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": false,
+      "group": ""
+    },
+    {
+      "name": "BoundaryBack",
+      "position": [
+        0,
+        4,
+        -4.3
+      ],
+      "size": [
+        27,
+        8,
+        0.5
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": false,
+      "group": ""
+    },
+    {
+      "name": "RimBack",
+      "position": [
+        0,
+        -0.03,
+        -4.3
+      ],
+      "size": [
+        26.5,
+        0.24,
+        0.4
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BoundaryFront",
+      "position": [
+        0,
+        4,
+        4.3
+      ],
+      "size": [
+        27,
+        8,
+        0.5
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": false,
+      "group": ""
+    },
+    {
+      "name": "RimFront",
+      "position": [
+        0,
+        -0.03,
+        4.3
+      ],
+      "size": [
+        26.5,
+        0.24,
+        0.4
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "SlottedGate",
+      "position": [
+        -6.05,
+        2.33,
+        0
+      ],
+      "size": [
+        0.8,
+        3.74,
+        8.0
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GatePier-3.7",
+      "position": [
+        -6.05,
+        2.0,
+        -3.7
+      ],
+      "size": [
+        1.3,
+        4,
+        0.65
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GateCap-3.7",
+      "position": [
+        -6.05,
+        4.12,
+        -3.7
+      ],
+      "size": [
+        1.65,
+        0.24,
+        0.95
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GatePier3.7",
+      "position": [
+        -6.05,
+        2.0,
+        3.7
+      ],
+      "size": [
+        1.3,
+        4,
+        0.65
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GateCap3.7",
+      "position": [
+        -6.05,
+        4.12,
+        3.7
+      ],
+      "size": [
+        1.65,
+        0.24,
+        0.95
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GateLintel",
+      "position": [
+        -6.05,
+        4.1,
+        0
+      ],
+      "size": [
+        1.05,
+        0.22,
+        8
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GateStripe-2.8",
+      "position": [
+        -6.47,
+        2.3,
+        -2.8
+      ],
+      "size": [
+        0.035,
+        2.8,
+        0.07
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GateStripe-1.4",
+      "position": [
+        -6.47,
+        2.3,
+        -1.4
+      ],
+      "size": [
+        0.035,
+        2.8,
+        0.07
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GateStripe0",
+      "position": [
+        -6.47,
+        2.3,
+        0
+      ],
+      "size": [
+        0.035,
+        2.8,
+        0.07
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GateStripe1.4",
+      "position": [
+        -6.47,
+        2.3,
+        1.4
+      ],
+      "size": [
+        0.035,
+        2.8,
+        0.07
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GateStripe2.8",
+      "position": [
+        -6.47,
+        2.3,
+        2.8
+      ],
+      "size": [
+        0.035,
+        2.8,
+        0.07
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "MainConduit",
+      "position": [
+        -6.2,
+        0.14,
+        0
+      ],
+      "size": [
+        7.6,
+        0.07,
+        0.12
+      ],
+      "material": "rail",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RailDock-10",
+      "position": [
+        -10,
+        0.04,
+        0
+      ],
+      "size": [
+        1.25,
+        0.05,
+        1.35
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "DockTrim-10-0.6",
+      "position": [
+        -10,
+        0.075,
+        -0.6
+      ],
+      "size": [
+        1.2,
+        0.03,
+        0.04
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "DockTrim-100.6",
+      "position": [
+        -10,
+        0.075,
+        0.6
+      ],
+      "size": [
+        1.2,
+        0.03,
+        0.04
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RailDock-2.4",
+      "position": [
+        -2.4,
+        0.04,
+        0
+      ],
+      "size": [
+        1.25,
+        0.05,
+        1.35
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "DockTrim-2.4-0.6",
+      "position": [
+        -2.4,
+        0.075,
+        -0.6
+      ],
+      "size": [
+        1.2,
+        0.03,
+        0.04
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "DockTrim-2.40.6",
+      "position": [
+        -2.4,
+        0.075,
+        0.6
+      ],
+      "size": [
+        1.2,
+        0.03,
+        0.04
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Monolith",
+      "position": [
+        0.5,
+        2.15,
+        0
+      ],
+      "size": [
+        2.6,
+        4.3,
+        2.4
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "MonolithFoot",
+      "position": [
+        0.5,
+        0.13,
+        0
+      ],
+      "size": [
+        2.85,
+        0.26,
+        2.65
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "MonolithCrown",
+      "position": [
+        0.5,
+        4.37,
+        0
+      ],
+      "size": [
+        2.9,
+        0.2,
+        2.7
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "MonolithInset",
+      "position": [
+        0.5,
+        2.3,
+        1.212
+      ],
+      "size": [
+        1.8,
+        3.3,
+        0.03
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "MonolithBand1.0",
+      "position": [
+        0.5,
+        1.0,
+        1.237
+      ],
+      "size": [
+        1.55,
+        0.055,
+        0.03
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "MonolithBand3.6",
+      "position": [
+        0.5,
+        3.6,
+        1.237
+      ],
+      "size": [
+        1.55,
+        0.055,
+        0.03
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuneStroke0.05",
+      "position": [
+        0.05,
+        2.3,
+        1.24
+      ],
+      "size": [
+        0.06,
+        1.55,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuneStroke0.5",
+      "position": [
+        0.5,
+        2.3,
+        1.24
+      ],
+      "size": [
+        0.06,
+        1.55,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuneStroke0.95",
+      "position": [
+        0.95,
+        2.3,
+        1.24
+      ],
+      "size": [
+        0.06,
+        1.55,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuneCrown",
+      "position": [
+        0.5,
+        3.12,
+        1.24
+      ],
+      "size": [
+        0.94,
+        0.09,
+        0.035
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "TraceApproach",
+      "position": [
+        -1.7,
+        0.035,
+        0
+      ],
+      "size": [
+        1.2,
+        0.035,
+        0.05
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "TraceTurn",
+      "position": [
+        -1.1,
+        0.035,
+        -1.25
+      ],
+      "size": [
+        0.05,
+        0.035,
+        2.5
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "TraceBack",
+      "position": [
+        0.05,
+        0.035,
+        -2.5
+      ],
+      "size": [
+        2.3,
+        0.035,
+        0.05
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "TraceToStairs",
+      "position": [
+        2.2,
+        0.035,
+        -2.5
+      ],
+      "size": [
+        1.8,
+        0.035,
+        0.05
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ReceiverBase",
+      "position": [
+        0.5,
+        0.25,
+        -2.5
+      ],
+      "size": [
+        0.72,
+        0.5,
+        0.72
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ReceiverSocket",
+      "position": [
+        0.5,
+        0.53,
+        -2.5
+      ],
+      "size": [
+        0.46,
+        0.06,
+        0.46
+      ],
+      "material": "rune_off",
+      "solid": false,
+      "visible": true,
+      "group": "bc_receiver"
+    },
+    {
+      "name": "RunicStep1",
+      "position": [
+        3.4,
+        0.71,
+        -2.5
+      ],
+      "size": [
+        1.35,
+        0.28,
+        1.4
+      ],
+      "material": "rune_off",
+      "solid": true,
+      "visible": true,
+      "group": "bc_steps"
+    },
+    {
+      "name": "StepRune1",
+      "position": [
+        3.4,
+        0.865,
+        -2.5
+      ],
+      "size": [
+        0.78,
+        0.025,
+        0.06
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RunicStep2",
+      "position": [
+        5.3,
+        1.56,
+        -2.5
+      ],
+      "size": [
+        1.35,
+        0.28,
+        1.4
+      ],
+      "material": "rune_off",
+      "solid": true,
+      "visible": true,
+      "group": "bc_steps"
+    },
+    {
+      "name": "StepRune2",
+      "position": [
+        5.3,
+        1.7149999999999999,
+        -2.5
+      ],
+      "size": [
+        0.78,
+        0.025,
+        0.06
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RunicStep3",
+      "position": [
+        7.2,
+        2.4099999999999997,
+        -2.5
+      ],
+      "size": [
+        1.35,
+        0.28,
+        1.4
+      ],
+      "material": "rune_off",
+      "solid": true,
+      "visible": true,
+      "group": "bc_steps"
+    },
+    {
+      "name": "StepRune3",
+      "position": [
+        7.2,
+        2.565,
+        -2.5
+      ],
+      "size": [
+        0.78,
+        0.025,
+        0.06
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RunicStep4",
+      "position": [
+        9.1,
+        3.26,
+        -2.5
+      ],
+      "size": [
+        1.35,
+        0.28,
+        1.4
+      ],
+      "material": "rune_off",
+      "solid": true,
+      "visible": true,
+      "group": "bc_steps"
+    },
+    {
+      "name": "StepRune4",
+      "position": [
+        9.1,
+        3.415,
+        -2.5
+      ],
+      "size": [
+        0.78,
+        0.025,
+        0.06
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "UpperBalcony",
+      "position": [
+        11.65,
+        4.02,
+        -2.5
+      ],
+      "size": [
+        2.7,
+        0.46,
+        2.1
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BalconyLip",
+      "position": [
+        11.65,
+        4.2,
+        -1.43
+      ],
+      "size": [
+        2.8,
+        0.14,
+        0.14
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "DoorRecess",
+      "position": [
+        11.7,
+        5.38,
+        -3.49
+      ],
+      "size": [
+        1.6,
+        2.25,
+        0.1
+      ],
+      "material": "void",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ExitPillar10.72",
+      "position": [
+        10.72,
+        5.38,
+        -3.46
+      ],
+      "size": [
+        0.32,
+        2.4,
+        0.5
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ExitCapital10.72",
+      "position": [
+        10.72,
+        6.6,
+        -3.46
+      ],
+      "size": [
+        0.5,
+        0.2,
+        0.65
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ExitPillar12.68",
+      "position": [
+        12.68,
+        5.38,
+        -3.46
+      ],
+      "size": [
+        0.32,
+        2.4,
+        0.5
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ExitCapital12.68",
+      "position": [
+        12.68,
+        6.6,
+        -3.46
+      ],
+      "size": [
+        0.5,
+        0.2,
+        0.65
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ExitLintel",
+      "position": [
+        11.7,
+        6.65,
+        -3.46
+      ],
+      "size": [
+        2.4,
+        0.28,
+        0.5
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ExitSeal",
+      "position": [
+        11.7,
+        5.45,
+        -3.41
+      ],
+      "size": [
+        0.12,
+        1.4,
+        0.04
+      ],
+      "material": "rune_off",
+      "solid": false,
+      "visible": true,
+      "group": "bc_exit_seal"
+    },
+    {
+      "name": "BackPillar0",
+      "position": [
+        -12,
+        2.75,
+        -4.75
+      ],
+      "size": [
+        0.85,
+        5.5,
+        0.9
+      ],
+      "material": "deep",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillarCap0",
+      "position": [
+        -12,
+        5.5,
+        -4.75
+      ],
+      "size": [
+        1.15,
+        0.23,
+        1.1
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillarBase0",
+      "position": [
+        -12,
+        0.2,
+        -4.75
+      ],
+      "size": [
+        1.2,
+        0.4,
+        1.25
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand0_0.9",
+      "position": [
+        -12,
+        0.9,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand0_2.1",
+      "position": [
+        -12,
+        2.1,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand0_3.3",
+      "position": [
+        -12,
+        3.3,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillar1",
+      "position": [
+        -9,
+        1.5,
+        -4.75
+      ],
+      "size": [
+        0.85,
+        3.0,
+        0.9
+      ],
+      "material": "deep",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillarCap1",
+      "position": [
+        -9,
+        3.0,
+        -4.75
+      ],
+      "size": [
+        1.15,
+        0.23,
+        1.1
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillarBase1",
+      "position": [
+        -9,
+        0.2,
+        -4.75
+      ],
+      "size": [
+        1.2,
+        0.4,
+        1.25
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand1_0.9",
+      "position": [
+        -9,
+        0.9,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand1_2.1",
+      "position": [
+        -9,
+        2.1,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillar2",
+      "position": [
+        -3,
+        2.3,
+        -4.75
+      ],
+      "size": [
+        0.85,
+        4.6,
+        0.9
+      ],
+      "material": "deep",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillarCap2",
+      "position": [
+        -3,
+        4.6,
+        -4.75
+      ],
+      "size": [
+        1.15,
+        0.23,
+        1.1
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillarBase2",
+      "position": [
+        -3,
+        0.2,
+        -4.75
+      ],
+      "size": [
+        1.2,
+        0.4,
+        1.25
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand2_0.9",
+      "position": [
+        -3,
+        0.9,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand2_2.1",
+      "position": [
+        -3,
+        2.1,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand2_3.3",
+      "position": [
+        -3,
+        3.3,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillar3",
+      "position": [
+        3,
+        2.8,
+        -4.75
+      ],
+      "size": [
+        0.85,
+        5.6,
+        0.9
+      ],
+      "material": "deep",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillarCap3",
+      "position": [
+        3,
+        5.6,
+        -4.75
+      ],
+      "size": [
+        1.15,
+        0.23,
+        1.1
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillarBase3",
+      "position": [
+        3,
+        0.2,
+        -4.75
+      ],
+      "size": [
+        1.2,
+        0.4,
+        1.25
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand3_0.9",
+      "position": [
+        3,
+        0.9,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand3_2.1",
+      "position": [
+        3,
+        2.1,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand3_3.3",
+      "position": [
+        3,
+        3.3,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillar4",
+      "position": [
+        7.7,
+        2.4,
+        -4.75
+      ],
+      "size": [
+        0.85,
+        4.8,
+        0.9
+      ],
+      "material": "deep",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillarCap4",
+      "position": [
+        7.7,
+        4.8,
+        -4.75
+      ],
+      "size": [
+        1.15,
+        0.23,
+        1.1
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillarBase4",
+      "position": [
+        7.7,
+        0.2,
+        -4.75
+      ],
+      "size": [
+        1.2,
+        0.4,
+        1.25
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand4_0.9",
+      "position": [
+        7.7,
+        0.9,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand4_2.1",
+      "position": [
+        7.7,
+        2.1,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand4_3.3",
+      "position": [
+        7.7,
+        3.3,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillar5",
+      "position": [
+        12.8,
+        3.0,
+        -4.75
+      ],
+      "size": [
+        0.85,
+        6.0,
+        0.9
+      ],
+      "material": "deep",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillarCap5",
+      "position": [
+        12.8,
+        6.0,
+        -4.75
+      ],
+      "size": [
+        1.15,
+        0.23,
+        1.1
+      ],
+      "material": "stone",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BackPillarBase5",
+      "position": [
+        12.8,
+        0.2,
+        -4.75
+      ],
+      "size": [
+        1.2,
+        0.4,
+        1.25
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand5_0.9",
+      "position": [
+        12.8,
+        0.9,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand5_2.1",
+      "position": [
+        12.8,
+        2.1,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "PillarBand5_3.3",
+      "position": [
+        12.8,
+        3.3,
+        -4.27
+      ],
+      "size": [
+        0.65,
+        0.055,
+        0.025
+      ],
+      "material": "edge",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble0",
+      "position": [
+        6.911491457608442,
+        0.12,
+        -3.85
+      ],
+      "size": [
+        0.5116871524676934,
+        0.18856739480516843,
+        0.15905882576921687
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble1",
+      "position": [
+        7.153555624713593,
+        0.12,
+        3.8
+      ],
+      "size": [
+        0.5273921470711689,
+        0.2531743583041296,
+        0.30723684572576104
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble2",
+      "position": [
+        10.074615855975221,
+        0.12,
+        3.8
+      ],
+      "size": [
+        0.3535496965453931,
+        0.20632734857248974,
+        0.41792572823065766
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble5",
+      "position": [
+        9.261435952424577,
+        0.12,
+        -3.85
+      ],
+      "size": [
+        0.26131126025968515,
+        0.30170756605970833,
+        0.1763815624996034
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble7",
+      "position": [
+        11.065922143726736,
+        0.12,
+        -3.85
+      ],
+      "size": [
+        0.4171202075808053,
+        0.3660513466557469,
+        0.3893917332126722
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble9",
+      "position": [
+        -11.544765160697699,
+        0.12,
+        3.8
+      ],
+      "size": [
+        0.5325495203804835,
+        0.38010702141379626,
+        0.3493359978570305
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble10",
+      "position": [
+        12.372228299125213,
+        0.12,
+        -3.85
+      ],
+      "size": [
+        0.2924986528471113,
+        0.2088822392913121,
+        0.1585966502957694
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble11",
+      "position": [
+        9.232549335148159,
+        0.12,
+        -3.85
+      ],
+      "size": [
+        0.22245708420112004,
+        0.2022832741338213,
+        0.31309281709116454
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble12",
+      "position": [
+        -12.674865952365614,
+        0.12,
+        3.8
+      ],
+      "size": [
+        0.3967443381217667,
+        0.3206670046076939,
+        0.40827010970108735
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble13",
+      "position": [
+        9.10206226397063,
+        0.12,
+        3.8
+      ],
+      "size": [
+        0.4260962898034518,
+        0.27937527746103585,
+        0.43910514278307045
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble14",
+      "position": [
+        -11.478457919893248,
+        0.12,
+        -3.85
+      ],
+      "size": [
+        0.2540467509159947,
+        0.2483327349936759,
+        0.47551459290470854
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble16",
+      "position": [
+        9.567538176776198,
+        0.12,
+        3.8
+      ],
+      "size": [
+        0.32929428045062353,
+        0.2446683445632392,
+        0.4446179443306112
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble17",
+      "position": [
+        -9.0500436147841,
+        0.12,
+        3.8
+      ],
+      "size": [
+        0.34460632366010613,
+        0.13141228947110173,
+        0.27664465034593155
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble18",
+      "position": [
+        7.000049663937831,
+        0.12,
+        3.8
+      ],
+      "size": [
+        0.4077152789074792,
+        0.2227888138039807,
+        0.2535208347566701
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble19",
+      "position": [
+        3.4097924051132007,
+        0.12,
+        -3.85
+      ],
+      "size": [
+        0.3371487264418458,
+        0.39240487909101657,
+        0.20796607780802429
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble20",
+      "position": [
+        -9.811855002818643,
+        0.12,
+        -3.85
+      ],
+      "size": [
+        0.5058540021088251,
+        0.2845166585003491,
+        0.1663255982142374
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble21",
+      "position": [
+        -8.815561139893763,
+        0.12,
+        -3.85
+      ],
+      "size": [
+        0.3896409776488545,
+        0.2727366250306658,
+        0.16164618579299572
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble22",
+      "position": [
+        -4.028715567833714,
+        0.12,
+        3.8
+      ],
+      "size": [
+        0.24254415785015196,
+        0.35627895894913025,
+        0.19491108525742462
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble23",
+      "position": [
+        5.699383534763564,
+        0.12,
+        3.8
+      ],
+      "size": [
+        0.4025538428030411,
+        0.21907094811562544,
+        0.42484858062981823
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Rubble25",
+      "position": [
+        12.030852134955504,
+        0.12,
+        -3.85
+      ],
+      "size": [
+        0.3943048593149435,
+        0.3693188369656325,
+        0.1708910707692818
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "EchoPlinth",
+      "position": [
+        3.8,
+        0.2,
+        2.65
+      ],
+      "size": [
+        0.85,
+        0.4,
+        0.85
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "EchoGlyph",
+      "position": [
+        3.8,
+        0.43,
+        2.65
+      ],
+      "size": [
+        0.35,
+        0.035,
+        0.35
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": "bc_echo"
+    }
+  ]
+}

@@ -554,4 +554,39 @@ Degrees_of_Escape/
 * **Engine Verification:**
   * Complete project scan and class registration in Godot 4.7.2 headless mode passed with exit code 0 and zero errors.
 
+### Session 8: Full Integration of Chamber 01 — The Broken Circuit (`chambers/broken_circuit`)
+* **Package Integration (`1st chamber gameplay/Broken_Circuit_Godot`):**
+  * Integrated the complete, 32-check verified **Chamber 01: The Broken Circuit** package into `res://chambers/broken_circuit/`.
+  * Preserved full namespaced directory structure: `BrokenCircuit.tscn` (geometry, lighting, mechanisms, materials), `Demo.tscn` (master chamber controller with player, camera, and HUD), `scripts/` (`chamber.gd`, `demo.gd`, `player.gd`), and `assets/sprites/` (approved John Rod v2 64px sprites).
+* **Cinematic Flow & Transition Wiring:**
+  * Updated `IntroCutscene.gd` (`start_game()` and `skip_to_game()`) to cleanly transition directly from the Undertale-style opening story into `res://chambers/broken_circuit/Demo.tscn`.
+  * Connected `chamber_completed` in `demo.gd` to `SceneTransition.change_chamber("res://scenes/levels/Chamber1_DimensionalTrial.tscn")` with a 1.6s delay for victory audio and completion message display.
+* **Global Game State & Input Synchronization:**
+  * In `demo.gd`: Initialized `Global.current_chamber_id = "broken_circuit"`, spatial dimensions (1D, 2D, 3D), and `SceneTransition.fade_in_from_black(0.4)`.
+  * Synchronized charge collection (`Global.carried_charge = true`, `charge_state_changed`), receiver powering (`receiver_powered = true`), and exit unlocking (`exit_open = true`).
+  * In `player.gd`: Updated controller input processing to support both Godot InputMap actions (`dimension_1..3`, `cycle_prev/next`, `jump`, `interact_strike`, `move_left/right/up/down`) and raw physical keyboard keys for total flexibility.
+* **Automated & Manual Verification:**
+  * Ran `tools/verify_route.gd` under Godot 4.7.2 headless in the main project: **All 32 physics and state checks passed** (conduit 1D entry, pit transit, expansion clearance rejection, charge pickup, monolith obstruction, 3D flank, receiver interaction, 2D depth preservation at $Z=-2.5$, runic step collision activation, 4 consecutive step jumps, and exit completion).
+  * Authored and executed `tools/verify_integration_flow.gd`: **100% passed** verifying instantiation of `IntroCutscene.tscn`, triggering skip/continue, smooth scene replacement to `BrokenCircuitDemo`, and presence of Player, Chamber, Camera3D, and HUD nodes.
+
+### Session 9: Mechanics, Perspective & Screen-Filling Platforming Overhaul
+* **Reference Alignment (`game reference video.mp4` / `123D`):**
+  * Dissected gameplay capture and unpacked PCK reference: confirmed block-based level design, intimate camera framing (`size ≈ 5.2`), true isometric perspective (`Yaw = -45.0°`, `Pitch = -30.0°`), and flat orthogonal 2D platforming (`Yaw = 0.0°`, `Pitch = 0.0°`).
+* **Camera System Calibration (`demo.gd`, `CameraRig.gd`, `CameraRig.tscn`):**
+  * Reduced default camera orthogonal size from wide `8.0`–`18.8` to intimate **`size = 5.2`**, ensuring platforms and John Rod fill the screen prominently.
+  * Removed wide-view establishing shot delay so gameplay opens immediately in the screen-filling framing.
+  * Updated camera target tracking to dynamically follow John Rod across $X$, $Y$, and depth $Z$ (`focus.y = player.position.y + 0.85`, following depth $Z$ in 3D mode).
+  * Retained `[M]` key map toggle: expands camera to `14.0` for whole-room view and returns smoothly to `5.2` on toggle off.
+* **Dimensional Controls & Locomotion (`player.gd`):**
+  * Configured `[Q]` to Count DOWN dimensions ($3\text{D} \rightarrow 2\text{D} \rightarrow 1\text{D}$) and `[E]` to Count UP dimensions ($1\text{D} \rightarrow 2\text{D} \rightarrow 3\text{D}$).
+  * Retained direct keys `[1]`, `[2]`, `[3]` and aliases `[Z]` / `[X]`.
+  * Calibrated 3D ground controls with $-45^\circ$ rotation to match the camera's isometric diagonal orientation.
+* **HUD Refinement:**
+  * Updated top bar with active dimension, charge state, and dynamic `[Q]` / `[E]` cycling prompts.
+* **Automated Verification:**
+  * Created and executed `tools/verify_mechanisms.gd`: validated camera angles (-45°/-30° in 3D, 0°/0° in 2D), camera size (5.2), Q count down, E count up, 1D conduit constraints, and dynamic Z/Y tracking with 100% pass rate.
+  * Re-ran `tools/verify_route.gd`: all 32 route and physics checks passed with exit code 0.
+
+
+
 

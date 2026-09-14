@@ -1,0 +1,291 @@
+[gd_scene load_steps=29 format=3 uid="uid://chamber1_dimensional_trial"]
+
+[ext_resource type="Script" path="res://scripts/levels/Chamber1_DimensionalTrial.gd" id="1_c1"]
+[ext_resource type="PackedScene" uid="uid://player_degrees_escape" path="res://scenes/player/Player.tscn" id="2_player"]
+[ext_resource type="PackedScene" uid="uid://camera_rig_123d" path="res://scenes/camera/CameraRig.tscn" id="3_cam"]
+[ext_resource type="PackedScene" uid="uid://hud_degrees_escape" path="res://scenes/ui/HUD.tscn" id="4_hud"]
+[ext_resource type="PackedScene" uid="uid://chamber_door_scene" path="res://scenes/objects/ChamberDoor.tscn" id="5_door"]
+[ext_resource type="PackedScene" uid="uid://conduit_rail_scene" path="res://scenes/objects/ConduitRail.tscn" id="6_rail"]
+[ext_resource type="PackedScene" uid="uid://layer_switch_pad_scene" path="res://scenes/objects/LayerSwitchPad.tscn" id="7_pad"]
+[ext_resource type="PackedScene" uid="uid://swinging_hazard_scene" path="res://scenes/objects/SwingingHazard.tscn" id="8_hazard"]
+[ext_resource type="PackedScene" uid="uid://energy_charge_scene" path="res://scenes/objects/EnergyCharge.tscn" id="9_charge"]
+[ext_resource type="PackedScene" uid="uid://energy_receiver_scene" path="res://scenes/objects/EnergyReceiver.tscn" id="10_receiver"]
+[ext_resource type="PackedScene" uid="uid://runic_platform_scene" path="res://scenes/objects/RunicPlatform.tscn" id="11_runic"]
+[ext_resource type="PackedScene" uid="uid://torch_scene" path="res://scenes/objects/Torch.tscn" id="12_torch"]
+[ext_resource type="Texture2D" uid="uid://floor_pavers_tex" path="res://assets/textures/floor_pavers.png" id="13_floor_tex"]
+[ext_resource type="Texture2D" uid="uid://wall_stone_tex" path="res://assets/textures/wall_stone.png" id="14_wall_tex"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_texture = ExtResource("13_floor_tex")
+uv1_scale = Vector3(4, 4, 1)
+texture_filter = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_entrance_floor"]
+material = SubResource("StandardMaterial3D_floor")
+size = Vector3(4, 0.5, 4.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_entrance_floor"]
+size = Vector3(4, 0.5, 4.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_courtyard_floor"]
+material = SubResource("StandardMaterial3D_floor")
+size = Vector3(11.5, 0.5, 8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_courtyard_floor"]
+size = Vector3(11.5, 0.5, 8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chasm"]
+albedo_color = Color(0.04, 0.05, 0.07, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_chasm_floor"]
+material = SubResource("StandardMaterial3D_chasm")
+size = Vector3(4, 0.5, 8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mezzanine_floor"]
+material = SubResource("StandardMaterial3D_floor")
+size = Vector3(5, 0.5, 5.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mezzanine_floor"]
+size = Vector3(5, 0.5, 5.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+albedo_texture = ExtResource("14_wall_tex")
+uv1_scale = Vector3(6, 2, 1)
+texture_filter = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_north_wall"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(25, 4.5, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_north_wall"]
+size = Vector3(25, 4.5, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_west_wall"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(0.5, 4.5, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_west_wall"]
+size = Vector3(0.5, 4.5, 6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_curbstone"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(25, 0.4, 0.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_curbstone"]
+size = Vector3(25, 0.4, 0.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pillar"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(0.9, 4.2, 0.9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pillar"]
+size = Vector3(0.9, 4.2, 0.9)
+
+[sub_resource type="BoxMesh" id="BoxMesh_monolith"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(1.6, 4.0, 2.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_monolith"]
+size = Vector3(1.6, 4.0, 2.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_balustrade"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(5, 0.7, 0.25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_balustrade"]
+size = Vector3(5, 0.7, 0.25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_portal"]
+size = Vector3(1.6, 3, 1.6)
+
+[node name="Chamber1_DimensionalTrial" type="Node3D"]
+script = ExtResource("1_c1")
+
+[node name="Lighting" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lighting"]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 10, 6)
+light_color = Color(1, 0.88, 0.75, 1)
+light_energy = 0.85
+
+[node name="AmbientOmni" type="OmniLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+light_color = Color(0.3, 0.7, 0.9, 1)
+light_energy = 0.8
+omni_range = 14.0
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="EntranceFloor" type="StaticBody3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, -0.25, -1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/EntranceFloor"]
+mesh = SubResource("BoxMesh_entrance_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/EntranceFloor"]
+shape = SubResource("BoxShape3D_entrance_floor")
+
+[node name="CourtyardFloor" type="StaticBody3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, -0.25, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/CourtyardFloor"]
+mesh = SubResource("BoxMesh_courtyard_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/CourtyardFloor"]
+shape = SubResource("BoxShape3D_courtyard_floor")
+
+[node name="ChasmBottom" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, -4.5, 0)
+mesh = SubResource("BoxMesh_chasm_floor")
+
+[node name="RaisedMezzanine" type="StaticBody3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 2.75, -1.25)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/RaisedMezzanine"]
+mesh = SubResource("BoxMesh_mezzanine_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/RaisedMezzanine"]
+shape = SubResource("BoxShape3D_mezzanine_floor")
+
+[node name="MezzanineBalustrade" type="StaticBody3D" parent="Environment/RaisedMezzanine"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 2.6)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/RaisedMezzanine/MezzanineBalustrade"]
+mesh = SubResource("BoxMesh_balustrade")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/RaisedMezzanine/MezzanineBalustrade"]
+shape = SubResource("BoxShape3D_balustrade")
+
+[node name="NorthWall" type="StaticBody3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2.25, -4.25)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/NorthWall"]
+mesh = SubResource("BoxMesh_north_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/NorthWall"]
+shape = SubResource("BoxShape3D_north_wall")
+
+[node name="WestWall" type="StaticBody3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 2.25, -1.25)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/WestWall"]
+mesh = SubResource("BoxMesh_west_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/WestWall"]
+shape = SubResource("BoxShape3D_west_wall")
+
+[node name="SouthCurbstone" type="StaticBody3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.2, 4)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/SouthCurbstone"]
+mesh = SubResource("BoxMesh_curbstone")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/SouthCurbstone"]
+shape = SubResource("BoxShape3D_curbstone")
+
+[node name="Pillar1" type="StaticBody3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 2.1, -2.2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Pillar1"]
+mesh = SubResource("BoxMesh_pillar")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Pillar1"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="Pillar2" type="StaticBody3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 2.1, 2.2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Pillar2"]
+mesh = SubResource("BoxMesh_pillar")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Pillar2"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="CentralMonolith" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 2, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CentralMonolith"]
+mesh = SubResource("BoxMesh_monolith")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CentralMonolith"]
+shape = SubResource("BoxShape3D_monolith")
+
+[node name="EnergyReceiver" parent="CentralMonolith" instance=ExtResource("10_receiver")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2, -1.2)
+receiver_id = "chamber1_receiver"
+
+[node name="PortcullisDoor" parent="." instance=ExtResource("5_door")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, 0)
+
+[node name="ConduitRail" parent="." instance=ExtResource("6_rail")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0.05, 0)
+length = 5.0
+passes_under_barrier = true
+
+[node name="LayerSwitchPadMid" parent="." instance=ExtResource("7_pad")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+
+[node name="LayerSwitchPadBack" parent="." instance=ExtResource("7_pad")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -1.5)
+
+[node name="SwingingHazard" parent="." instance=ExtResource("8_hazard")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 0)
+swing_speed = 2.5
+max_angle_deg = 40.0
+
+[node name="EnergyCharge" parent="." instance=ExtResource("9_charge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.8, -3.2)
+charge_id = "chamber1_charge"
+
+[node name="RunicPlatforms" type="Node3D" parent="."]
+
+[node name="RunicPlatform1" parent="RunicPlatforms" instance=ExtResource("11_runic")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, 0)
+is_powered = false
+
+[node name="RunicPlatform2" parent="RunicPlatforms" instance=ExtResource("11_runic")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 2, 0)
+is_powered = false
+
+[node name="RunicPlatform3" parent="RunicPlatforms" instance=ExtResource("11_runic")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 3, 0)
+is_powered = false
+
+[node name="Torches" type="Node3D" parent="."]
+
+[node name="Torch1" parent="Torches" instance=ExtResource("12_torch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 2.2, -4)
+
+[node name="Torch2" parent="Torches" instance=ExtResource("12_torch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2.2, -4)
+
+[node name="Torch3" parent="Torches" instance=ExtResource("12_torch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2.2, -4)
+
+[node name="Torch4" parent="Torches" instance=ExtResource("12_torch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 4.5, -4)
+
+[node name="RaisedMezzanine" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 3, -1.5)
+
+[node name="ExitPortal" type="Area3D" parent="RaisedMezzanine"]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RaisedMezzanine/ExitPortal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_portal")
+
+[node name="PortalBeacon" type="OmniLight3D" parent="RaisedMezzanine/ExitPortal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+light_color = Color(0.2, 0.9, 1, 1)
+light_energy = 2.0
+omni_range = 4.0
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 0.6, 0)
+
+[node name="CameraRig" parent="." instance=ExtResource("3_cam")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 1.5, 0)
+
+[node name="HUD" parent="." instance=ExtResource("4_hud")]

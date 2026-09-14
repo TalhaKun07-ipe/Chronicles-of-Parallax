@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1080" viewBox="0 0 1280 1080">
+<style>text{font-family:DejaVu Sans,sans-serif}</style>
+<rect x="0" y="0" width="1280" height="1080" rx="0" fill="#140c04" stroke="none"/>
+<rect x="40" y="35" width="5" height="64" rx="0" fill="#c29f5c" stroke="none"/>
+<text x="64" y="47" font-size="13" fill="#c29f5c" font-weight="600" text-anchor="start">DEGREES OF ESCAPE / FIRST PLAYABLE CHAMBER</text>
+<text x="64" y="85" font-size="36" fill="#ebd8b0" font-weight="700" text-anchor="start">THE BROKEN CIRCUIT</text>
+<text x="64" y="111" font-size="17" fill="#aa8952" font-weight="400" text-anchor="start">Carry a spark. Restore the path. Climb toward the light.</text>
+<text x="1216" y="65" font-size="14" fill="#c29f5c" font-weight="700" text-anchor="end">GODOT 4</text>
+<text x="1216" y="89" font-size="14" fill="#ebd8b0" font-weight="400" text-anchor="end">1D + 2D + 3D</text>
+<rect x="64" y="135" width="1152" height="372" rx="8" fill="#1e1309" stroke="#513619"/>
+<text x="86" y="162" font-size="13" fill="#c29f5c" font-weight="700" text-anchor="start">PLAN / LOOKING DOWN</text>
+<text x="1194" y="162" font-size="13" fill="#aa8952" font-weight="400" text-anchor="end">Rear = negative Z     •     Floor Y = 0m</text>
+<rect x="100.0" y="188" width="1079.0" height="272" rx="0" fill="#493017" stroke="#8c6532"/>
+<polyline points="141.5,188 141.5,460" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="224.5,188 224.5,460" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="307.5,188 307.5,460" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="390.5,188 390.5,460" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="473.5,188 473.5,460" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="556.5,188 556.5,460" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="639.5,188 639.5,460" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="722.5,188 722.5,460" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="805.5,188 805.5,460" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="888.5,188 888.5,460" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="971.5,188 971.5,460" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="1054.5,188 1054.5,460" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="1137.5,188 1137.5,460" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="100.0,256 1179.0,256" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="100.0,324 1179.0,324" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="100.0,392 1179.0,392" fill="none" stroke="#563a1c" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<rect x="315.8" y="188" width="145.25" height="272" rx="0" fill="#0d0803" stroke="none"/>
+<text x="326.175" y="222" font-size="11" fill="#443019" font-weight="400" text-anchor="start">////</text>
+<text x="326.175" y="290" font-size="11" fill="#443019" font-weight="400" text-anchor="start">////</text>
+<text x="326.175" y="358" font-size="11" fill="#443019" font-weight="400" text-anchor="start">////</text>
+<text x="326.175" y="426" font-size="11" fill="#443019" font-weight="400" text-anchor="start">////</text>
+<rect x="371.825" y="188" width="33.199999999999996" height="272" rx="0" fill="#9e743b" stroke="#d4af67"/>
+<polyline points="373.9,205.0 402.95,205.0" fill="none" stroke="#c29f5c" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="373.9,256 402.95,256" fill="none" stroke="#c29f5c" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="373.9,307.0 402.95,307.0" fill="none" stroke="#c29f5c" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="373.9,358 402.95,358" fill="none" stroke="#c29f5c" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<polyline points="373.9,409.0 402.95,409.0" fill="none" stroke="#c29f5c" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<text x="388.425" y="483" font-size="12" fill="#c29f5c" font-weight="400" text-anchor="middle">3.5m chasm</text>
+<rect x="199.60000000000002" y="303.6" width="49.79999999999997" height="40.8" rx="0" fill="#261708" stroke="#c29f5c"/>
+<rect x="515.0" y="303.6" width="49.8" height="40.8" rx="0" fill="#261708" stroke="#c29f5c"/>
+<polyline points="224.5,324 539.9,324" fill="none" stroke="#70b9af" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<path d="M 510.85 315 l 7 9 l -7 9 l -7 -9 Z" fill="#ebd8b0"/>
+<rect x="601.1125" y="278.95" width="118.275" height="90.1" rx="0" fill="#261708" stroke="#9e743b"/>
+<rect x="606.3" y="283.2" width="107.9" height="81.6" rx="0" fill="#66421f" stroke="#c29f5c"/>
+<text x="660.25" y="320" font-size="11" fill="#ebd8b0" font-weight="700" text-anchor="middle">MONOLITH</text>
+<text x="660.25" y="338" font-size="10" fill="#c29f5c" font-weight="400" text-anchor="middle">4.3m tall</text>
+<polyline points="539.9,324 568.95,324 568.95,239.0 627.05,239.0 627.05,211.8 739.1,211.8 739.1,239.0" fill="none" stroke="#d4af67" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<rect x="645.3100000000001" y="226.76" width="29.88" height="24.47999999999999" rx="0" fill="#140c04" stroke="#d4af67"/>
+<circle cx="660.25" cy="239.0" r="14" fill="#d4af67" stroke="#140c04" stroke-width="3"/>
+<text x="660.25" y="244.0" font-size="14" fill="#140c04" font-weight="700" text-anchor="middle">3</text>
+<text x="652.25" y="271.3" font-size="12" fill="#ebd8b0" font-weight="700" text-anchor="start">F</text>
+<rect x="752.5875" y="215.2" width="56.02500000000002" height="47.6" rx="0" fill="#3b2d19" stroke="#d9b779"/>
+<text x="780.5999999999999" y="258.0" font-size="10" fill="#ebd8b0" font-weight="600" text-anchor="middle">0.85m</text>
+<rect x="831.4375" y="215.2" width="56.024999999999984" height="47.6" rx="0" fill="#3b2d19" stroke="#d9b779"/>
+<text x="859.45" y="258.0" font-size="10" fill="#ebd8b0" font-weight="600" text-anchor="middle">1.70m</text>
+<rect x="910.2874999999999" y="215.2" width="56.024999999999984" height="47.6" rx="0" fill="#3b2d19" stroke="#d9b779"/>
+<text x="938.3" y="258.0" font-size="10" fill="#ebd8b0" font-weight="600" text-anchor="middle">2.55m</text>
+<rect x="989.1374999999999" y="215.2" width="56.02500000000006" height="47.6" rx="0" fill="#3b2d19" stroke="#d9b779"/>
+<text x="1017.1500000000001" y="258.0" font-size="10" fill="#ebd8b0" font-weight="600" text-anchor="middle">3.40m</text>
+<polyline points="739.1,239.0 1120.9,239.0" fill="none" stroke="#ebd8b0" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="5 7"/>
+<rect x="1066.95" y="203.3" width="112.04999999999997" height="71.39999999999999" rx="0" fill="#9e743b" stroke="#ebd8b0"/>
+<rect x="1087.7" y="208.4" width="74.7" height="7" rx="0" fill="#ebd8b0" stroke="none"/>
+<circle cx="1120.9" cy="239.0" r="14" fill="#ebd8b0" stroke="#140c04" stroke-width="3"/>
+<text x="1120.9" y="244.0" font-size="14" fill="#140c04" font-weight="700" text-anchor="middle">4</text>
+<text x="1120.9" y="300.2" font-size="11" fill="#ebd8b0" font-weight="700" text-anchor="middle">EXIT +4.25m</text>
+<text x="930.0" y="203.3" font-size="10" fill="#ebd8b0" font-weight="600" text-anchor="middle">2D FOOTHOLDS</text>
+<rect x="779.5625" y="399.65" width="35.274999999999984" height="28.900000000000002" rx="0" fill="#261708" stroke="#c29f5c"/>
+<text x="826.25" y="418.1" font-size="12" fill="#c29f5c" font-weight="400" text-anchor="start">Optional watch echo / F</text>
+<circle cx="170.54999999999995" cy="324" r="14" fill="#ebd8b0" stroke="#140c04" stroke-width="3"/>
+<text x="170.54999999999995" y="329" font-size="14" fill="#140c04" font-weight="700" text-anchor="middle">1</text>
+<circle cx="510.85" cy="369.9" r="14" fill="#70b9af" stroke="#140c04" stroke-width="3"/>
+<text x="510.85" y="374.9" font-size="14" fill="#140c04" font-weight="700" text-anchor="middle">2</text>
+<text x="170.54999999999995" y="358.0" font-size="11" fill="#ebd8b0" font-weight="600" text-anchor="middle">SPAWN</text>
+<text x="90" y="489" font-size="12" fill="#aa8952" font-weight="400" text-anchor="start">26m wide × 8m deep</text>
+<polyline points="760,485 792,485" fill="none" stroke="#70b9af" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<text x="800" y="489" font-size="12" fill="#aa8952" font-weight="400" text-anchor="start">1D rail</text>
+<polyline points="887,485 919,485" fill="none" stroke="#d4af67" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<text x="927" y="489" font-size="12" fill="#aa8952" font-weight="400" text-anchor="start">3D path</text>
+<polyline points="1020,485 1052,485" fill="none" stroke="#ebd8b0" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 5"/>
+<text x="1060" y="489" font-size="12" fill="#aa8952" font-weight="400" text-anchor="start">2D climb</text>
+<rect x="64" y="530" width="276" height="155" rx="6" fill="#24180d" stroke="#513619"/>
+<text x="80" y="558" font-size="14" fill="#c29f5c" font-weight="700" text-anchor="start">01</text>
+<text x="80" y="582" font-size="15" fill="#ebd8b0" font-weight="700" text-anchor="start">ARRIVAL</text>
+<text x="80" y="610" font-size="13" fill="#ba9a65" font-weight="400" text-anchor="start">See the doorway above.</text>
+<text x="80" y="633" font-size="13" fill="#ba9a65" font-weight="400" text-anchor="start">All spatial forms are ready.</text>
+<text x="80" y="656" font-size="13" fill="#ba9a65" font-weight="400" text-anchor="start">Experiment on safe ground.</text>
+<rect x="356" y="530" width="276" height="155" rx="6" fill="#24180d" stroke="#513619"/>
+<text x="372" y="558" font-size="14" fill="#c29f5c" font-weight="700" text-anchor="start">02</text>
+<text x="372" y="582" font-size="15" fill="#ebd8b0" font-weight="700" text-anchor="start">THE LOW GATE</text>
+<text x="372" y="610" font-size="13" fill="#ba9a65" font-weight="400" text-anchor="start">Fold into 1D at the socket.</text>
+<text x="372" y="633" font-size="13" fill="#ba9a65" font-weight="400" text-anchor="start">Slide over the chasm.</text>
+<text x="372" y="656" font-size="13" fill="#ba9a65" font-weight="400" text-anchor="start">Collect the spark on the way.</text>
+<rect x="648" y="530" width="276" height="155" rx="6" fill="#24180d" stroke="#513619"/>
+<text x="664" y="558" font-size="14" fill="#c29f5c" font-weight="700" text-anchor="start">03</text>
+<text x="664" y="582" font-size="15" fill="#ebd8b0" font-weight="700" text-anchor="start">THE HIDDEN SOCKET</text>
+<text x="664" y="610" font-size="13" fill="#ba9a65" font-weight="400" text-anchor="start">Expand and explore depth.</text>
+<text x="664" y="633" font-size="13" fill="#ba9a65" font-weight="400" text-anchor="start">Follow gold behind the pillar.</text>
+<text x="664" y="656" font-size="13" fill="#ba9a65" font-weight="400" text-anchor="start">Press F to restore the circuit.</text>
+<rect x="940" y="530" width="276" height="155" rx="6" fill="#24180d" stroke="#513619"/>
+<text x="956" y="558" font-size="14" fill="#c29f5c" font-weight="700" text-anchor="start">04</text>
+<text x="956" y="582" font-size="15" fill="#ebd8b0" font-weight="700" text-anchor="start">THE ASCENT</text>
+<text x="956" y="610" font-size="13" fill="#ba9a65" font-weight="400" text-anchor="start">Find the rear approach.</text>
+<text x="956" y="633" font-size="13" fill="#ba9a65" font-weight="400" text-anchor="start">2D makes the steps solid.</text>
+<text x="956" y="656" font-size="13" fill="#ba9a65" font-weight="400" text-anchor="start">Climb to the upper doorway.</text>
+<rect x="64" y="714" width="818" height="295" rx="8" fill="#1e1309" stroke="#513619"/>
+<text x="86" y="744" font-size="13" fill="#c29f5c" font-weight="700" text-anchor="start">CLIMB ELEVATION / LOCK DEPTH AT Z = -2.5m</text>
+<polyline points="95,957 842,957" fill="none" stroke="#66421f" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray=""/>
+<rect x="155.74999999999997" y="924.7" width="94.5" height="10.64" rx="0" fill="#d9b779" stroke="none"/>
+<text x="203.0" y="914.7" font-size="12" fill="#ebd8b0" font-weight="400" text-anchor="middle">0.85m</text>
+<polyline points="203.0,938.7 203.0,957" fill="none" stroke="#513619" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="3 5"/>
+<rect x="288.75" y="892.4" width="94.5" height="10.64" rx="0" fill="#d9b779" stroke="none"/>
+<text x="336.0" y="882.4" font-size="12" fill="#ebd8b0" font-weight="400" text-anchor="middle">1.70m</text>
+<polyline points="336.0,906.4 336.0,957" fill="none" stroke="#513619" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="3 5"/>
+<rect x="421.75" y="860.1" width="94.5" height="10.64" rx="0" fill="#d9b779" stroke="none"/>
+<text x="469.0" y="850.1" font-size="12" fill="#ebd8b0" font-weight="400" text-anchor="middle">2.55m</text>
+<polyline points="469.0,874.1 469.0,957" fill="none" stroke="#513619" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="3 5"/>
+<rect x="554.75" y="827.8" width="94.5" height="10.64" rx="0" fill="#d9b779" stroke="none"/>
+<text x="602.0" y="817.8" font-size="12" fill="#ebd8b0" font-weight="400" text-anchor="middle">3.40m</text>
+<polyline points="602.0,841.8 602.0,957" fill="none" stroke="#513619" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="3 5"/>
+<rect x="686.0" y="795.5" width="140" height="17.48" rx="0" fill="#9e743b" stroke="#ebd8b0"/>
+<text x="756.0" y="785.5" font-size="12" fill="#ebd8b0" font-weight="600" text-anchor="middle">4.25m / EXIT</text>
+<text x="95" y="990" font-size="13" fill="#ba9a65" font-weight="400" text-anchor="start">0.85m rises   •   1.35m-wide steps   •   Safe courtyard below</text>
+<rect x="904" y="714" width="312" height="295" rx="8" fill="#24180d" stroke="#513619"/>
+<text x="926" y="744" font-size="13" fill="#c29f5c" font-weight="700" text-anchor="start">THE RULES STAY CONSISTENT</text>
+<text x="926" y="778" font-size="12" fill="#ebd8b0" font-weight="700" text-anchor="start">1D / A LINE</text>
+<text x="926" y="797" font-size="12" fill="#ba9a65" font-weight="400" text-anchor="start">Only available on the conduit.</text>
+<text x="926" y="835" font-size="12" fill="#ebd8b0" font-weight="700" text-anchor="start">2D / A PLANE</text>
+<text x="926" y="854" font-size="12" fill="#ba9a65" font-weight="400" text-anchor="start">Keeps your current depth.</text>
+<text x="926" y="892" font-size="12" fill="#ebd8b0" font-weight="700" text-anchor="start">3D / A VOLUME</text>
+<text x="926" y="911" font-size="12" fill="#ba9a65" font-weight="400" text-anchor="start">Walk around the obstruction.</text>
+<text x="926" y="949" font-size="12" fill="#ebd8b0" font-weight="700" text-anchor="start">PROGRESS STAYS</text>
+<text x="926" y="968" font-size="12" fill="#ba9a65" font-weight="400" text-anchor="start">A fall does not drain the socket.</text>
+<text x="64" y="1044" font-size="12" fill="#c29f5c" font-weight="600" text-anchor="start">SEPIA STONE / GOLD CIRCUITS / CHROME JOHN ROD</text>
+<text x="1216" y="1044" font-size="12" fill="#aa8952" font-weight="400" text-anchor="end">Editable Godot geometry · Actual physics-tested route</text>
+</svg>

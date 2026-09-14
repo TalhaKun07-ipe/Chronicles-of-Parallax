@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://layer_switch_pad_scene"]
+
+[ext_resource type="Script" path="res://scripts/mechanics/LayerSwitchPad.gd" id="1_pad"]
+[ext_resource type="Texture2D" path="res://assets/textures/depth_arrow_indicator.png" id="2_tex"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_pad"]
+height = 0.5
+radius = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rune"]
+albedo_color = Color(0.18, 0.14, 0.08, 1)
+emission_enabled = true
+emission = Color(1, 0.75, 0.2, 1)
+emission_energy_multiplier = 1.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rune"]
+material = SubResource("StandardMaterial3D_rune")
+top_radius = 0.8
+bottom_radius = 0.85
+height = 0.08
+radial_segments = 16
+
+[node name="LayerSwitchPad" type="Area3D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_pad")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_pad")
+
+[node name="PadMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+mesh = SubResource("CylinderMesh_rune")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+light_color = Color(1, 0.75, 0.25, 1)
+light_energy = 0.9
+omni_range = 3.0
+
+[node name="Indicator" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+visible = false
+texture = ExtResource("2_tex")
+modulate = Color(1, 0.85, 0.3, 1)
+billboard = 1
+double_sided = false
+no_depth_test = true
+texture_filter = 0

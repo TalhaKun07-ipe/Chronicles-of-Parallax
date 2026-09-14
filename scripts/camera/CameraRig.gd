@@ -8,7 +8,7 @@ class_name CameraRig
 @onready var camera_3d: Camera3D = $CamRoot2/Camera3D
 
 @export var target_node: Node3D
-@export var ortho_size: float = 6.5
+@export var ortho_size: float = 5.8
 
 # Angles in 3D mode
 const ROT_3D_Y: float = -45.0

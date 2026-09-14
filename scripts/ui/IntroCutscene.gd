@@ -201,12 +201,12 @@ func start_game() -> void:
 	var t = create_tween()
 	t.tween_property(fade_rect, "modulate:a", 1.0, 0.7)
 	t.tween_callback(func():
-		get_tree().change_scene_to_file("res://scenes/levels/Arrival_BrokenCircuit.tscn")
+		get_tree().change_scene_to_file("res://chambers/broken_circuit/Demo.tscn")
 	)
 
 func skip_to_game() -> void:
 	var t = create_tween()
 	t.tween_property(fade_rect, "modulate:a", 1.0, 0.3)
 	t.tween_callback(func():
-		get_tree().change_scene_to_file("res://scenes/levels/Arrival_BrokenCircuit.tscn")
+		get_tree().change_scene_to_file("res://chambers/broken_circuit/Demo.tscn")
 	)

@@ -214,7 +214,15 @@ func process_2d(delta: float) -> void:
 			
 	# Constrained to current frozen 2D plane (depth is preserved)
 	velocity.z = 0
-	global_position.z = locked_2d_z
+	if not is_shifting_lane:
+		global_position.z = locked_2d_z
+		
+	# While on a LayerSwitchPad in 2D, allow W/S to shift discrete depth lanes
+	if can_shift_lanes and not is_shifting_lane:
+		if Input.is_action_just_pressed("move_up") and current_lane > 0:
+			shift_lane(current_lane - 1)
+		elif Input.is_action_just_pressed("move_down") and current_lane < 2:
+			shift_lane(current_lane + 1)
 
 # --- 2.5D MODE (DISCRETE LAYERS) ---
 func process_2_5d(delta: float) -> void:
@@ -234,6 +242,7 @@ func shift_lane(target_lane: int) -> void:
 	is_shifting_lane = true
 	sprite_3d.texture = get_tex("25d_front") if going_forward else get_tex("25d_back")
 	var target_z = LANE_Z_COORDS[current_lane]
+	locked_2d_z = target_z
 	var mid_z = (global_position.z + target_z) * 0.5
 	var tween = create_tween()
 	tween.tween_property(self, "global_position:z", mid_z, 0.11).set_trans(Tween.TRANS_QUAD)
@@ -242,6 +251,7 @@ func shift_lane(target_lane: int) -> void:
 	tween.tween_callback(func():
 		is_shifting_lane = false
 		sprite_3d.texture = get_tex("25d_idle")
+		locked_2d_z = target_z
 	)
 	SoundManager.play_sfx("transform")
 

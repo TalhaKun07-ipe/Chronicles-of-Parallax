@@ -26,6 +26,7 @@ config/icon="res://assets/ui/ancient_watch_hud.png"
 
 Global="*res://scripts/autoload/Global.gd"
 SoundManager="*res://scripts/autoload/SoundManager.gd"
+SceneTransition="*res://scripts/autoload/SceneTransition.gd"
 
 [display]
 

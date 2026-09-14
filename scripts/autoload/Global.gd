@@ -30,8 +30,8 @@ var unlocked_dimensions: Dictionary = {
 	Dimension.DIM_0D: true,
 	Dimension.DIM_1D: true,   # Unlocked from start of exploration
 	Dimension.DIM_2D: true,   # Unlocked from start of exploration
-	Dimension.DIM_2_5D: false, # Handled as camera perspective
-	Dimension.DIM_3D: true    # Unlocked from start of exploration
+	Dimension.DIM_2_5D: true, # Depth lane shifting unlocked
+	Dimension.DIM_3D: true    # Continuous volume unlocked
 }
 
 var carried_charge: bool = false
@@ -41,17 +41,15 @@ var is_rewinding: bool = false
 var max_health: int = 3
 var current_health: int = 3
 
-var current_chamber_id: String = "arrival"
+var current_chamber_id: String = "chamber_1"
 var current_checkpoint_pos: Vector3 = Vector3.ZERO
 
 var chamber_states: Dictionary = {
-	"arrival": {"charge_collected": false, "receiver_powered": false, "exit_open": false},
-	"chamber_1": {"charge_collected": false, "receiver_powered": false, "stairs_active": false},
-	"chamber_2": {"shutter_locked": false, "bridge_active": false},
-	"chamber_3": {"charge_collected": false, "lift_powered": false, "lift_raised": false},
-	"boss": {"phase": 1, "defeated": false},
-	"escape": {"stairs_repaired": false, "cleared": false}
+	"chamber_1": {"gate_opened": false, "charge_collected": false, "receiver_powered": false, "exit_open": false},
+	"chamber_2": {"shutter_passed": false, "lever_a": false, "lever_b": false, "lift_active": false},
+	"chamber_3": {"boss_phase": 1, "boss_defeated": false, "rewind_unlocked": false, "stairs_restored": false, "escaped": false}
 }
+
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS

@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=3 uid="uid://swinging_hazard_scene"]
+
+[ext_resource type="Script" path="res://scripts/objects/SwingingHazard.gd" id="1_hazard"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rod"]
+albedo_color = Color(0.2, 0.22, 0.25, 1)
+metallic = 0.8
+roughness = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rod"]
+material = SubResource("StandardMaterial3D_rod")
+top_radius = 0.05
+bottom_radius = 0.05
+height = 2.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blade"]
+albedo_color = Color(0.6, 0.15, 0.15, 1)
+metallic = 0.9
+roughness = 0.2
+emission_enabled = true
+emission = Color(0.9, 0.2, 0.1, 1)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_blade"]
+material = SubResource("StandardMaterial3D_blade")
+size = Vector3(0.5, 0.9, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hitbox"]
+size = Vector3(0.6, 1.0, 0.9)
+
+[node name="SwingingHazard" type="Node3D"]
+script = ExtResource("1_hazard")
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+
+[node name="ShaftMesh" type="MeshInstance3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.4, 0)
+mesh = SubResource("CylinderMesh_rod")
+
+[node name="BladeMesh" type="MeshInstance3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.7, 0)
+mesh = SubResource("BoxMesh_blade")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Pivot/BladeMesh"]
+light_color = Color(1, 0.2, 0.1, 1)
+light_energy = 1.2
+omni_range = 3.0
+
+[node name="Hitbox" type="Area3D" parent="Pivot/BladeMesh"]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/BladeMesh/Hitbox"]
+shape = SubResource("BoxShape3D_hitbox")
