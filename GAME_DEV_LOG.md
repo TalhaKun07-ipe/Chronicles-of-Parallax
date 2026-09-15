@@ -656,3 +656,25 @@ Degrees_of_Escape/
   * `tools/verify_new_features.gd`: **20/20 checks passed 100%** validating Undertale conversation system, portraits, and Full Map auto-reset on movement.
   * `tools/capture_showcase.gd`: Successfully captured 5 showcase renders confirming visual quality in full 1280×720 HD with 4x MSAA.
 
+### Session 13: Technical Manual Creation (`HOW_WE_CODE.md`) & Continuous Git Workflow Standardization
+* **Authoring Master Technical Manual (`HOW_WE_CODE.md`):**
+  * Authored comprehensive 13-section technical architecture and engineering manual at repository root.
+  * Documented core architectural philosophy (0D through 4D temporal rewind, asymmetric causality, design pillars).
+  * Documented full project directory topology and file ownership across scripts, assets, chambers, scenes, and tools.
+  * Documented engine display and rendering pipeline (1280×720 HD canvas_items, 4× MSAA 3D, nearest-neighbor canvas texture filter, filmic tonemapping, procedural stone shader).
+  * Documented autoload singletons (`Global.gd`, `SoundManager.gd`, `SceneTransition.gd`) and event bus signals.
+  * Documented dimensional kinematic engine, state machine transitions, dual input mapping (InputMap + raw key fallbacks), and ring-buffer temporal rewind.
+  * Documented screen-filling axonometric Camera3D rig, full map overview mode (`[M]`), and movement auto-reset.
+  * Documented Chamber 01 course architecture, 253-piece layout, permanent solid 3D masonry, and Flat Guardian sentinel AI.
+  * Documented Undertale dialogue box, character portraits, retro sound synthesis, and HUD heart systems.
+  * Documented headless automated verification test suite and procedural asset generators.
+* **Standardization of Continuous Coding & Git Protocol:**
+  * Created `.agents/rules/continuous_workflow.md` and `Degrees_of_Escape/AGENTS.md` enshrining the permanent rule:
+    * Every coding session must update `GAME_DEV_LOG.md`.
+    * Every coding session must update `HOW_WE_CODE.md`.
+    * Every coding session must run automated headless verification.
+    * Every coding session must commit all changes and push to `git push origin master`.
+* **Repository Synchronization:**
+  * Verified all documentation, staged all updates, and synchronized directly with the remote GitHub repository.
+
+

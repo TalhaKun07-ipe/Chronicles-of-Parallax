@@ -2,12 +2,15 @@
 
 **GameJam Submission for Intra BUET Robo Challenge 2026**  
 **Theme:** *Degree of Freedom*  
-**Engine:** Godot Engine 4.3+ / 4.7+ (GL Compatibility)  
-**Target Viewport:** 320×180 (Crisp Retro Pixel Scaling)  
-**Repository:** [https://github.com/TalhaKun07-ipe/Degrees-of-Escape](https://github.com/TalhaKun07-ipe/Degrees-of-Escape)
+**Engine:** Godot Engine 4.3+ / 4.7+ (Forward+ / GL Compatibility)  
+**Target Resolution:** 1280×720 (HD CanvasItems with 4× MSAA 3D + Crisp Retro Pixel Art)  
+**Repository:** [https://github.com/TalhaKun07-ipe/Degrees-of-Escape](https://github.com/TalhaKun07-ipe/Degrees-of-Escape)  
 
-📖 **Full Technical Documentation & Continuous Dev Log:**  
-👉 **[GAME_DEV_LOG.md](file:///c:/Users/USER/Desktop/game%20making/Degrees_of_Escape/GAME_DEV_LOG.md)** *(Master design bible, GDScript architecture index, narrative script, sprite specifications, mathematical formulas, and session changelog).*
+🛠️ **Technical Architecture & Engineering Manual:**  
+👉 **[HOW_WE_CODE.md](file:///c:/Users/USER/Desktop/game%20making/Degrees_of_Escape/HOW_WE_CODE.md)** *(Complete technical guide on how this game is coded, dimensional kinematic engines, screen-filling axonometric camera, procedural shaders, UI systems, test suite, and coding conventions).*
+
+📖 **Design Bible & Continuous Dev Log:**  
+👉 **[GAME_DEV_LOG.md](file:///c:/Users/USER/Desktop/game%20making/Degrees_of_Escape/GAME_DEV_LOG.md)** *(Master narrative script, character design specifications, level progression, and session-by-session changelog).*
 
 ---
 
