@@ -6,8 +6,8 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'chambers/broken_circuit'
 random.seed(19)
 palette = {
-    'void':'140C04', 'deep':'261708', 'shadow':'3B220B', 'stone':'66421F',
-    'paver':'785026', 'edge':'9E743B', 'ochre':'C29F5C', 'gold':'D4AF67',
+    'cavern':'554A38', 'void':'140C04', 'deep':'261708', 'shadow':'3B220B', 'stone':'685039',
+    'paver':'635B47', 'edge':'9E743B', 'ochre':'C29F5C', 'gold':'D4AF67',
     'light':'EBD8B0', 'rail':'70B9AF', 'rune_off':'564125', 'rune_on':'D9B779',
 }
 resources=[]; nodes=[]; boxes=[]; cache={}
@@ -33,91 +33,140 @@ def box(name,pos,size,mat='stone',solid=False,parent='Geometry',group='',visible
     boxes.append(dict(name=name,position=pos,size=size,material=mat,solid=solid,visible=visible,group=group))
 def marker(name,pos): nodes.append(f'[node name="{name}" type="Marker3D" parent="Markers"]\nposition = {v(pos)}\n')
 
+# World-space masonry remains crisp in either perspective; no baked camera art.
+for index,name in enumerate(palette):
+    if name in ['stone','paver','shadow','deep']:
+        resources[index]=f'[sub_resource type="ShaderMaterial" id="mat_{name}"]\nshader = ExtResource("2")\nshader_parameter/stone_color = {color(palette[name])}\n'
+
 nodes.append('[node name="BrokenCircuit" type="Node3D"]\nscript = ExtResource("1")\n')
 for name in ['Geometry','Details','Mechanisms','Markers']:
     nodes.append(f'[node name="{name}" type="Node3D" parent="."]\n')
-# Floors: the only abyss is too broad to jump and crossed by the first rail.
-box('LandingSlab',(-10.4,-.55,0),(5.2,1.1,8),'shadow',True)
-box('CourtyardSlab',(4.35,-.55,0),(17.3,1.1,8),'shadow',True)
-for xmin,xmax in [(-13,-7.8),(-4.3,13)]:
-    x=xmin;ix=0
-    while x<xmax-.01:
-        width=min(1.65,xmax-x)
-        for iz in range(5):
-            z=-4+iz*1.6
-            box(f'Paver_{str(xmin).replace("-","m")}_{ix}_{iz}',(x+width/2,.006,z+.8),(width-.045,.04,1.55),random.choice(['paver','stone','paver']),parent='Details')
-        x+=width;ix+=1
-box('LeftBoundary',(-13.2,3,0),(.4,6,8.6),'deep',True,visible=False)
-box('RightBoundary',(13.2,3,0),(.4,6,8.6),'deep',True,visible=False)
-for z in [-4.3,4.3]:
-    box('BoundaryBack' if z<0 else 'BoundaryFront',(0,4,z),(27,8,.5),'deep',True,visible=False)
-    box('RimBack' if z<0 else 'RimFront',(0,-.03,z),(26.5,.24,.4),'edge')
-# Gate closes the entire depth of the chamber. Bottom slot is 0.46m high.
-box('SlottedGate',(-6.05,2.33,0),(.8,3.74,8.0),'stone',True)
-for z in [-3.7,3.7]:
-    box('GatePier'+str(z),(-6.05,2.0,z),(1.3,4,0.65),'shadow',True)
-    box('GateCap'+str(z),(-6.05,4.12,z),(1.65,.24,.95),'ochre')
-box('GateLintel',(-6.05,4.1,0),(1.05,.22,8),'edge')
-for z in [-2.8,-1.4,0,1.4,2.8]:
-    box('GateStripe'+str(z),(-6.47,2.3,z),(.035,2.8,.07),'edge',parent='Details')
-box('MainConduit',(-6.2,.14,0),(7.6,.07,.12),'rail',parent='Mechanisms')
-for x in [-10,-2.4]:
-    box('RailDock'+str(x),(x,.04,0),(1.25,.05,1.35),'shadow',parent='Details')
-    for z in [-.6,.6]: box('DockTrim'+str(x)+str(z),(x,.075,z),(1.2,.03,.04),'gold',parent='Details')
-# Charged monolith blocks a flat route; room around both sides is walkable in 3D.
-box('Monolith',(.5,2.15,0),(2.6,4.3,2.4),'stone',True)
-box('MonolithFoot',(.5,.13,0),(2.85,.26,2.65),'shadow',True)
-box('MonolithCrown',(.5,4.37,0),(2.9,.2,2.7),'ochre')
-box('MonolithInset',(.5,2.3,1.212),(1.8,3.3,.03),'shadow',parent='Details')
-for y in [1.0,3.6]: box('MonolithBand'+str(y),(.5,y,1.237),(1.55,.055,.03),'edge',parent='Details')
-for x in [.05,.5,.95]: box('RuneStroke'+str(x),(x,2.3,1.24),(.06,1.55,.035),'ochre',parent='Details')
-box('RuneCrown',(.5,3.12,1.24),(.94,.09,.035),'gold',parent='Details')
-# A broken circuit is a literal floor line around the pillar to the hidden socket.
-for name,pos,size in [
- ('TraceApproach',(-1.7,.035,0),(1.2,.035,.05)),
- ('TraceTurn',(-1.1,.035,-1.25),(.05,.035,2.5)),
- ('TraceBack',(.05,.035,-2.5),(2.3,.035,.05)),
- ('TraceToStairs',(2.2,.035,-2.5),(1.8,.035,.05))]: box(name,pos,size,'gold',parent='Details')
-box('ReceiverBase',(.5,.25,-2.5),(.72,.5,.72),'shadow',True,parent='Mechanisms')
-box('ReceiverSocket',(.5,.53,-2.5),(.46,.06,.46),'rune_off',parent='Mechanisms',group='bc_receiver')
-# Climb: each rise is 0.85m (6.5m/s jump with gravity18 reaches1.174m).
-for i,(x,top) in enumerate([(3.4,.85),(5.3,1.7),(7.2,2.55),(9.1,3.4)]):
-    box(f'RunicStep{i+1}',(x,top-.14,-2.5),(1.35,.28,1.4),'rune_off',True,parent='Mechanisms',group='bc_steps')
-    box(f'StepRune{i+1}',(x,top+.015,-2.5),(.78,.025,.06),'gold',parent=f'Mechanisms/RunicStep{i+1}')
-    # Child coordinates must be relative to the moving/colored platform.
-    nodes[-2]=nodes[-2].replace(v((x,top+.015,-2.5)),v((0,.155,0)))
-box('UpperBalcony',(11.65,4.02,-2.5),(2.7,.46,2.1),'stone',True)
-box('BalconyLip',(11.65,4.2,-1.43),(2.8,.14,.14),'ochre')
-box('DoorRecess',(11.7,5.38,-3.49),(1.6,2.25,.1),'void')
-for x in [10.72,12.68]:
-    box('ExitPillar'+str(x),(x,5.38,-3.46),(.32,2.4,.5),'edge')
-    box('ExitCapital'+str(x),(x,6.6,-3.46),(.5,.2,.65),'ochre')
-box('ExitLintel',(11.7,6.65,-3.46),(2.4,.28,.5),'gold')
-box('ExitSeal',(11.7,5.45,-3.41),(.12,1.4,.04),'rune_off',parent='Mechanisms',group='bc_exit_seal')
-# Ruin dressing is kept on the perimeter, away from silhouettes and landing edges.
-for i,x in enumerate([-12,-9,-3,3,7.7,12.8]):
-    h=[5.5,3.0,4.6,5.6,4.8,6.0][i]
-    box(f'BackPillar{i}',(x,h/2,-4.75),(.85,h,.9),'deep')
-    box(f'BackPillarCap{i}',(x,h,-4.75),(1.15,.23,1.1),'stone')
-    box(f'BackPillarBase{i}',(x,.2,-4.75),(1.2,.4,1.25),'shadow')
-    for y in [.9,2.1,3.3]:
-        if y<h: box(f'PillarBand{i}_{y}',(x,y,-4.27),(.65,.055,.025),'edge',parent='Details')
-for i in range(26):
-    x=random.choice([-1,1])*random.uniform(2.5,12.8);z=random.choice([-3.85,3.8])
-    if -7.9<x<-4.25:continue
-    box(f'Rubble{i}',(x,.12,z),(random.uniform(.2,.55),random.uniform(.12,.4),random.uniform(.15,.5)),'shadow',parent='Details')
-# Optional discovery: a small watch echo in the front alcove; no required timer.
-box('EchoPlinth',(3.8,.2,2.65),(.85,.4,.85),'shadow',True,parent='Mechanisms')
-box('EchoGlyph',(3.8,.43,2.65),(.35,.035,.35),'ochre',parent='Mechanisms',group='bc_echo')
-for name,pos in {
- 'Spawn':(-11.3,.05,0),'RailStart':(-10,.2,0),'RailEnd':(-2.4,.2,0),
- 'Charge':(-3.1,.65,0),'Receiver':(.5,.6,-2.5),
- 'CourtyardCheckpoint':(-2.6,.05,0),'ClimbCheckpoint':(2.5,.05,-2.5),
- 'Exit':(11.6,4.3,-2.5),'Echo':(3.8,.65,2.65),
-}.items(): marker(name,pos)
 
-scene='[gd_scene load_steps=%d format=3]\n\n[ext_resource type="Script" path="res://chambers/broken_circuit/scripts/chamber.gd" id="1"]\n\n'%(len(resources)+2)
+def masonry(name,x1,x2,z1,z2,top,bottom=-5,group='',material='stone'):
+    parent='Mechanisms' if group else 'Geometry'
+    center=((x1+x2)/2,(top+bottom)/2,(z1+z2)/2)
+    box(name,center,(x2-x1,top-bottom,z2-z1),material,True,parent=parent,group=group)
+    # Body mesh ends below the coping: no coplanar top faces / z-fighting.
+    nodes[-2] += f'scale = {v((1,(top-bottom-.1)/(top-bottom),1))}\nposition = Vector3(0,-0.05,0)\n'
+    root=f'{parent}/{name}'
+    box('Coping',(0,(top-bottom)/2-.05,0),(x2-x1+.08,.10,z2-z1+.08),'paver',parent=root)
+    box('FrontBand',(0,(top-bottom)/2-.20,(z2-z1)/2+.012),(x2-x1,.055,.035),'ochre',parent=root)
+    return root
+
+# Terrain extends past the camera in every playable screen.
+masonry('ArrivalEarth',-40,-3,-22,22,0,-7,material='paver')
+masonry('SanctumEarth',1,38,-22,22,0,-7,material='paver')
+for name,x1,x2 in [('Arrival',-14,-3),('Court',1,38)]:
+    for z in [-8.25,8.25]:
+        masonry(name+('BackWall' if z<0 else 'FrontWall'),x1,x2,z-.3,z+.3,1.65,0)
+box('WestLimit',(-14.5,.825,0),(1,1.65,17),'deep',True)
+box('EastLimit',(38.5,4,0),(1,8,17),'deep',True)
+box('CavernBackdrop',(12,5,-14),(80,14,1),'cavern')
+# Natural-looking perimeter pillars and ruined walls fill the background.
+for i,x in enumerate(range(-18,42,5)):
+    h=[5.8,4.7,7.1,5.2][i%4]
+    masonry(f'RuinPier{i}',x-.55,x+.55,-10.5,-9.4,h,0,'', 'shadow')
+    if i%3!=1: masonry(f'RuinWall{i}',x+.55,x+4.45,-10.3,-9.8,3.4,0,'','deep')
+for i in range(80):
+    x=random.uniform(-15,36);z=random.choice([-7.7,7.7])+random.uniform(-.12,.12)
+    if -3<x<1:continue
+    box(f'Rubble{i}',(x,.14,z),(random.uniform(.2,.65),random.uniform(.12,.38),random.uniform(.2,.5)),'shadow',parent='Details')
+
+# 01 / Arrival court: a touch plate tells the player what it controls.
+box('WakePlate',(-9,.045,0),(1.2,.09,1.2),'ochre',parent='Mechanisms')
+box('WakePlateInset',(-9,.1,0),(.85,.035,.85),'rune_off',parent='Mechanisms')
+for x in [-12,-6]:
+    masonry('ArrivalButtress'+str(x),x-.5,x+.5,-4,-2.4,2.5,0)
+box('FirstConduit',(-1.25,.18,0),(8.5,.06,.12),'rail',parent='Mechanisms')
+# Passage in a full-depth bulkhead: 0.46m clear under its door.
+masonry('FirstGate',-1.5,-.7,-8,8,4.2,.46)
+for z in [-7.6,7.6]:masonry('FirstGatePier'+str(z),-1.8,-.4,z-.4,z+.4,4.8,0)
+for x in [-5.5,3]:
+    box('RailDock'+str(x),(x,.04,0),(1.5,.08,1.5),'shadow',parent='Details')
+    for z in [-.7,.7]:box('DockLine'+str(x)+str(z),(x,.09,z),(1.5,.035,.06),'gold',parent='Details')
+
+# 02 / Receiver court: two wide aisles and a blocked central sightline.
+masonry('Monolith',6,9,-1,4,3.7,0)
+masonry('SidePier',11,12.5,1.5,6,2.2,0)
+for z in [4.015,-1.015]:
+    for x in [6.6,7.5,8.4]:box('Inscription'+str(x)+str(z),(x,2.0,z),(.065,1.8,.03),'ochre',parent='Details')
+for name,pos,size in [
+ ('TraceFront',(4.6,.09,0),(2.5,.035,.07)),
+ ('TraceBack',(5.6,.09,-2.0),(.07,.035,4.0)),
+ ('TraceSocket',(6.5,.09,-4.0),(1.8,.035,.07)),
+ ('TraceClimb',(11.3,.09,-4.0),(5.5,.035,.07))]:box(name,pos,size,'gold',parent='Details')
+box('ReceiverBase',(7.5,.30,-4),(.8,.6,.8),'shadow',True,parent='Mechanisms')
+box('ReceiverSocket',(7.5,.625,-4),(.52,.05,.52),'rune_off',parent='Mechanisms')
+box('EchoPlinth',(4,.25,4.8),(1,.5,1),'stone',True,parent='Mechanisms')
+box('EchoGlyph',(4,.53,4.8),(.6,.045,.6),'gold',parent='Mechanisms')
+
+# 03 / Multi-Dimensional Platforming: Terrace 1 (2D Jump & 3D Walk Front)
+# Rear terrace aligned with 2D climb plane Z = -4.0
+masonry('RunicTerrace1', 14.2, 20.5, -5.6, -2.4, 0.85, 0.0, 'bc_steps')
+for x in [15.5, 17.5, 19.5]:
+    box('Rune'+str(x), (x, 0.87, -4.0), (1.2, 0.025, 0.4), 'gold', parent='Mechanisms')
+# Frontward terrace extension for walking front in 3D
+masonry('TerraceWalkway', 16.5, 20.5, -2.4, 1.2, 0.85, 0.0)
+for z in [-1.5, -0.5, 0.5]:
+    box('WalkwayTrace'+str(z), (18.5, 0.87, z), (0.08, 0.02, 0.8), 'gold', parent='Details')
+
+# High Rail Dock at front edge of Terrace 1
+box('HighDockStart', (20.0, 0.87, 0.0), (1.2, 0.05, 1.2), 'shadow', parent='Details')
+box('HighLineStart', (20.0, 0.90, 0.0), (1.2, 0.02, 0.1), 'gold', parent='Details')
+
+# Elevated High Conduit Rail across 6m rift (Utilizes 1D again!)
+box('HighConduit', (23.5, 1.05, 0.0), (6.5, 0.06, 0.12), 'rail', parent='Mechanisms')
+
+# High Gate with narrow 1D slit passage
+masonry('HighGateLeft', 23.0, 23.8, -4.5, -0.5, 4.2, 0.0)
+masonry('HighGateRight', 23.0, 23.8, 0.5, 4.5, 4.2, 0.0)
+masonry('HighGateLintel', 22.8, 24.0, -4.5, 4.5, 4.2, 1.35)
+
+# High Rail Dock at far landing (Guardian Hall threshold)
+box('HighDockEnd', (27.0, 0.87, 0.0), (1.2, 0.05, 1.2), 'shadow', parent='Details')
+box('HighLineEnd', (27.0, 0.90, 0.0), (1.2, 0.02, 0.1), 'gold', parent='Details')
+
+# 04 / Guardian Hall (Arena where Flat Guardian patrols)
+masonry('GuardianHallFloor', 26.5, 37.0, -5.5, 5.5, 0.85, 0.0)
+masonry('GuardianHallBackWall', 26.5, 37.0, -5.8, -5.4, 4.5, 0.85)
+masonry('GuardianHallFrontWall', 26.5, 37.0, 5.4, 5.8, 2.2, 0.85)
+
+# Decorative arena ruin pillars
+for x, z in [(28.5, -3.5), (28.5, 3.5), (34.0, -3.5), (34.0, 3.5)]:
+    masonry('ArenaPillar'+str(x)+str(z), x-0.4, x+0.4, z-0.4, z+0.4, 3.6, 0.85)
+
+# 05 / Exit Archway & Portal at the far end of Guardian Hall
+box('DoorRecess', (36.8, 2.2, 0.0), (0.2, 2.4, 2.2), 'void')
+masonry('ExitPillarLeft', 36.3, 36.8, -1.6, -1.1, 3.8, 0.85)
+masonry('ExitPillarRight', 36.3, 36.8, 1.1, 1.6, 3.8, 0.85)
+box('ExitLintel', (36.5, 3.4, 0.0), (0.6, 0.35, 3.2), 'ochre')
+box('ExitSeal', (36.7, 2.1, 0.0), (0.06, 1.7, 0.16), 'rune_off', parent='Mechanisms')
+
+markers = {
+    'Spawn': (-11.5, 0.08, 0.0),
+    'RailStart': (-5.5, 0.2, 0.0),
+    'RailEnd': (3.0, 0.2, 0.0),
+    'Charge': (2.2, 0.65, 0.0),
+    'Receiver': (7.5, 0.6, -4.0),
+    'CourtyardCheckpoint': (3.0, 0.08, 0.0),
+    'ClimbCheckpoint': (13.5, 0.08, -4.0),
+    'HighRailStart': (20.5, 1.05, 0.0),
+    'HighRailEnd': (26.5, 1.05, 0.0),
+    'GuardianSpawn': (31.5, 1.5, 0.0),
+    'GuardianCheckpoint': (27.0, 0.88, 0.0),
+    'Exit': (36.0, 0.88, 0.0),
+    'Echo': (4.0, 0.65, 4.8),
+}
+for name, pos in markers.items(): marker(name, pos)
+
+
+scene='[gd_scene load_steps=%d format=3]\n\n[ext_resource type="Script" path="res://chambers/broken_circuit/scripts/chamber.gd" id="1"]\n[ext_resource type="Shader" path="res://chambers/broken_circuit/stone.gdshader" id="2"]\n\n'%(len(resources)+3)
 scene+='\n'.join(resources)+'\n'+'\n'.join(nodes)
 (OUT/'BrokenCircuit.tscn').write_text(scene)
-(ROOT/'docs/layout.json').write_text(json.dumps({'units':'meters','axes':{'x':'progression right','y':'up','z':'depth; rear is negative'},'palette':palette,'boxes':boxes},indent=2))
-print('Built editable layout:',len(boxes),'boxes;',len(cache),'shared meshes')
+terraces = [('RunicTerrace1', 14.2, 20.5, 0.85)]
+data={'revision':2,'units':'meters','footprint':{'x':[-14,38],'z':[-8,8]},'palette':palette,'markers':markers,'terraces':terraces,'boxes':boxes}
+(ROOT/'docs').mkdir(exist_ok=True)
+(ROOT/'docs/layout.json').write_text(json.dumps(data,indent=2))
+print('Built course:',len(boxes),'pieces; Phase 1 Chamber 1 complete')
+
+

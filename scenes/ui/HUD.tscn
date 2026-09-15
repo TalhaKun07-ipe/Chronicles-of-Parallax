@@ -3,6 +3,8 @@
 [ext_resource type="Script" path="res://scripts/ui/HUD.gd" id="1_hud"]
 [ext_resource type="Texture2D" uid="uid://ancient_watch_hud_tex" path="res://assets/ui/ancient_watch_hud.png" id="2_watch_tex"]
 
+[ext_resource type="Texture2D" path="res://assets/ui/heart_full.png" id="3_heart_tex"]
+
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
 
@@ -14,54 +16,42 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="WatchContainer" type="HBoxContainer" parent="Control"]
+[node name="HPContainer" type="HBoxContainer" parent="Control"]
 layout_mode = 0
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 260.0
-offset_bottom = 68.0
-theme_override_constants/separation = 12
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 120.0
+offset_bottom = 46.0
+theme_override_constants/separation = 6
 
-[node name="WatchIcon" type="TextureRect" parent="Control/WatchContainer"]
-custom_minimum_size = Vector2(48, 48)
+[node name="HP1" type="TextureRect" parent="Control/HPContainer"]
+custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
-pivot_offset = Vector2(24, 24)
-texture = ExtResource("2_watch_tex")
+texture = ExtResource("3_heart_tex")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="DimLabel" type="Label" parent="Control/WatchContainer"]
+[node name="HP2" type="TextureRect" parent="Control/HPContainer"]
+custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "0D: POINT"
-vertical_alignment = 1
+texture = ExtResource("3_heart_tex")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="HPContainer" type="HBoxContainer" parent="Control"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -120.0
-offset_top = 20.0
-offset_right = -20.0
-offset_bottom = 44.0
-grow_horizontal = 0
-theme_override_constants/separation = 8
-
-[node name="HP1" type="ColorRect" parent="Control/HPContainer"]
-custom_minimum_size = Vector2(24, 14)
+[node name="HP3" type="TextureRect" parent="Control/HPContainer"]
+custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
-color = Color(0.95, 0.2, 0.2, 1)
+texture = ExtResource("3_heart_tex")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="HP2" type="ColorRect" parent="Control/HPContainer"]
-custom_minimum_size = Vector2(24, 14)
-layout_mode = 2
-color = Color(0.95, 0.2, 0.2, 1)
-
-[node name="HP3" type="ColorRect" parent="Control/HPContainer"]
-custom_minimum_size = Vector2(24, 14)
-layout_mode = 2
-color = Color(0.95, 0.2, 0.2, 1)
+[node name="WatchContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 0
+offset_left = 135.0
+offset_top = 16.0
+offset_right = 379.0
+offset_bottom = 68.0
+theme_override_constants/separation = 12
 
 [node name="RewindContainer" type="VBoxContainer" parent="Control"]
 visible = false

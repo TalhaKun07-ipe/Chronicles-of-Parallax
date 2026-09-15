@@ -569,24 +569,90 @@ Degrees_of_Escape/
   * Ran `tools/verify_route.gd` under Godot 4.7.2 headless in the main project: **All 32 physics and state checks passed** (conduit 1D entry, pit transit, expansion clearance rejection, charge pickup, monolith obstruction, 3D flank, receiver interaction, 2D depth preservation at $Z=-2.5$, runic step collision activation, 4 consecutive step jumps, and exit completion).
   * Authored and executed `tools/verify_integration_flow.gd`: **100% passed** verifying instantiation of `IntroCutscene.tscn`, triggering skip/continue, smooth scene replacement to `BrokenCircuitDemo`, and presence of Player, Chamber, Camera3D, and HUD nodes.
 
-### Session 9: Mechanics, Perspective & Screen-Filling Platforming Overhaul
-* **Reference Alignment (`game reference video.mp4` / `123D`):**
-  * Dissected gameplay capture and unpacked PCK reference: confirmed block-based level design, intimate camera framing (`size ≈ 5.2`), true isometric perspective (`Yaw = -45.0°`, `Pitch = -30.0°`), and flat orthogonal 2D platforming (`Yaw = 0.0°`, `Pitch = 0.0°`).
-* **Camera System Calibration (`demo.gd`, `CameraRig.gd`, `CameraRig.tscn`):**
-  * Reduced default camera orthogonal size from wide `8.0`–`18.8` to intimate **`size = 5.2`**, ensuring platforms and John Rod fill the screen prominently.
-  * Removed wide-view establishing shot delay so gameplay opens immediately in the screen-filling framing.
-  * Updated camera target tracking to dynamically follow John Rod across $X$, $Y$, and depth $Z$ (`focus.y = player.position.y + 0.85`, following depth $Z$ in 3D mode).
-  * Retained `[M]` key map toggle: expands camera to `14.0` for whole-room view and returns smoothly to `5.2` on toggle off.
-* **Dimensional Controls & Locomotion (`player.gd`):**
-  * Configured `[Q]` to Count DOWN dimensions ($3\text{D} \rightarrow 2\text{D} \rightarrow 1\text{D}$) and `[E]` to Count UP dimensions ($1\text{D} \rightarrow 2\text{D} \rightarrow 3\text{D}$).
-  * Retained direct keys `[1]`, `[2]`, `[3]` and aliases `[Z]` / `[X]`.
-  * Calibrated 3D ground controls with $-45^\circ$ rotation to match the camera's isometric diagonal orientation.
-* **HUD Refinement:**
-  * Updated top bar with active dimension, charge state, and dynamic `[Q]` / `[E]` cycling prompts.
-* **Automated Verification:**
-  * Created and executed `tools/verify_mechanisms.gd`: validated camera angles (-45°/-30° in 3D, 0°/0° in 2D), camera size (5.2), Q count down, E count up, 1D conduit constraints, and dynamic Z/Y tracking with 100% pass rate.
-  * Re-ran `tools/verify_route.gd`: all 32 route and physics checks passed with exit code 0.
+### Session 10: Expanded 64×16m Chamber 1 Course, Undertale Dialogue System & Interactive Full Map
+* **Course Layout Upgrade (`1st chamber 2nd try/Broken_Circuit_Godot`):**
+  * Integrated the 64 × 16m expanded obstacle course into `res://chambers/broken_circuit/`:
+    * Replaced narrow floating steps with substantial masonry terraces (4.5m, 5m, 5.5m) with 1m gaps and 0.85m rises.
+    * Added dual conduit crossings (first rail at $Y=0.2, Z=0$; upper rail at $Y=2.75, Z=2$).
+    * Integrated arrival pressure plate, rear receiver courtyard, permanent upper gallery, depth divider, upper pressure plate, and timed shutter gate.
+    * Integrated custom pixel masonry shader (`stone.gdshader`) and visual perimeter cutaways.
+  * Verified full course traversal via `tools/verify_route.gd`: **All 45 physics and mechanics checks passed in Godot 4.7.2** (conduits, jumps, depth locks, receiver latch, shutter timing, exit).
+* **Display Settings & Crisp Retro Rendering:**
+  * Configured `project.godot` display pipeline for authentic, razor-sharp pixel presentation:
+    * `viewport_width = 320`, `viewport_height = 180`
+    * `window_width_override = 1280`, `window_height_override = 720`
+    * `window/stretch/mode = "viewport"`, `window/stretch/scale_mode = "integer"`
+    * `textures/canvas_textures/default_texture_filter = 0` (nearest neighbor).
+  * Calibrated `IntroCutscene.tscn` to native 320×180 proportions with pixel-sharp typography and borders.
+* **Undertale-Style Dialogue System (`UndertaleDialogueBox.tscn` / `UndertaleDialogueBox.gd`):**
+  * Faithfully recreated the Undertale conversation window matching reference imagery:
+    * High-contrast black box with crisp double white border and pixel corners.
+    * Decorative top-left Undertale stat box (`John Rod / DIM 3D / HP 100 / WATCH OK`).
+    * Handcrafted 4 expressive pixel art character portraits in `res://assets/ui/portraits/`:
+      1. `john_rod_portrait_dazed.png`: Waking groggy with dizzy eyes and ruffled explorer hair.
+      2. `john_rod_portrait_watch.png`: Raised wrist with Ancient Chronometer glowing in cyan pixels.
+      3. `john_rod_portrait_revelation.png`: Wide-eyed awe surrounded by 1D, 2D, 3D geometric wireframes.
+      4. `john_rod_portrait_determined.png`: Looking upward toward distant exit with confident smirk.
+    * Scripted narrative sequence directly upon waking in Chamber 1:
+      1. Waking: `* ...Where am I?` / `* How did I survive that fall?`
+      2. Watch: `* (The Ancient Watch pulses with an ethereal glow.)` / `* You're still glowing. What did you do to me?`
+      3. Revelation: `* A line... a plane... a whole body.` / `* I can change between them! I can bend the very degrees of space!`
+      4. Determined: `* (The broken circuit ascends into the deep cavern.)` / `* That’s a long way up. ...All right. One step at a time.`
+    * Typewriter character-by-character text crawl with natural punctuation delays, retro voice blip sound effects, and blinking advance chevron indicator (`▼`).
+    * Full input handling: `[Z]`, `[SPACE]`, `[ENTER]`, or Click to fast-forward/advance; `[ESC]` to skip. Locks player kinematics during dialogue, then seamlessly releases controls.
+* **Interactive Full Map & Movement Auto-Reset (`demo.gd`):**
+  * Added clickable `[ MAP (M) ]` HUD button and `[M]` keyboard binding.
+  * Overview camera smoothly zooms to `size = 24.0` centered at `Vector3(18.5, 2.6, -1.0)` to showcase the entire 64m course in isometric axonometric perspective.
+  * **Movement Auto-Reset:** While viewing the full map, player movement input (WASD, Arrow Keys, Jump) automatically triggers an instant, fluid camera reset back to close tracking (`size = 5.2`, centered on John Rod).
+* **Automated Verification Pipeline:**
+  * `tools/verify_route.gd`: **45/45 checks passed** (traversal, conduits, terraces, shutter).
+  * `tools/verify_new_features.gd`: **20/20 checks passed** (dialogue progression, portraits, map toggle, movement auto-reset).
+  * `tools/verify_full_flow.gd`: **Passed** (seamless sequence from Intro cutscene into Chamber 1 with Undertale dialogue box).
 
+### Session 11: Graphics Quality Overhaul (720p HD + 4x MSAA) & Chamber 1 Phase 2 Removal
+* **Visuals & Graphics Overhaul (Eliminating "Textuery / Low Quality" Artifacts):**
+  * Root cause diagnosed: The low-resolution 320×180 viewport buffer (`stretch/mode="viewport"`) forced 3D geometry to render on a tiny 0.05-megapixel canvas, causing severe pixel-crawl and stair-stepping on diagonal isometric edges. In addition, the shader previously had pseudo-random noise `fract(sin(dot(...)))` and coordinate quantization (`floor(uv*24.0)`).
+  * Switched `project.godot` to `window/size/viewport_width = 1280`, `window/size/viewport_height = 720`, `stretch/mode = "canvas_items"`, and `stretch/aspect = "expand"`.
+  * Enabled **4x MSAA 3D** (`rendering/anti_aliasing/quality/msaa_3d = 2`) for crisp, anti-aliased 3D geometry and shadow borders.
+  * Preserved `textures/canvas_textures/default_texture_filter = 0` (nearest-neighbor) so John Rod's pixel art sprites remain crisp without linear blur.
+  * Rewrote `chambers/broken_circuit/stone.gdshader` into an anti-aliased architectural masonry shader with clean mortar seams, block bevel highlights, and zero procedural noise grain.
+  * Upgraded lighting: Filmic tonemapping (`Environment.TONE_MAPPER_FILMIC`), subtle bloom/glow, orthogonal directional sun shadows (`SHADOW_ORTHOGONAL`), and warm architectural omni torches.
+* **Removal of Phase 2 (Streamlining Chamber 1):**
+  * Stripped Phase 2 elements from `tools/build_layout.py` and `BrokenCircuit.tscn` (upper divider, 2nd plate, upper conduit, timed shutter, second 4m rift).
+  * Placed Chamber 1's Exit Archway, Doorway Recess, and glowing Rune Seal directly on the upper gallery landing at $X = 35.5, Y = 2.55, Z = -4.5$.
+  * Updated `chamber.gd`, `player.gd`, and `demo.gd` so ascending the 3 terraces in 2D and reaching the upper portal triggers victory celebration (`chamber_completed`) without transitioning to an unfinished 2nd chamber.
+* **UI & Dialogue Adaptation for 1280×720:**
+  * Redesigned HUD in `demo.gd`: 44px top glassmorphic banner with gold accent border, clickable `FULL MAP [M]` button, title, and live status; 62px bottom docked footer for hints and controls.
+  * Scaled `UndertaleDialogueBox.tscn`: 4px double white border, 160×160 portrait box for John Rod's pixel expressions, 20pt dialogue typography, and clean positioning above the bottom HUD.
+  * Scaled `IntroCutscene.tscn`: 704×396 pixel art canvas, 22pt story text, and 48pt title presentation.
+* **Verification & Automated Validation:**
+  * Updated `tools/verify_route.gd`: **37/37 checks passed** covering the streamlined Chamber 1 course to the upper terrace exit portal.
+  * Executed `tools/verify_new_features.gd`: **20/20 checks passed** validating dialogue box progression, portraits, map toggle, and movement auto-reset.
+  * Captured and verified high-definition renders of gameplay, Undertale dialogue, and full map view.
 
-
+### Session 12: Permanent 3D Terrace Visibility, Dimensional Platforming, Flat Guardian Sentinel & Red Hearts HUD
+* **Fixing 3D Block Disappearance (`haha.mp4` Root Cause):**
+  * Root cause diagnosed: In `chamber.gd`, terrace mesh materials were overridden with `outline_material` in 3D (`spatial_mode == 3`), which had an albedo alpha of `0.14`. Under isometric scene lighting, the terrace blocks became virtually invisible until the player collapsed to 2D.
+  * Solution: Removed the outline transparency override. Terrace meshes now permanently preserve their solid procedural architectural masonry shader (`stone.gdshader`) with gold runic coping, remaining physically and visually solid in full 3D at all times.
+* **Expanded Multi-Dimensional Platforming Course:**
+  * Extended chamber layout in `tools/build_layout.py` and `BrokenCircuit.tscn` to 253 pieces:
+    1. **Receiver Power**: Connect spark from lower 1D conduit rail to the receiver pedestal.
+    2. **2D Terrace Jump**: Walk behind receiver to terrace face ($X = 13.9, Z = -4.0$), switch to 2D plane mode, jump onto the runic terrace at $Y = 0.85$.
+    3. **3D Frontward Walk**: Switch to 3D volume mode on top of the terrace, walk forward along the walkway from $Z = -4.0$ to the front dock at $Z = 0.0$.
+    4. **1D High Conduit Rail**: Collapse to 1D on the elevated high rail ($Y = 1.05, Z = 0.0$), sliding across a 6-meter chasm through a narrow slit lintel into Guardian Hall.
+    5. **Flat Guardian Sentinel Arena**: Expand into 3D in Guardian Hall ($X = 26.5 \to 37.0$) to face the dimensional sentinel.
+    6. **2D Ethereal Slip-Through**: Switch to 2D to bypass the Flat Guardian safely without taking damage.
+    7. **Exit Archway**: Step through the exit portal at $X = 36.0, Z = 0.0$ to complete Chamber 1.
+* **Flat Guardian Sentinel (`flat_guardian.gd`):**
+  * Dimensional enemy inspired by *1 2 3D* / *To The Third*.
+  * **3D Volume State**: Actively pursues John Rod within 8.0m detection radius at 2.8 m/s; slashes if $< 1.35$m, dealing 1 heart damage, inflicting knockback, and activating 1.2s invulnerability blinking.
+  * **2D Plane State**: Collapses into a paper-thin ethereal form with cyan hue and low opacity ($\alpha = 0.22$), disabling its collision layer/mask so John Rod can slip straight through its body unharmed.
+* **Top-Left Red Pixel Hearts Health Display:**
+  * Replaced rectangular red boxes (`ColorRect`) with 32×32 retro pixel hearts (`assets/ui/heart_full.png` and `assets/ui/heart_empty.png`) anchored in the top-left corner of the HUD.
+  * Connected `Global.health_changed` to dynamically update heart textures on damage and respawn.
+  * Updated `scenes/ui/HUD.tscn` and `scripts/ui/HUD.gd` as well as `UndertaleDialogueBox.tscn` (`HP 3/3`).
+* **Automated Verification Pipeline:**
+  * `tools/verify_route.gd`: **61/61 checks passed 100%** covering the entire platforming course, permanent 3D terrace visibility, 1D high rail slide, Flat Guardian 3D pursuit & damage, 2D ethereal slip-through, exit archway completion, and health reset upon respawn.
+  * `tools/verify_new_features.gd`: **20/20 checks passed 100%** validating Undertale conversation system, portraits, and Full Map auto-reset on movement.
+  * `tools/capture_showcase.gd`: Successfully captured 5 showcase renders confirming visual quality in full 1280×720 HD with 4x MSAA.
 

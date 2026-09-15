@@ -31,10 +31,17 @@ func _on_dimension_changed(new_dim: Global.Dimension, _old: Global.Dimension) ->
 	update_dim_display(new_dim)
 	update_controls_hint()
 
+const HEART_FULL = preload("res://assets/ui/heart_full.png")
+const HEART_EMPTY = preload("res://assets/ui/heart_empty.png")
+
 func _on_health_changed(hp: int) -> void:
 	for i in range(hp_container.get_child_count()):
 		var pip = hp_container.get_child(i)
-		pip.modulate = Color(1, 1, 1, 1) if i < hp else Color(0.3, 0.3, 0.3, 0.4)
+		if pip is TextureRect:
+			pip.texture = HEART_FULL if i < hp else HEART_EMPTY
+			pip.modulate = Color(1, 1, 1, 1) if i < hp else Color(0.6, 0.6, 0.6, 0.7)
+		else:
+			pip.modulate = Color(1, 1, 1, 1) if i < hp else Color(0.3, 0.3, 0.3, 0.4)
 
 func _on_ability_unlocked(_dim: Global.Dimension) -> void:
 	update_controls_hint()
@@ -88,4 +95,3 @@ func update_controls_hint() -> void:
 		
 	hints.append("[F8]: 128/64px")
 	controls_label.text = " | ".join(hints)
-

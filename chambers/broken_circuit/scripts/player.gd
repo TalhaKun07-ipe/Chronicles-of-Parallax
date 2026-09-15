@@ -9,7 +9,9 @@ const JUMP: float = 6.5
 const ART: String = "res://chambers/broken_circuit/assets/sprites/"
 var mode: int = 3
 var plane_z: float = 0.0
-var checkpoint: Vector3 = Vector3(-11.3, 0.05, 0)
+var active_rail: Dictionary = {}
+var gallery_reached: bool = false
+var checkpoint: Vector3 = Vector3(-11.5, 0.08, 0)
 var shape_node: CollisionShape3D
 var humanoid: CapsuleShape3D
 var rod: BoxShape3D
@@ -22,6 +24,7 @@ var override_jump: bool = false
 var texture_cache: Dictionary = {}
 var coyote: float = 0.0
 var jump_buffer: float = 0.0
+var invulnerable_timer: float = 0.0
 @onready var chamber: Node3D = get_parent().get_node("Chamber")
 
 func _ready() -> void:
@@ -56,51 +59,33 @@ func _ready() -> void:
 	add_child(charge_orb)
 	_update_sprite()
 
-func count_down_dimension() -> void:
-	if mode == 3:
-		request_mode(2)
-	elif mode == 2:
-		request_mode(1)
+func action_pressed(action: String) -> bool:
+	return InputMap.has_action(action) and Input.is_action_pressed(action)
 
-func count_up_dimension() -> void:
-	if mode == 1:
-		request_mode(2)
-	elif mode == 2:
-		request_mode(3)
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("dimension_1"):
-		request_mode(1)
-		return
-	elif event.is_action_pressed("dimension_2"):
-		request_mode(2)
-		return
-	elif event.is_action_pressed("dimension_3"):
-		request_mode(3)
-		return
-	elif event.is_action_pressed("cycle_prev"):
-		count_down_dimension()
-		return
-	elif event.is_action_pressed("cycle_next"):
-		count_up_dimension()
-		return
-	elif event.is_action_pressed("jump"):
+func _unhandled_key_input(event: InputEvent) -> void:
+	for pair in [["dimension_1",1],["dimension_2",2],["dimension_3",3]]:
+		if InputMap.has_action(pair[0]) and event.is_action_pressed(pair[0]):
+			request_mode(pair[1])
+			return
+	for pair in [["cycle_prev",-1],["cycle_next",1]]:
+		if InputMap.has_action(pair[0]) and event.is_action_pressed(pair[0]):
+			request_mode(clampi(mode + pair[1],1,3))
+			return
+	if InputMap.has_action("jump") and event.is_action_pressed("jump"):
 		jump_buffer = 0.12
 		return
-	elif event.is_action_pressed("interact_strike"):
-		var message: String = chamber.try_interact(global_position)
-		if not message.is_empty():
-			notice.emit(message)
+	if InputMap.has_action("interact_strike") and event.is_action_pressed("interact_strike"):
+		var mapped_message: String = chamber.try_interact(global_position)
+		if not mapped_message.is_empty(): notice.emit(mapped_message)
 		return
-
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return
 	match event.physical_keycode:
 		KEY_1: request_mode(1)
 		KEY_2: request_mode(2)
 		KEY_3: request_mode(3)
-		KEY_Q, KEY_Z: count_down_dimension()
-		KEY_E, KEY_X: count_up_dimension()
+		KEY_Q, KEY_Z: request_mode(maxi(1, mode - 1))
+		KEY_E, KEY_X: request_mode(mini(3, mode + 1))
 		KEY_SPACE: jump_buffer = 0.12
 		KEY_F:
 			var message: String = chamber.try_interact(global_position)
@@ -120,10 +105,12 @@ func request_mode(target: int) -> bool:
 	if target == mode:
 		return true
 	if target == 1:
-		if position.x < -10.45 or position.x > -1.95 or absf(position.z) > 0.34 or absf(position.y - 0.2) > 0.35:
-			notice.emit("1D needs a conduit. Stand on its marked socket.")
+		var found: Dictionary = chamber.rail_near(position)
+		if found.is_empty():
+			notice.emit("Stand on a powered conduit to enter 1D.")
 			return false
-		position = Vector3(clampf(position.x, -10.0, -2.4), 0.2, 0)
+		active_rail = found
+		position = Vector3(clampf(position.x, found.start.x, found.end.x), found.start.y, found.start.z)
 		shape_node.shape = rod
 		shape_node.position.y = 0
 		sprite.position.y = 0
@@ -131,8 +118,8 @@ func request_mode(target: int) -> bool:
 		var destination := position
 		# Restore feet to floor height when leaving the rail, without changing X/Z.
 		if mode == 1:
-			destination.y = 0.04
-			if destination.x > -7.8 and destination.x < -4.3:
+			destination.y = float(active_rail.floor_y) + 0.04
+			if destination.x > float(active_rail.gap_min) and destination.x < float(active_rail.gap_max):
 				notice.emit("No foothold here. Slide to the far socket.")
 				return false
 		if not has_clearance(destination):
@@ -146,11 +133,6 @@ func request_mode(target: int) -> bool:
 	mode = target
 	velocity = Vector3.ZERO
 	chamber.set_spatial_mode(mode)
-	if Global:
-		match mode:
-			1: Global.active_dimension = Global.Dimension.DIM_1D
-			2: Global.active_dimension = Global.Dimension.DIM_2D
-			3: Global.active_dimension = Global.Dimension.DIM_3D
 	mode_changed.emit(mode)
 	_update_sprite()
 	return true
@@ -158,19 +140,15 @@ func request_mode(target: int) -> bool:
 func _physics_process(delta: float) -> void:
 	animation_time += delta
 	if not input_override:
-		var raw_x: float = Input.get_axis("move_left", "move_right") if InputMap.has_action("move_left") else 0.0
-		var raw_y: float = Input.get_axis("move_up", "move_down") if InputMap.has_action("move_up") else 0.0
-		if raw_x == 0.0:
-			raw_x = float(Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT)) - float(Input.is_physical_key_pressed(KEY_A) or Input.is_physical_key_pressed(KEY_LEFT))
-		if raw_y == 0.0:
-			raw_y = float(Input.is_physical_key_pressed(KEY_S) or Input.is_physical_key_pressed(KEY_DOWN)) - float(Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP))
-		move_input = Vector2(raw_x, raw_y)
+		move_input = Vector2(
+			float(action_pressed("move_right") or Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT)) - float(action_pressed("move_left") or Input.is_physical_key_pressed(KEY_A) or Input.is_physical_key_pressed(KEY_LEFT)),
+			float(action_pressed("move_down") or Input.is_physical_key_pressed(KEY_S) or Input.is_physical_key_pressed(KEY_DOWN)) - float(action_pressed("move_up") or Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP)))
 	if mode == 1:
 		velocity = Vector3(move_input.x * 3.5, 0, 0)
 		move_and_slide()
-		position.x = clampf(position.x, -10.0, -2.4)
-		position.y = 0.2
-		position.z = 0
+		position.x = clampf(position.x, active_rail.start.x, active_rail.end.x)
+		position.y = active_rail.start.y
+		position.z = active_rail.start.z
 	else:
 		var direction := Vector3(move_input.x, 0, move_input.y if mode == 3 else 0.0)
 		# Ground controls follow the angled camera in volume mode.
@@ -194,17 +172,61 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		if mode == 2:
 			position.z = plane_z
-	if position.x > -4.0 and checkpoint.x < -4.0:
-		checkpoint = Vector3(-2.6, 0.05, 0)
-	if chamber.powered:
-		checkpoint = Vector3(2.5, 0.05, -2.5)
+	chamber.tick_player(global_position)
+	
+	# Checkpoint zones
+	if position.x > 1.8 and checkpoint.x < 1:
+		checkpoint = Vector3(3.0, 0.08, 0.0)
+	if chamber.powered and position.x < 14:
+		checkpoint = Vector3(13.5, 0.08, -4.0)
+	if position.x >= 18.0 and position.x < 21.0 and position.y > 0.7:
+		checkpoint = Vector3(19.0, 0.88, 0.0)
+	if position.x >= 26.5 and position.x < 37.0 and position.y > 0.7:
+		checkpoint = Vector3(27.5, 0.88, 0.0)
+		
 	if position.y < -2.8:
 		respawn()
+		
 	chamber.try_collect(global_position)
 	chamber.try_exit(global_position)
 	charge_orb.visible = chamber.carrying_charge
 	charge_orb.position.y = (0.5 if mode == 1 else 1.45) + sin(animation_time * 3) * 0.05
+	
+	# Invulnerability blink
+	if invulnerable_timer > 0.0:
+		invulnerable_timer = maxf(0.0, invulnerable_timer - delta)
+		sprite.visible = int(invulnerable_timer * 16.0) % 2 == 0
+	else:
+		sprite.visible = true
+		
 	_update_sprite()
+
+func take_damage(amount: int, from_pos: Vector3) -> void:
+	if invulnerable_timer > 0.0:
+		return
+	invulnerable_timer = 1.2
+	
+	var g = get_node_or_null("/root/Global")
+	if g and g.has_method("take_damage"):
+		g.take_damage(amount)
+		
+	var sm = get_node_or_null("/root/SoundManager")
+	if sm and sm.has_method("play_sfx"):
+		sm.play_sfx("hurt")
+		
+	# Knockback impulse away from attacker
+	var kb_dir := (global_position - from_pos)
+	kb_dir.y = 0.0
+	if kb_dir.length() > 0.01:
+		kb_dir = kb_dir.normalized()
+	else:
+		kb_dir = Vector3.BACK
+	velocity = kb_dir * 4.5 + Vector3.UP * 3.0
+	
+	notice.emit("Flat Guardian strikes! Switch to 2D to slip through its slice!")
+	
+	if g and "current_health" in g and g.current_health <= 0:
+		respawn()
 
 func respawn() -> void:
 	position = checkpoint
@@ -214,9 +236,21 @@ func respawn() -> void:
 	shape_node.shape = humanoid
 	shape_node.position.y = 0.575
 	sprite.position.y = 0.576
+	invulnerable_timer = 0.0
+	sprite.visible = true
 	chamber.set_spatial_mode(3)
 	mode_changed.emit(3)
-	notice.emit("Back on solid ground. Your circuit progress is safe.")
+	
+	var g = get_node_or_null("/root/Global")
+	if g:
+		if g.has_method("reset_health"):
+			g.reset_health()
+		elif "current_health" in g:
+			g.current_health = g.max_health if "max_health" in g else 3
+			if g.has_signal("health_changed"):
+				g.health_changed.emit(g.current_health)
+		
+	notice.emit("Back on solid ground. Your health and progress are restored.")
 
 func _update_sprite() -> void:
 	var moving: bool = move_input.length() > 0.1

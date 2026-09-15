@@ -133,7 +133,8 @@ func _process(delta: float) -> void:
 			if next_char != " " and next_char != "." and next_char != ",":
 				sound_tick_counter += 1
 				if sound_tick_counter % 2 == 0:
-					SoundManager.play_sfx("typewriter")
+					var sm = get_node_or_null("/root/SoundManager")
+					if sm: sm.play_sfx("typewriter")
 					
 			# Natural pauses on commas and periods like Undertale
 			if next_char == ",":
@@ -175,7 +176,8 @@ func advance_story() -> void:
 
 func show_title_screen() -> void:
 	is_title_screen = true
-	SoundManager.play_sfx("story_chord")
+	var sm = get_node_or_null("/root/SoundManager")
+	if sm: sm.play_sfx("story_chord")
 	
 	# Fade out illustration and text
 	var t = create_tween()
@@ -197,7 +199,8 @@ func show_title_screen() -> void:
 	)
 
 func start_game() -> void:
-	SoundManager.play_sfx("unlock")
+	var sm = get_node_or_null("/root/SoundManager")
+	if sm: sm.play_sfx("unlock")
 	var t = create_tween()
 	t.tween_property(fade_rect, "modulate:a", 1.0, 0.7)
 	t.tween_callback(func():

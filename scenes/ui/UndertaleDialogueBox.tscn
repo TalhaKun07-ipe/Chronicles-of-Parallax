@@ -1,0 +1,136 @@
+[gd_scene load_steps=5 format=3 uid="uid://undertale_dialogue_box_scene"]
+
+[ext_resource type="Script" path="res://scripts/ui/UndertaleDialogueBox.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/ui/portraits/john_rod_portrait_dazed.png" id="2_portrait"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_undertale_border"]
+bg_color = Color(0, 0, 0, 0.96)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_portrait_border"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.7)
+corner_detail = 1
+
+[node name="UndertaleDialogueBox" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_script")
+
+[node name="DialogueRoot" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StatBox" type="PanelContainer" parent="DialogueRoot"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 220.0
+offset_right = 260.0
+offset_bottom = 400.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_undertale_border")
+
+[node name="MarginContainer" type="MarginContainer" parent="DialogueRoot/StatBox"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="StatLabel" type="Label" parent="DialogueRoot/StatBox/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/line_spacing = 4
+theme_override_font_sizes/font_size = 18
+text = "John Rod
+DIM  3D
+HP  3/3
+WATCH OK"
+
+[node name="BoxPanel" type="PanelContainer" parent="DialogueRoot"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 64.0
+offset_top = -262.0
+offset_right = -64.0
+offset_bottom = -72.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_undertale_border")
+
+[node name="MarginContainer" type="MarginContainer" parent="DialogueRoot/BoxPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="DialogueRoot/BoxPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="PortraitBox" type="PanelContainer" parent="DialogueRoot/BoxPanel/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(164, 164)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_portrait_border")
+
+[node name="PortraitTexture" type="TextureRect" parent="DialogueRoot/BoxPanel/MarginContainer/HBoxContainer/PortraitBox"]
+texture_filter = 0
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 2
+texture = ExtResource("2_portrait")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextContainer" type="Control" parent="DialogueRoot/BoxPanel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DialogueText" type="Label" parent="DialogueRoot/BoxPanel/MarginContainer/HBoxContainer/TextContainer"]
+texture_filter = 0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/line_spacing = 6
+theme_override_font_sizes/font_size = 20
+text = "* ...Where am I?
+* How did I survive that fall?"
+autowrap_mode = 3
+
+[node name="ArrowIndicator" type="Label" parent="DialogueRoot/BoxPanel/MarginContainer/HBoxContainer/TextContainer"]
+texture_filter = 0
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -30.0
+offset_top = -30.0
+offset_right = -6.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.37, 0.94, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "▼"
+horizontal_alignment = 2
+vertical_alignment = 2

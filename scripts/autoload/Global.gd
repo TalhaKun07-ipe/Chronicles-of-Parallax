@@ -103,11 +103,16 @@ func heal(amount: int = 1) -> void:
 	current_health = min(max_health, current_health + amount)
 	health_changed.emit(current_health)
 
+func reset_health() -> void:
+	current_health = max_health
+	health_changed.emit(current_health)
+
 func handle_defeat() -> void:
 	# Quick reset at chamber checkpoint
 	current_health = max_health
 	health_changed.emit(current_health)
-	get_tree().reload_current_scene()
+	if get_tree() and get_tree().current_scene != null:
+		get_tree().reload_current_scene()
 
 func unlock_rewind() -> void:
 	rewind_unlocked = true
