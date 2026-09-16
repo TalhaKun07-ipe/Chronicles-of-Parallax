@@ -1,25 +1,34 @@
 extends Node3D
-## Lighting, camera and minimal HUD for the standalone reference scene.
-var overview: bool = false
-var establishing_time: float = 0.0
+## Chamber 1 (The Broken Circuit) - Redesigned 8-Section Master Controller
+## Features: Clean floating HUD, readable gameplay subtitles, contextual controls,
+## continuous camera lookahead tracking, checkpoint recovery, and seamless transition to Chamber 2.
+
 var yaw: float = -45.0
 var pitch: float = -30.0
-var message_time: float = 0.0
-var message: String = "Stand on the gold plate to wake the first conduit."
-var hint: Label
-var status: Label
-var title: Label
-var controls: Label
-var map_button: Button
-var focus: Vector3 = Vector3(-11.5, .85, 0)
+var focus: Vector3 = Vector3(-15.0, 1.0, 0)
 var dialogue_box: CanvasLayer
+
+# Subtitle presentation system
+var subtitle_label: Label
+var subtitle_queue: Array[Dictionary] = [] # Array of {"text": String, "duration": float}
+var current_subtitle_time: float = 0.0
+var current_subtitle_duration: float = 3.5
+var shown_milestones: Dictionary = {}
+
+# Floating HUD elements
+var controls_label: Label
 var heart_icons: Array[TextureRect] = []
 var heart_full_tex: Texture2D = preload("res://assets/ui/heart_full.png")
 var heart_empty_tex: Texture2D = preload("res://assets/ui/heart_empty.png")
 
+# Checkpoint system
+var latest_checkpoint: Vector3 = Vector3(-15.0, 0.08, 0.0)
+var latest_checkpoint_mode: int = 3
+
 @onready var player: CharacterBody3D = $Player
 @onready var chamber: Node3D = $Chamber
 @onready var camera: Camera3D = $Camera3D
+var guardian: Node3D = null
 
 func _ready() -> void:
 	var world := WorldEnvironment.new()
@@ -41,7 +50,7 @@ func _ready() -> void:
 	sun.light_color = Color("fff3dd")
 	sun.light_energy = 0.75
 	sun.shadow_enabled = true
-	sun.directional_shadow_max_distance = 65
+	sun.directional_shadow_max_distance = 80
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
 	sun.shadow_bias = 0.02
 	sun.shadow_normal_bias = 1.5
@@ -53,13 +62,25 @@ func _ready() -> void:
 	fill.light_energy = 0.28
 	add_child(fill)
 	
-	# Atmospheric architectural lamps
-	for pos in [Vector3(-9, 2.2, 0), Vector3(3.0, 2.4, 0), Vector3(7.5, 2.2, -4), Vector3(20, 3.2, -4), Vector3(35.5, 4.0, -4.5)]:
+	# Atmospheric architectural lamps spaced along the 8 sections
+	var lamp_positions: Array[Vector3] = [
+		Vector3(-14, 2.4, 0),
+		Vector3(-2.0, 3.2, 0),
+		Vector3(12.0, 4.5, -3.5),
+		Vector3(22.0, 4.5, -4.0),
+		Vector3(36.0, 5.0, -4.0),
+		Vector3(55.0, 5.0, 0.0),
+		Vector3(64.0, 5.2, -3.5),
+		Vector3(76.0, 6.5, 2.5),
+		Vector3(95.0, 7.5, 0.0),
+		Vector3(102.5, 8.0, 0.0)
+	]
+	for pos in lamp_positions:
 		var lamp := OmniLight3D.new()
 		lamp.position = pos
 		lamp.light_color = Color("ffc97a")
 		lamp.light_energy = 0.85
-		lamp.omni_range = 5.0
+		lamp.omni_range = 7.0
 		add_child(lamp)
 		
 	# Global & SceneTransition integration
@@ -77,11 +98,18 @@ func _ready() -> void:
 	if transition and transition.has_method("fade_in_from_black"):
 		transition.fade_in_from_black(0.4)
 		
-	_build_hud()
-	player.notice.connect(show_message)
-	player.mode_changed.connect(func(_mode: int): _tone(330, 0.09))
+	_build_clean_hud()
+	
+	player.notice.connect(queue_subtitle)
+	player.mode_changed.connect(func(mode: int):
+		_tone(330, 0.08)
+		_update_controls_label(mode)
+		if chamber:
+			chamber.set_spatial_mode(mode)
+	)
+	
 	chamber.charge_collected.connect(func():
-		show_message("A spark follows you. Find its missing socket.")
+		queue_subtitle("A spark follows you. Guide it through 3D to the receiver.")
 		_tone(660, 0.18)
 		var g = get_node_or_null("/root/Global")
 		if g and "carried_charge" in g:
@@ -89,7 +117,9 @@ func _ready() -> void:
 			if g.has_signal("charge_state_changed"):
 				g.emit_signal("charge_state_changed", true)
 	)
+	
 	chamber.circuit_completed.connect(func():
+		queue_subtitle("The circuit answers. A new path opens.")
 		_tone(880, 0.32)
 		var g = get_node_or_null("/root/Global")
 		if g and "carried_charge" in g:
@@ -99,8 +129,9 @@ func _ready() -> void:
 			if g.has_signal("charge_state_changed"):
 				g.emit_signal("charge_state_changed", false)
 	)
+	
 	chamber.chamber_completed.connect(func():
-		show_message("★ CHAMBER 1 COMPLETE ★ — The Ascent Portal is Open!")
+		queue_subtitle("★ CHAMBER 1 COMPLETE ★ — The Ascent Portal is Open!")
 		_tone(1100, 0.5)
 		var g = get_node_or_null("/root/Global")
 		if g and "exit_open" in g:
@@ -108,17 +139,17 @@ func _ready() -> void:
 		if get_tree().current_scene == self:
 			get_tree().create_timer(1.8).timeout.connect(_enter_axiom_sanctum)
 	)
-	chamber.plate_activated.connect(_plate_activated)
 	
-	# Spawn Flat Guardian Sentinel in the upper arena
+	# Spawn Flat Guardian Sentinel in Section H (Upper Guardian Hall)
 	var guardian_script = load("res://chambers/broken_circuit/scripts/flat_guardian.gd")
-	var guardian = guardian_script.new()
-	guardian.name = "FlatGuardian"
-	if chamber.has_node("Markers/GuardianSpawn"):
-		guardian.position = chamber.get_node("Markers/GuardianSpawn").position
-	else:
-		guardian.position = Vector3(31.5, 0.88, 0.0)
-	add_child(guardian)
+	if guardian_script:
+		guardian = guardian_script.new()
+		guardian.name = "FlatGuardian"
+		if chamber.has_node("Markers/GuardianSpawn"):
+			guardian.position = chamber.get_node("Markers/GuardianSpawn").position
+		else:
+			guardian.position = Vector3(96.0, 6.38, 0.0)
+		add_child(guardian)
 	
 	# Global health signal connection
 	var g_node = get_node_or_null("/root/Global")
@@ -127,17 +158,17 @@ func _ready() -> void:
 		_on_health_changed(g_node.current_health if "current_health" in g_node else 3)
 	
 	_setup_dialogue()
-	show_message(message)
 	_update_camera(1.0)
+	_update_controls_label(player.mode)
+	
+	# Initial Arrival subtitle
+	trigger_milestone("arrival", "Three dimensions. Three ways forward.", 4.0)
 
 func _setup_dialogue() -> void:
-	# Instantiate Undertale-style conversation box
 	var d_scene = load("res://scenes/ui/UndertaleDialogueBox.tscn")
 	if d_scene:
 		dialogue_box = d_scene.instantiate()
 		add_child(dialogue_box)
-		
-		# If this is active gameplay and not an automated headless test
 		if not player.input_override:
 			player.input_override = true
 			var timer = get_tree().create_timer(0.35)
@@ -147,242 +178,179 @@ func _setup_dialogue() -> void:
 			)
 			dialogue_box.dialogue_finished.connect(func():
 				player.input_override = false
-				show_message("Stand on the gold plate to wake the first conduit.")
 			)
 
-func _build_hud() -> void:
+func _build_clean_hud() -> void:
 	var layer := CanvasLayer.new()
-	layer.name = "HUD"
+	layer.name = "CleanHUD"
 	add_child(layer)
 	
-	# Top bar - 1280x44 sleek glassmorphic banner
-	var top_panel := PanelContainer.new()
-	top_panel.custom_minimum_size = Vector2(1280, 44)
-	top_panel.size = Vector2(1280, 44)
-	top_panel.position = Vector2.ZERO
-	var top_style := StyleBoxFlat.new()
-	top_style.bg_color = Color(0.06, 0.04, 0.02, 0.92)
-	top_style.border_width_bottom = 2
-	top_style.border_color = Color(0.66, 0.47, 0.16, 0.7)
-	top_panel.add_theme_stylebox_override("panel", top_style)
-	layer.add_child(top_panel)
-	
-	var top_margin := MarginContainer.new()
-	top_margin.add_theme_constant_override("margin_left", 24)
-	top_margin.add_theme_constant_override("margin_right", 24)
-	top_margin.add_theme_constant_override("margin_top", 6)
-	top_margin.add_theme_constant_override("margin_bottom", 6)
-	top_panel.add_child(top_margin)
-	
-	var top_hbox := HBoxContainer.new()
-	top_margin.add_child(top_hbox)
-	
-	# Top-Left Health Points: Crisp Retro Red Pixel Hearts
+	# 1. Floating Health Hearts (Top-Left, no brown panel)
 	var hp_container := HBoxContainer.new()
-	hp_container.add_theme_constant_override("separation", 8)
-	top_hbox.add_child(hp_container)
+	hp_container.name = "HealthHearts"
+	hp_container.position = Vector2(32, 24)
+	hp_container.add_theme_constant_override("separation", 10)
+	layer.add_child(hp_container)
 	
 	heart_icons.clear()
 	for i in 3:
 		var heart := TextureRect.new()
 		heart.texture = heart_full_tex
-		heart.custom_minimum_size = Vector2(24, 24)
+		heart.custom_minimum_size = Vector2(28, 28)
 		heart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		heart.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		hp_container.add_child(heart)
 		heart_icons.append(heart)
-		
-	var hp_divider := Label.new()
-	hp_divider.text = "   |   "
-	hp_divider.add_theme_font_size_override("font_size", 15)
-	hp_divider.add_theme_color_override("font_color", Color(0.66, 0.47, 0.16, 0.7))
-	top_hbox.add_child(hp_divider)
-	
-	title = Label.new()
-	title.text = "01 / THE BROKEN CIRCUIT"
-	title.add_theme_font_size_override("font_size", 16)
-	title.add_theme_color_override("font_color", Color("ebd8b0"))
-	top_hbox.add_child(title)
-	
-	var spacer1 := Control.new()
-	spacer1.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	top_hbox.add_child(spacer1)
-	
-	# Interactive Full Map button
-	map_button = Button.new()
-	map_button.text = "FULL MAP [M]"
-	map_button.custom_minimum_size = Vector2(140, 30)
-	map_button.add_theme_font_size_override("font_size", 13)
-	map_button.add_theme_color_override("font_color", Color("ebd8b0"))
-	map_button.add_theme_color_override("font_hover_color", Color("fff3dd"))
-	map_button.focus_mode = Control.FOCUS_NONE
-	var style_normal = StyleBoxFlat.new()
-	style_normal.bg_color = Color(0.14, 0.09, 0.04, 0.95)
-	style_normal.border_width_left = 1
-	style_normal.border_width_top = 1
-	style_normal.border_width_right = 1
-	style_normal.border_width_bottom = 1
-	style_normal.border_color = Color("c29f5c")
-	style_normal.corner_radius_top_left = 3
-	style_normal.corner_radius_top_right = 3
-	style_normal.corner_radius_bottom_right = 3
-	style_normal.corner_radius_bottom_left = 3
-	map_button.add_theme_stylebox_override("normal", style_normal)
-	var style_hover = style_normal.duplicate()
-	style_hover.bg_color = Color(0.28, 0.19, 0.09, 0.95)
-	style_hover.border_color = Color("ffd778")
-	map_button.add_theme_stylebox_override("hover", style_hover)
-	var style_pressed = style_normal.duplicate()
-	style_pressed.bg_color = Color(0.40, 0.28, 0.12, 1.0)
-	style_pressed.border_color = Color("ffffff")
-	map_button.add_theme_stylebox_override("pressed", style_pressed)
-	map_button.pressed.connect(_toggle_overview)
-	top_hbox.add_child(map_button)
-	
-	var spacer2 := Control.new()
-	spacer2.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	top_hbox.add_child(spacer2)
-	
-	status = Label.new()
-	status.add_theme_font_size_override("font_size", 15)
-	status.add_theme_color_override("font_color", Color("d4af67"))
-	top_hbox.add_child(status)
-	
-	# Lower bar - 1280x62 docked footer
-	var bot_panel := PanelContainer.new()
-	bot_panel.custom_minimum_size = Vector2(1280, 62)
-	bot_panel.size = Vector2(1280, 62)
-	bot_panel.position = Vector2(0, 658)
-	var bot_style := StyleBoxFlat.new()
-	bot_style.bg_color = Color(0.06, 0.04, 0.02, 0.93)
-	bot_style.border_width_top = 2
-	bot_style.border_color = Color(0.66, 0.47, 0.16, 0.7)
-	bot_panel.add_theme_stylebox_override("panel", bot_style)
-	layer.add_child(bot_panel)
-	
-	var bot_margin := MarginContainer.new()
-	bot_margin.add_theme_constant_override("margin_left", 24)
-	bot_margin.add_theme_constant_override("margin_right", 24)
-	bot_margin.add_theme_constant_override("margin_top", 8)
-	bot_margin.add_theme_constant_override("margin_bottom", 8)
-	bot_panel.add_child(bot_margin)
-	
-	var bot_vbox := VBoxContainer.new()
-	bot_vbox.add_theme_constant_override("separation", 4)
-	bot_margin.add_child(bot_vbox)
-	
-	hint = Label.new()
-	hint.add_theme_font_size_override("font_size", 15)
-	hint.add_theme_color_override("font_color", Color("ebd8b0"))
-	bot_vbox.add_child(hint)
-	
-	controls = Label.new()
-	controls.add_theme_font_size_override("font_size", 12)
-	controls.add_theme_color_override("font_color", Color("c29f5c"))
-	controls.text = "WASD Move   •   SPACE Jump   •   Q/E Change Dimension   •   F Interact   •   M Full Map"
-	bot_vbox.add_child(controls)
 
-func _toggle_overview() -> void:
-	overview = not overview
-	if overview:
-		show_message("[ FULL MAP ] Move to return to close view.")
-		_tone(440, 0.08)
-	else:
-		_tone(330, 0.08)
+	# 2. Large, Readable Gameplay Subtitles (Lower-middle safe area, above controls)
+	subtitle_label = Label.new()
+	subtitle_label.name = "SubtitleLabel"
+	subtitle_label.custom_minimum_size = Vector2(960, 70)
+	subtitle_label.size = Vector2(960, 70)
+	subtitle_label.position = Vector2(160, 565)
+	subtitle_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	subtitle_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	subtitle_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	subtitle_label.add_theme_font_size_override("font_size", 30)
+	subtitle_label.add_theme_color_override("font_color", Color.WHITE)
+	subtitle_label.add_theme_constant_override("outline_size", 6)
+	subtitle_label.add_theme_color_override("font_outline_color", Color(0.04, 0.04, 0.04, 0.95))
+	subtitle_label.add_theme_constant_override("shadow_offset_x", 2)
+	subtitle_label.add_theme_constant_override("shadow_offset_y", 2)
+	subtitle_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.65))
+	subtitle_label.modulate.a = 0.0
+	layer.add_child(subtitle_label)
 
-func _unhandled_key_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.physical_keycode == KEY_M:
-			_toggle_overview()
-		elif event.physical_keycode == KEY_F5:
-			get_tree().reload_current_scene()
+	# 3. Contextual Bottom Controls (No brown bar, large legible typography)
+	controls_label = Label.new()
+	controls_label.name = "ControlsLabel"
+	controls_label.custom_minimum_size = Vector2(1200, 36)
+	controls_label.size = Vector2(1200, 36)
+	controls_label.position = Vector2(40, 668)
+	controls_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	controls_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	controls_label.add_theme_font_size_override("font_size", 23)
+	controls_label.add_theme_color_override("font_color", Color(0.96, 0.94, 0.90, 1.0))
+	controls_label.add_theme_constant_override("outline_size", 5)
+	controls_label.add_theme_color_override("font_outline_color", Color(0.04, 0.03, 0.02, 0.95))
+	controls_label.add_theme_constant_override("shadow_offset_x", 2)
+	controls_label.add_theme_constant_override("shadow_offset_y", 2)
+	controls_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.6))
+	layer.add_child(controls_label)
 
-func show_message(text: String) -> void:
-	message = text
-	message_time = 5.0
+func _update_controls_label(mode: int) -> void:
+	if not controls_label:
+		return
+	match mode:
+		2:
+			controls_label.text = "WASD Move   •   SPACE Jump   •   1/2/3 Dimension   •   F Interact"
+		3:
+			controls_label.text = "WASD Move Across Depth   •   1/2/3 Dimension   •   F Interact"
+		1:
+			controls_label.text = "A/D Slide Along Conduit   •   1/2/3 Dimension   •   F Interact"
+
+func queue_subtitle(text: String, duration: float = 3.5) -> void:
+	subtitle_queue.append({"text": text, "duration": duration})
+
+func trigger_milestone(id: String, text: String, duration: float = 3.5) -> void:
+	if shown_milestones.has(id):
+		return
+	shown_milestones[id] = true
+	queue_subtitle(text, duration)
 
 func _process(delta: float) -> void:
-	establishing_time = maxf(0, establishing_time - delta)
-	
-	# Auto-reset full map view if player moves
-	if overview:
-		var is_moving: bool = player.move_input.length() > 0.08 \
-			or Input.is_action_pressed("move_left") \
-			or Input.is_action_pressed("move_right") \
-			or Input.is_action_pressed("move_up") \
-			or Input.is_action_pressed("move_down") \
-			or Input.is_action_pressed("jump") \
-			or Input.is_physical_key_pressed(KEY_W) \
-			or Input.is_physical_key_pressed(KEY_A) \
-			or Input.is_physical_key_pressed(KEY_S) \
-			or Input.is_physical_key_pressed(KEY_D) \
-			or Input.is_physical_key_pressed(KEY_SPACE) \
-			or Input.is_physical_key_pressed(KEY_UP) \
-			or Input.is_physical_key_pressed(KEY_LEFT) \
-			or Input.is_physical_key_pressed(KEY_DOWN) \
-			or Input.is_physical_key_pressed(KEY_RIGHT)
-		if is_moving:
-			overview = false
-			
+	_handle_subtitles(delta)
+	_update_checkpoints_and_milestones()
+	_handle_pit_respawn()
 	_update_camera(delta)
-	message_time = maxf(0, message_time - delta)
-	status.text = "%dD  %s" % [player.mode, "AWAKE" if chamber.powered else ("SPARK" if chamber.carrying_charge else "DORMANT")]
-	if chamber.completed:
-		hint.text = "CHAMBER 1 COMPLETE — The path to the next trial awaits."
-	elif overview:
-		hint.text = "[ FULL MAP VIEW ] — Move in any direction to return to close view."
-	elif message_time > 0:
-		hint.text = message
-	elif player.position.x > 26.5:
-		if player.mode == 3:
-			hint.text = "FLAT GUARDIAN ATTACKING! Switch to 2D [2] to slip right through it!"
-		else:
-			hint.text = "2D / Slip through the Flat Guardian to reach the Exit Portal!"
-	elif player.mode == 1 and player.position.x > 18.0:
-		hint.text = "1D / Slide across the high conduit to the Guardian Hall."
-	elif player.position.x > 17.0 and player.position.y > 0.6:
-		if player.mode == 2:
-			hint.text = "3D / Switch to 3D [3] and walk forward to the front rail dock."
-		else:
-			hint.text = "1D / Step to the high conduit dock and press 1 to slide across."
-	elif chamber.powered:
-		hint.text = "2D / Jump up onto the glowing terrace in 2D."
-	elif chamber.carrying_charge:
-		hint.text = "3D / Follow the gold trace behind the monolith to the receiver."
-	elif chamber.first_rail_live:
-		hint.text = "1D / Reach the conduit dock, flatten into 1D, and slide through."
+
+func _handle_subtitles(delta: float) -> void:
+	if current_subtitle_time > 0:
+		current_subtitle_time -= delta
+		# Smooth fade in / fade out
+		var t_in = minf(1.0, (current_subtitle_duration - current_subtitle_time) / 0.25)
+		var t_out = minf(1.0, current_subtitle_time / 0.35)
+		subtitle_label.modulate.a = minf(t_in, t_out)
 	else:
-		hint.text = "Stand on the gold plate ahead."
+		if not subtitle_queue.is_empty():
+			var item = subtitle_queue.pop_front()
+			subtitle_label.text = item["text"]
+			current_subtitle_duration = item["duration"]
+			current_subtitle_time = item["duration"]
+			subtitle_label.modulate.a = 0.0
+		else:
+			subtitle_label.modulate.a = 0.0
+
+func _update_checkpoints_and_milestones() -> void:
+	var px: float = player.position.x
+	
+	# Milestone tutorials
+	if px > -12.5 and px < -8.5:
+		trigger_milestone("first_ledge", "Switch to 2D [2]. Press SPACE to jump.")
+	elif px >= 8.0 and px <= 14.0:
+		trigger_milestone("offset_passage", "The path continues at another depth. Return to 3D [3].")
+	elif px >= 15.5 and px <= 19.5:
+		trigger_milestone("conduit_d", "Too narrow? Become a line [1].")
+	elif px >= 26.5 and px <= 32.0:
+		trigger_milestone("gallery_e", "Time your jumps across the moving terrace.")
+	elif px >= 48.0 and px <= 53.0:
+		trigger_milestone("relay_f", "Enter the conduit to fetch the spark, then route it through 3D.")
+	elif px >= 68.0 and px <= 73.0:
+		trigger_milestone("ascent_g", "Combine all three dimensions to ascend.")
+	elif px >= 90.0 and px <= 96.0:
+		trigger_milestone("guardian_h", "Flat Guardian ahead. In 2D, you can slip right through it.")
+
+	# Safe Checkpoints
+	if px >= 90.0:
+		latest_checkpoint = Vector3(91.0, 5.88, 0.0)
+		latest_checkpoint_mode = 3
+	elif px >= 69.0:
+		latest_checkpoint = Vector3(69.5, 4.28, -3.5)
+		latest_checkpoint_mode = 2
+	elif px >= 49.0:
+		latest_checkpoint = Vector3(49.5, 3.08, 0.0)
+		latest_checkpoint_mode = 3
+	elif px >= 26.0:
+		latest_checkpoint = Vector3(26.5, 2.48, -4.0)
+		latest_checkpoint_mode = 2
+	elif px >= 15.0:
+		latest_checkpoint = Vector3(15.5, 2.48, -4.0)
+		latest_checkpoint_mode = 3
+	elif px >= 6.0:
+		latest_checkpoint = Vector3(6.5, 2.48, 0.0)
+		latest_checkpoint_mode = 3
+
+func _handle_pit_respawn() -> void:
+	if player.position.y < -5.5:
+		# Player fell into the abyss; respawn safely at latest milestone
+		player.velocity = Vector3.ZERO
+		player.position = latest_checkpoint
+		player.request_mode(latest_checkpoint_mode)
+		_tone(220, 0.25)
+		queue_subtitle("Careful! Returned to the latest resting terrace.", 2.5)
 
 func _on_health_changed(hp: int) -> void:
 	for i in heart_icons.size():
 		heart_icons[i].texture = heart_full_tex if i < hp else heart_empty_tex
-		heart_icons[i].modulate = Color.WHITE if i < hp else Color(0.5, 0.5, 0.5, 0.5)
-
-func _plate_activated(_upper: bool = false) -> void:
-	show_message("A path appears beneath the gate. Press 1 at its socket.")
-	_tone(550, .25)
+		heart_icons[i].modulate = Color.WHITE if i < hp else Color(0.45, 0.45, 0.45, 0.4)
 
 func _update_camera(delta: float) -> void:
 	var blend: float = minf(1.0, delta * 7.0)
-	var target_yaw: float = -45.0 if player.mode == 3 or overview else 0.0
-	var target_pitch: float = -30.0 if player.mode == 3 or overview else 0.0
+	var target_yaw: float = -45.0 if player.mode == 3 else 0.0
+	var target_pitch: float = -30.0 if player.mode == 3 else 0.0
 	yaw = lerpf(yaw, target_yaw, blend)
 	pitch = lerpf(pitch, target_pitch, blend)
 	
-	var target: Vector3
-	if overview:
-		# Centered to frame the 52-meter Chamber 1 course from X=-14 to X=38
-		target = Vector3(12.0, 1.2, 0.0)
-	else:
-		target = player.position + Vector3(0.65, 0.85, 0)
-		
+	# Smooth forward look-ahead along X axis so upcoming jumps and platforms are clearly framed
+	var lookahead_x: float = 1.2 if player.mode == 2 else 0.8
+	var target: Vector3 = player.position + Vector3(lookahead_x, 0.9, 0)
 	focus = focus.lerp(target, blend)
 	
-	var target_size: float = 16.5 if overview else 5.2
+	# Maintain close, large scale view on screen (size ~ 5.2)
+	var target_size: float = 5.4 if player.mode == 3 else 4.8
 	camera.size = lerpf(camera.size, target_size, blend)
 	
-	var dist: float = 34.0 if overview else 28.0
+	var dist: float = 28.0
 	var offset := Vector3(0, 0, dist).rotated(Vector3.RIGHT, deg_to_rad(pitch)).rotated(Vector3.UP, deg_to_rad(yaw))
 	camera.position = focus + offset
 	camera.look_at(focus)
@@ -396,8 +364,8 @@ func _tone(frequency: float, duration: float) -> void:
 	var data := PackedByteArray()
 	data.resize(samples * 2)
 	for i in samples:
-		var envelope: float = pow(1.0-float(i)/samples,2.0)
-		data.encode_s16(i*2, int(sin(TAU*frequency*i/22050.0)*envelope*2800))
+		var envelope: float = pow(1.0 - float(i) / samples, 2.0)
+		data.encode_s16(i * 2, int(sin(TAU * frequency * i / 22050.0) * envelope * 2800))
 	stream.data = data
 	audio.stream = stream
 	add_child(audio)
@@ -412,4 +380,3 @@ func _enter_axiom_sanctum() -> void:
 		transition.change_chamber("res://chambers/axiom_warden/AxiomWarden.tscn")
 	else:
 		get_tree().change_scene_to_file("res://chambers/axiom_warden/AxiomWarden.tscn")
-

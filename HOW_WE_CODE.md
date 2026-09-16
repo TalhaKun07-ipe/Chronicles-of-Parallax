@@ -215,7 +215,7 @@ The player controller (`chambers/broken_circuit/scripts/player.gd` and `scripts/
                                 +-------------------+
 ```
 
-#### Detailed Dimensional Behaviors
+#### Detailed Dimensional Behaviors & Jump Rules
 1. **0D Mode (Point Singularity):**
    * Velocity strictly zeroed: `velocity = Vector3.ZERO`.
    * Directional movement inputs disabled.
@@ -223,20 +223,31 @@ The player controller (`chambers/broken_circuit/scripts/player.gd` and `scripts/
 2. **1D Mode (Linear Rail):**
    * Snaps and locks player position to the active conduit rail ($Z$ and $Y$ coordinates fixed).
    * Traversal along $X$ axis: `velocity.x = input_dir.x * rail_speed`.
-   * Collisions with full-volume blocks disabled; allows passage through narrow 0.5m conduit slits and lintels.
+   * Cannot jump: Space produces zero upward impulse.
+   * Collisions with full-volume blocks disabled; allows passage through narrow 0.45m conduit slits and lintels.
 3. **2D Mode (Planar Slice):**
    * The $Z$ coordinate is locked to the active plane (e.g. $Z = -4.0$ for runic terrace scaling or $Z = 0.0$ for the main corridor).
    * `velocity.z = 0.0`.
-   * Standard 2D platformer kinematics: horizontal run speed, gravity acceleration (`gravity = 14.0`), and jump impulse (`jump_velocity = 4.8`).
-   * Runic terraces become jumpable stepping platforms.
+   * **Only 2D can initiate a jump:** Space triggers upward jump impulse (`JUMP = 6.5`, `GRAVITY = 18.0`).
+   * Runic terraces and broken stair piers become jumpable stepping platforms.
    * Flat Guardian sentinel collapses into a paper-thin ethereal form that John Rod can slip through.
-4. **2.5D Mode (Layer Stepping):**
-   * Player traverses within 2D planes, but when standing on a `LayerSwitchPad`, pressing forward/backward (`W`/`S`) smoothly tweens the player between foreground ($Z = 0.0$) and background ($Z = -4.0$) tracks.
-5. **3D Mode (Volumetric Continuous):**
-   * Full unconstrained 3-axis motion: `velocity.x = dir.x * speed`, `velocity.z = dir.z * speed`.
-   * Terraces remain solid procedural masonry blocks. John Rod can walk forward/backward along terrace tops ($Z = -4.0 \to Z = 0.0$) to reach elevated docks.
+4. **3D Mode (Volumetric Continuous):**
+   * Free movement across depth: `velocity.x = dir.x * speed`, `velocity.z = dir.z * speed`.
+   * **No Jumping:** Space produces zero jump impulse. John Rod can only fall naturally when walking off an edge.
+   * **Grounded Depth Steering Lock:** Depth movement (`velocity.z`) strictly requires `is_on_floor()`. If airborne in 3D, `velocity.z = 0.0`, preventing midair lane hopping or puzzle bypass.
    * Flat Guardian sentinel becomes a physical chaser in 3D.
-6. **4D Mode (Temporal Rewind):**
+5. **Dimension Switch Kinematic Integrity:**
+   * Switching dimensions clears `jump_buffer = 0.0` immediately, preventing buffered 3D jumps from triggering in 2D.
+   * Switching dimensions midair preserves vertical velocity (`velocity.y`) and gravity without extra height, jump reset, or double jumps.
+6. **2D Foreground Occlusion Handling (`chamber.gd`):**
+   * When switching to 2D, `update_occlusion()` hides visual meshes of foreground walls situated at $Z > \text{player\_z} + 0.6$ (`fg_walls` group).
+   * Physics collision remains 100% solid at all times, preventing unintended shortcuts or physics anomalies.
+   * Major front perimeter walls are designed as low stone curbs ($0.45\text{m}$), ensuring the 3D isometric camera has an unobstructed line of sight into all courtyards.
+7. **Clean HUD & Subtitle Architecture (`demo.gd`):**
+   * No brown background bars or banners across top or bottom.
+   * Clean floating retro pixel hearts in the top-left margin.
+   * Large, readable gameplay subtitles (30px, white text, 6px black outline, soft shadow, centered in lower safe area above controls, queued one at a time, shown once per milestone).
+   * Contextual bottom controls (23px white text with black outline, accurately advertising "SPACE Jump" only in 2D).
    * Implemented via a continuous ring-buffer storing snapshot states at 60 Hz:
      ```gdscript
      struct HistoryState {

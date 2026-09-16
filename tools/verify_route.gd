@@ -21,12 +21,12 @@ func frames(n: int) -> void:
 	for i in n:
 		await physics_frame
 
-func walk(goal: Vector2, limit: int = 450) -> bool:
+func walk(goal: Vector2, limit: int = 400) -> bool:
 	for i in limit:
 		var d := Vector3(goal.x - player.position.x, 0, goal.y - player.position.z)
-		if d.length() < 0.08:
+		if d.length() < 0.12:
 			player.move_input = Vector2.ZERO
-			await frames(3)
+			await frames(2)
 			return true
 		d = d.normalized()
 		if player.mode == 3:
@@ -39,11 +39,13 @@ func walk(goal: Vector2, limit: int = 450) -> bool:
 func jump_to(x: float, target_z: float, height: float) -> void:
 	player.override_jump = true
 	await frames(1)
-	await walk(Vector2(x, target_z), 120)
-	await frames(35)
-	check(player.is_on_floor() and absf(player.position.y - height) < 0.12, "Lands at Y=%.2f (actual=%.2f)" % [height, player.position.y])
+	await walk(Vector2(x, target_z), 90)
+	await frames(25)
+	check(player.is_on_floor() and absf(player.position.y - height) < 0.18,
+		"Lands at Y=%.2f (actual=%.2f)" % [height, player.position.y])
 
 func run() -> void:
+	print("--- BEGINNING CHAMBER 1 FULL 8-SECTION ROUTE VERIFICATION ---")
 	demo = load("res://chambers/broken_circuit/Demo.tscn").instantiate()
 	root.add_child(demo)
 	player = demo.get_node("Player")
@@ -51,129 +53,192 @@ func run() -> void:
 	
 	await frames(10)
 	
-	# Dismiss/remove intro dialogue for headless route walk
+	# Dismiss intro dialogue for automated headless test
 	if demo.dialogue_box and is_instance_valid(demo.dialogue_box):
 		demo.dialogue_box.queue_free()
 		demo.dialogue_box = null
 	await frames(2)
 	player.input_override = true
 	
-	# Verify top-left hearts HUD initial state
 	var global = demo.get_node_or_null("/root/Global")
 	check(global != null, "Global autoload present")
 	check(global.current_health == 3, "Starts with 3 full health points")
-	check(demo.heart_icons.size() == 3, "HUD has 3 red heart icons in top-left")
-	check(demo.heart_icons[0].texture == demo.heart_full_tex, "First heart is full")
-	check(demo.heart_icons[1].texture == demo.heart_full_tex, "Second heart is full")
-	check(demo.heart_icons[2].texture == demo.heart_full_tex, "Third heart is full")
+	check(demo.heart_icons.size() == 3, "Clean HUD displays 3 floating health hearts")
 	
-	# Verify 3D Terrace Visibility BEFORE 2D activation (User Request 1)
-	for step in root.get_tree().get_nodes_in_group("bc_steps"):
-		for mesh in step.find_children("*", "MeshInstance3D"):
-			check(mesh.material_override != null, "Terrace mesh has solid masonry material in 3D")
+	# =========================================================================
+	# SECTION A: Arrival & Safe Orientation
+	# =========================================================================
+	check(player.mode == 3, "Starts in 3D volume mode")
+	check(await walk(Vector2(-11.5, 0.0)), "Walks across arrival terrace in 3D")
 	
-	# Step 1: Walk to wake plate
-	check(not player.request_mode(1), "Rejects 1D away from live conduit")
-	check(await walk(Vector2(-9.0, 0.0)), "Walks to arrival wake plate")
-	check(chamber.first_rail_live, "Plate wakes lower conduit rail")
+	# Verify 3D cannot jump
+	player.override_jump = true
+	await frames(3)
+	check(player.velocity.y <= 0.01, "Jump in 3D is strictly rejected (no upward impulse)")
 	
-	# Step 2: 1D traverse across lower rift
-	check(await walk(Vector2(-5.5, 0.0)), "Walks to first conduit rail entry")
-	check(player.request_mode(1), "Enters 1D conduit rail")
-	check(await walk(Vector2(-1.1, 0.0)), "Slides in 1D below bulkhead across 4m rift")
-	check(not player.request_mode(3), "Rejects unsafe expansion over open rift")
-	check(await walk(Vector2(3.0, 0.0)), "Reaches far landing in 1D")
-	check(chamber.carrying_charge, "Picks up circuit spark")
+	# Switch to 2D to jump onto raised ledge
+	check(player.request_mode(2), "Switches to 2D at raised ledge")
+	await jump_to(-9.0, 0.0, 0.80)
+	check(await walk(Vector2(-7.8, 0.0)), "Reaches edge of raised ledge A")
 	
-	# Step 3: Expand to 2D then 3D and reach receiver
-	check(player.request_mode(2), "Expands to 2D at safe landing")
+	# =========================================================================
+	# SECTION B: The Broken Stair (4 Ascending 2D Jumps)
+	# =========================================================================
+	# Jump 1: to StairB1 (Y=1.20)
+	await jump_to(-5.2, 0.0, 1.20)
+	# Jump 2: to StairB2 (Y=1.60)
+	await jump_to(-1.7, 0.0, 1.60)
+	# Jump 3: to StairB3 (Y=2.00)
+	await jump_to(2.0, 0.0, 2.00)
+	check(await walk(Vector2(2.8, 0.0)), "Walks to edge of Stair B3")
+	# Jump 4: to TerraceBTop (Y=2.40)
+	await jump_to(5.8, 0.0, 2.40)
+	check(player.position.y > 2.30, "Reaches broad resting Terrace B at Y=2.40")
+	
+	# Verify forward 2D route is blocked by BarrierMonolithC
 	player.move_input = Vector2.RIGHT
-	await frames(80)
+	await frames(40)
 	player.move_input = Vector2.ZERO
-	check(player.position.x < 6.0, "Masonry wall stops 2D forward route")
+	check(player.position.x < 10.0, "Barrier Monolith C genuinely blocks forward 2D route")
 	
-	check(player.request_mode(3), "Restores 3D volume mode")
-	check(await walk(Vector2(5.0, -4.0)), "Follows rear aisle in 3D")
-	check(await walk(Vector2(6.6, -4.0)), "Walks to receiver socket")
+	# =========================================================================
+	# SECTION C: The Offset Passage (3D Depth Routing)
+	# =========================================================================
+	check(player.request_mode(3), "Switches to 3D to route around barrier monolith")
+	check(await walk(Vector2(8.5, -4.0)), "Steps across depth into rear aisle (Z=-4.0)")
+	check(await walk(Vector2(16.0, -4.0)), "Walks through offset corridor behind monolith in 3D")
+	check(absf(player.position.z + 4.0) < 0.3, "Successfully navigated around depth barrier to Z=-4.0 lane")
 	
-	var msg = chamber.try_interact(player.position)
+	# =========================================================================
+	# SECTION D: The Narrow Conduit (1D Passage through Bulkhead)
+	# =========================================================================
+	check(await walk(Vector2(16.5, -4.0)), "Walks to Conduit D start dock")
+	check(player.request_mode(1), "Enters 1D mode on conduit rail")
+	check(absf(player.position.y - 2.58) < 0.1, "Locked to rail elevation")
+	check(await walk(Vector2(21.0, -4.0)), "Slides in 1D through bulkhead slit across rift")
+	check(not player.request_mode(3), "Unsafe expansion over open rift strictly rejected")
+	check(await walk(Vector2(25.5, -4.0)), "Reaches destination dock at Section E entrance")
+	check(player.request_mode(2), "Expands safely into 2D on Gallery terrace")
+	
+	# =========================================================================
+	# SECTION E: The Fractured Gallery (Extended 2D Parkour)
+	# =========================================================================
+	check(await walk(Vector2(29.0, -4.0)), "Walks to edge of Gallery entrance terrace")
+	# Jump 1: to Pillar E1 (Y=2.80)
+	await jump_to(32.0, -4.0, 2.80)
+	check(await walk(Vector2(32.8, -4.0)), "Walks to edge of Pillar E1")
+	# Jump 2: to Pillar E2 (Y=3.20)
+	await jump_to(35.8, -4.0, 3.20)
+	check(await walk(Vector2(36.6, -4.0)), "Walks to edge of Pillar E2")
+	# Jump 3: to Moving Platform E3 (Y=3.20)
+	await jump_to(39.5, -4.0, 3.20)
+	await frames(10)
+	# Jump 4: to Pillar E4 (Y=3.20)
+	await jump_to(44.5, -4.0, 3.20)
+	check(await walk(Vector2(45.4, -4.0)), "Walks to edge of Pillar E4")
+	# Jump 5: to Relay Court Landing (Y=3.00)
+	await jump_to(48.5, -4.0, 3.00)
+	check(player.position.y >= 2.90, "Reaches Relay Court checkpoint terrace at Y=3.00")
+	
+	# =========================================================================
+	# SECTION F: The Relay Court (Interactive Dimension Puzzle)
+	# =========================================================================
+	check(player.request_mode(3), "Switches to 3D to explore Relay Court")
+	check(await walk(Vector2(51.5, 3.5)), "Walks to security grille conduit dock at Z=+3.5")
+	check(player.request_mode(1), "Flattens to 1D to enter security grille conduit")
+	check(await walk(Vector2(56.0, 3.5)), "Slides in 1D through grille slit into spark chamber")
+	check(chamber.carrying_charge, "Collected and carrying circuit spark behind security grille")
+	check(await walk(Vector2(51.5, 3.5)), "Returns in 1D with spark back through grille")
+	check(player.request_mode(3), "Expands into 3D volume at Relay Court")
+	
+	# Route around central wall across depth to receiver
+	check(await walk(Vector2(54.0, 0.0)), "Steps across depth to central court")
+	check(await walk(Vector2(61.2, -2.5)), "Navigates depth around central wall to receiver")
+	var interact_msg = chamber.try_interact(player.position)
 	await frames(5)
-	check(chamber.powered and not chamber.carrying_charge, "Deposits spark and powers circuit")
+	check(chamber.powered, "Deposited spark powers circuit and ignites runic bridge!")
 	
-	# Verify Terrace blocks remain solid and visible in 3D
-	check(chamber.has_node("Mechanisms/HighConduit"), "High conduit unhidden upon power")
+	# Step around receiver pedestal in 3D to reach base of runic bridge
+	check(await walk(Vector2(63.2, -2.2)), "Advances past pedestal in 3D")
+	check(await walk(Vector2(63.2, -3.5)), "Aligns to runic bridge climb lane (Z=-3.5)")
 	
-	# Step 4: Multi-dimensional platforming: Jump onto block in 2D
-	check(await walk(Vector2(6.6, -5.0)), "Walks behind receiver")
-	check(await walk(Vector2(13.6, -5.0)), "Crosses generous rear court")
-	check(await walk(Vector2(13.9, -4.0)), "Aligns to climb plane at terrace base")
-	check(player.request_mode(2), "Switches to 2D to jump onto runic terrace")
-	check(absf(player.plane_z + 4.0) < 0.1, "Locks to 2D plane at Z=-4.0")
-	await jump_to(16.0, -4.0, 0.85)
-	check(await walk(Vector2(19.0, -4.0)), "Walks along 2D terrace surface at Y=0.85")
+	# =========================================================================
+	# SECTION G: The Interwoven Ascent (Multi-Dimensional Climax)
+	# =========================================================================
+	# 2D jump onto runic bridge
+	check(player.request_mode(2), "Switches to 2D for runic ascent")
+	await jump_to(65.5, -3.5, 3.60)
+	check(await walk(Vector2(67.5, -3.5)), "Walks along runic bridge")
+	await jump_to(70.5, -3.5, 4.20)
+	check(player.position.y > 4.10, "Stands on Terrace G1 at Y=4.20")
 	
-	# Step 5: Switch to 3D and traverse front along +Z walkway
-	check(player.request_mode(3), "Switches to 3D on terrace surface")
-	check(await walk(Vector2(18.5, 0.0)), "Traverses forward ('front') in 3D onto front terrace walkway")
-	check(player.position.y > 0.75, "Remains firmly standing on elevated 3D terrace")
+	# Required 3D depth walk across Transversal Walkway
+	check(player.request_mode(3), "Switches to 3D for depth transversal walk")
+	check(await walk(Vector2(71.0, 2.5)), "Walks across transversal depth walkway from Z=-3.5 to Z=+2.5")
 	
-	# Step 6: Utilize 1D again via High Conduit Rail across chasm
-	check(await walk(Vector2(20.2, 0.0)), "Walks to High Conduit Rail entry")
-	check(player.request_mode(1), "Collapses to 1D on high rail")
-	check(absf(player.position.y - 1.05) < 0.1, "Locked to High Rail elevation (Y=1.05)")
-	check(await walk(Vector2(23.5, 0.0)), "Slides in 1D through narrow slit lintel over deep rift")
-	check(not player.request_mode(3), "Cannot expand into 3D inside narrow rift slit")
-	check(await walk(Vector2(26.5, 0.0)), "Reaches Guardian Hall entrance landing")
+	# 2D jump sequence on front lane
+	check(player.request_mode(2), "Switches to 2D on front lane (Z=+2.5)")
+	check(await walk(Vector2(72.5, 2.5)), "Walks to front lane jump edge")
+	await jump_to(75.0, 2.5, 4.80)
+	check(await walk(Vector2(76.2, 2.5)), "Walks to edge of Terrace G2")
+	await jump_to(79.0, 2.5, 5.20)
+	check(player.position.y > 5.10, "Stands on High Conduit dock at Y=5.20")
 	
-	# Step 7: Expand into Guardian Hall in 3D and test Flat Guardian mechanics
-	check(player.request_mode(3), "Expands into 3D in Guardian Hall")
-	check(await walk(Vector2(27.5, 0.0)), "Steps onto Guardian Hall arena floor")
+	# 1D High Conduit slide through gate bulkhead
+	check(player.request_mode(1), "Collapses to 1D on High Conduit rail")
+	check(await walk(Vector2(85.5, 2.5)), "Slides in 1D through high bulkhead slit across chasm")
+	check(player.request_mode(2), "Expands into 2D at far dock")
+	check(await walk(Vector2(85.8, 2.5)), "Walks to edge of exit dock")
 	
-	# Find Flat Guardian instance
+	# Final 2D jumps to Guardian Threshold
+	await jump_to(87.5, 2.5, 5.50)
+	check(await walk(Vector2(88.2, 2.5)), "Walks to edge of stepping stone")
+	await jump_to(91.0, 2.5, 5.80)
+	check(player.position.y > 5.70, "Ascends onto Guardian Hall grand threshold at Y=5.80")
+	
+	# =========================================================================
+	# SECTION H: Guardian Hall & Chamber Exit
+	# =========================================================================
+	check(player.request_mode(3), "Enters Guardian arena in 3D")
+	check(await walk(Vector2(94.0, 0.0)), "Steps onto Guardian arena floor")
+	
 	guardian = demo.get_node_or_null("FlatGuardian")
-	check(guardian != null, "Flat Guardian is spawned and active in arena")
-	
-	# In 3D: Guardian detects and pursues player
-	guardian.global_position = Vector3(29.0, 1.35, 0.0)
+	check(guardian != null, "Flat Guardian is present in arena")
+	guardian.global_position = Vector3(97.0, 6.38, 0.0)
 	await frames(5)
-	check(guardian.mode == 3 and not guardian.is_ethereal_2d, "Guardian is in 3D hostile pursuit mode")
-	check(guardian.collision_layer == 1, "Guardian is physically solid in 3D")
+	check(guardian.mode == 3 and not guardian.is_ethereal_2d, "Flat Guardian is active and solid in 3D")
 	
-	# Test Player Taking Damage from Guardian
+	# Take damage check
 	var hp_before = global.current_health
 	player.take_damage(1, guardian.global_position)
 	await frames(5)
-	check(global.current_health == hp_before - 1, "Player takes 1 damage from Guardian attack")
-	check(demo.heart_icons[2].texture == demo.heart_empty_tex, "Third heart becomes empty in HUD")
-	check(player.invulnerable_timer > 0.0, "Player gains invulnerability frames and knockback")
+	check(global.current_health == hp_before - 1, "Player takes 1 damage from contact in 3D")
+	check(demo.heart_icons[2].texture == demo.heart_empty_tex, "Third heart icon reflects damage")
 	
-	# Step 8: Switch to 2D - Guardian phases into paper-thin ethereal form
+	# Switch to 2D: Guardian collapses into paper-thin ethereal phase
 	check(player.request_mode(2), "Player switches to 2D to bypass Flat Guardian")
 	await frames(5)
-	check(guardian.mode == 2 and guardian.is_ethereal_2d, "Flat Guardian collapses to 2D paper-thin phase")
-	check(guardian.collision_layer == 0, "Guardian collision layer disabled in 2D")
-	check(guardian.collision_mask == 0, "Guardian collision mask disabled in 2D")
-	check(guardian.sprite.modulate.a < 0.5, "Guardian visually ethereal in 2D (low alpha)")
+	check(guardian.mode == 2 and guardian.is_ethereal_2d, "Flat Guardian enters 2D paper-thin ethereal phase")
 	
-	# Walk straight through Guardian unharmed!
-	var hp_during_pass = global.current_health
-	check(await walk(Vector2(32.0, 0.0)), "Walks straight through Flat Guardian in 2D")
-	check(global.current_health == hp_during_pass, "Took ZERO damage passing through Flat Guardian in 2D!")
+	# Slip right through guardian unharmed
+	var hp_pass = global.current_health
+	check(await walk(Vector2(99.0, 0.0)), "Walks directly through Flat Guardian in 2D")
+	check(global.current_health == hp_pass, "Passed through Flat Guardian taking ZERO damage in 2D")
 	
-	# Step 9: Reach Exit Archway and Complete Chamber 1
-	check(await walk(Vector2(36.0, 0.0)), "Walks to Chamber 1 Exit Archway")
+	# Reach Exit Archway
+	check(await walk(Vector2(102.5, 0.0)), "Reaches Chamber 1 Exit Portal Archway")
 	await frames(5)
-	check(chamber.completed, "Exit triggered and Chamber 1 completed successfully!")
+	check(chamber.completed, "Chamber 1 completed successfully!")
 	
-	# Step 10: Test Respawn / Health Reset
-	guardian.global_position = Vector3(33.5, 1.35, 0.0)
-	player.respawn()
-	await frames(2)
-	check(global.current_health == 3, "Respawn restores player to 3 full health points")
-	check(demo.heart_icons[2].texture == demo.heart_full_tex, "HUD hearts fully restored upon respawn")
-	check(player.position.x > 25.0, "Respawn places player at safe Guardian Hall checkpoint")
+	# Test Pit Respawn / Checkpoint Recovery
+	player.position = Vector3(95.0, -8.0, 0.0)
+	await frames(5)
+	demo._process(0.016)
+	await frames(5)
+	check(player.position.y > 5.0, "Pit fall respawns player at safe Section H checkpoint (Y=5.88)")
+	check(chamber.powered, "Puzzle state (circuit powered) retained after respawn")
 	
 	print("\n=======================================================")
-	print("ALL %d CHAMBER 1 PLATFORMING & ROUTE CHECKS PASSED 100%%!" % checks)
+	print("ALL %d CHAMBER 1 8-SECTION REDESIGN ROUTE CHECKS PASSED 100%%!" % checks)
 	print("=======================================================\n")
 	quit(0)

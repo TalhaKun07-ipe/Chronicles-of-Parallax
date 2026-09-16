@@ -742,6 +742,54 @@ Degrees_of_Escape/
     * Confirms transition overlay fades out to full transparency (`a = 0.00`).
   * All 5 automated suites pass 100% (`verify_chamber_transition.gd`, `verify_axiom_warden.gd`, `verify_route.gd`, `verify_new_features.gd`, `verify_full_flow.gd`).
 
+### Session 16: Chamber 1 Full Architectural & Kinematic Redesign (The 8-Section Master Course)
+* **Design & Gameplay Overhaul:**
+  * Redesigned Chamber 1 ("The Broken Circuit") from a short demonstration area into an expansive, connected 8-section obstacle course spanning 122 meters ($X \in [-18, 104]$, $Y$ up to $5.8\text{m}$) with 15 calculated jumps, required depth routing, and two purposeful 1D conduit passages.
+  * Target playtime: 4–6 minutes for a first-time player.
+* **Strict Kinematics & Jump Rule Enforcement (`player.gd`):**
+  * **2D-Only Jump Initiation:** Space key and jump actions strictly check `mode == 2`. Space in 3D or 1D produces zero upward impulse under all conditions.
+  * **Jump Buffer Sanitization:** `request_mode()` unconditionally clears `jump_buffer = 0.0` during any dimension transition, preventing buffered 3D jumps from phantom-triggering in 2D.
+  * **Midair Momentum & Gravity Preservation:** Vertical velocity (`velocity.y`) is preserved across midair 2D ↔ 3D transitions without extra upward velocity, gravity reset, or double jumping.
+  * **Airborne Depth Steering Lock:** In 3D mode, depth movement (`velocity.z`) strictly requires `is_on_floor()`. If airborne in 3D, `velocity.z = 0.0`, preventing midair lane hopping or puzzle bypass.
+  * **1D Rail Jump Immunity:** In 1D mode, John remains locked to the active rail elevation with zero jump capability.
+* **The 8 Connected Sections (A → H) (`tools/build_layout.py` & `BrokenCircuit.tscn`):**
+  * **Section A: Arrival & Safe Orientation ($X \in [-18, -10]$, $Y = 0.0$):** Generous arrival terrace with clear view of the course. A short walk leads to a $0.80\text{m}$ raised stone ledge (`LedgeStepA`) requiring a 2D jump, immediately establishing the movement distinction.
+  * **Section B: The Broken Stair ($X \in [-7.5, 9.5]$, $Y = 0.8 \to 2.4$):** 4 ascending 2D jumps across stone piers over a deep abyss (`StairB1`, `StairB2`, `StairB3`) leading to broad resting `TerraceBTop` at $Y = 2.40\text{m}$.
+  * **Section C: The Offset Passage ($X \in [8, 18]$, $Y = 2.40$):** Direct 2D path terminated by a 4.6m tall solid barrier (`BarrierMonolithC`, $Z \in [-2.0, 5.5]$). The player must switch to 3D, navigate the rear depth aisle ($Z = -4.0$) guided by golden floor traces, and reach the next platforming lane.
+  * **Section D: The Narrow Conduit ($X \in [16, 28]$, $Y = 2.4 \to 2.58$):** A massive stone bulkhead wall with a $0.45\text{m}$ narrow opening and cyan rail (`FirstConduit`) spanning a 7m rift. John's full body cannot fit; collapsing to 1D allows sliding through the opening, expanding safely onto the Gallery entrance terrace.
+  * **Section E: The Fractured Gallery ($X \in [29, 50]$, $Y = 2.4 \to 3.2$):** Extended 2D parkour across broken platforms (`GalleryPillarE1`, `GalleryPillarE2`, `GalleryPillarE4`) and a moving platform (`MovingPlatform`, `AnimatableBody3D` oscillating at $Y = 3.12, Z = -4.0$). Leads to `RelayCourtLanding` at $Y = 3.00\text{m}$.
+  * **Section F: The Relay Court ($X \in [50, 68]$, $Y = 3.0 \to 3.6$):** Interactive dimension puzzle:
+    1. 1D slide along `RelayConduit` through a security grille wall to collect the circuit spark.
+    2. 1D return and 3D expansion.
+    3. 3D navigation around `RelayCentralWall` across depth to the receiver socket at $Z = -3.5$.
+    4. Depositing the spark permanently powers the circuit and illuminates `RunicBridge`.
+  * **Section G: The Interwoven Ascent ($X \in [68, 88]$, $Y = 3.6 \to 5.8$):** Multi-dimensional climax combining:
+    1. 2D jump up `RunicBridge` to `TerraceG1` ($Y = 4.20, Z = -3.5$). Forward 2D route blocked by `BlockingPillarG`.
+    2. 3D depth walk across `TransversalWalkwayG` from $Z = -3.5$ to $Z = +2.5$.
+    3. 2D jump sequence on front lane to `TerraceG2` ($Y = 4.80$) and `HighConduitDockG` ($Y = 5.20$).
+    4. 1D slide along `HighConduit` rail through high gate bulkhead slit across chasm to `HighConduitExitDockG`.
+    5. Final 2D jumps across `SteppingStoneG4` ($Y = 5.50$) to grand `GuardianThreshold` ($Y = 5.80$).
+  * **Section H: Guardian Hall & Exit ($X \in [90, 104]$, $Y = 5.80$):** High ancient ruined hall. Staged approach introduces Flat Guardian sentinel. In 3D, the Guardian aggressively pursues; switching to 2D collapses the Guardian into an ethereal paper-thin form, allowing John to slip right through unharmed into the Chamber 1 Exit Portal Archway.
+* **2D Foreground Occlusion Elimination & Clean Visual Framing (`chamber.gd`):**
+  * Implemented dynamic active-depth visibility: in 2D mode, wall meshes in group `fg_walls` with $Z > \text{player\_z} + 0.6$ are hidden, ensuring John, platforms, and hazards remain 100% visible with zero clipping or visual obstruction.
+  * Physics collision remains 100% solid at all times, preventing unintended shortcuts.
+  * Front courtyard perimeter walls calibrated as low stone curbs ($0.45\text{m}$), allowing the 3D isometric camera to look clearly over them into play spaces.
+* **Streamlined Clean HUD & Large Gameplay Subtitles (`demo.gd`):**
+  * Removed top brown bar, title header, status indicators, Full Map button, and bottom brown strip.
+  * Preserved retro red pixel health hearts as a clean floating HUD element in the top-left margin.
+  * Created a large, readable gameplay subtitle system (30px font, white text, 6px black outline, soft shadow, centered in lower safe area above controls, queued one message at a time, displayed once per milestone).
+  * Implemented contextual bottom controls (23px white text with black outline, displaying "SPACE Jump" only in 2D mode).
+* **Continuous Camera Tracking (`demo.gd`):**
+  * Camera smoothly tracks John with forward look-ahead along the X axis ($+1.2\text{m}$ in 2D, $+0.8\text{m}$ in 3D), maintaining a close, readable character scale (`camera.size = 4.8` to `5.4`) across the full 122m course.
+* **Automated Verification Suite (100% Pass):**
+  * `tools/verify_jump_rules.gd`: **21/21 checks passed 100%** (3D jump rejection, buffer clearing, 2D jump, midair momentum, grounded depth steering).
+  * `tools/verify_route.gd`: **84/84 checks passed 100%** (full end-to-end traversal of Sections A through H, moving platform timing, spark fetch, receiver deposit, Guardian bypass, exit transition, and checkpoint recovery).
+  * `tools/verify_new_features.gd`: **27/27 checks passed 100%** (dialogue box, clean HUD, floating hearts, subtitles, contextual controls, camera lookahead).
+  * `tools/verify_chamber_transition.gd`: **100% passed** (Chamber 1 exit cleanly loads Axiom Warden Chamber).
+  * `tools/verify_full_flow.gd`: **100% passed** (Intro cutscene skips directly into Chamber 1 with dialogue).
+  * `tools/verify_axiom_warden.gd`: **56/56 checks passed 100%** (full boss regression suite).
+
+
 
 
 

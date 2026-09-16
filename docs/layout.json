@@ -1,14 +1,14 @@
 {
-  "revision": 2,
+  "revision": 3,
   "units": "meters",
   "footprint": {
     "x": [
-      -14,
-      38
+      -18,
+      104
     ],
     "z": [
-      -8,
-      8
+      -12,
+      12
     ]
   },
   "palette": {
@@ -28,431 +28,235 @@
   },
   "markers": {
     "Spawn": [
-      -11.5,
+      -15.0,
       0.08,
       0.0
     ],
-    "RailStart": [
-      -5.5,
-      0.2,
+    "Ledge": [
+      -10.0,
+      0.88,
       0.0
     ],
-    "RailEnd": [
-      3.0,
-      0.2,
+    "StairTop": [
+      6.0,
+      2.48,
+      0.0
+    ],
+    "OffsetCorridor": [
+      13.0,
+      2.48,
+      -4.0
+    ],
+    "Rail1Start": [
+      16.5,
+      2.58,
+      -4.0
+    ],
+    "Rail1End": [
+      25.5,
+      2.58,
+      -4.0
+    ],
+    "GalleryCheckpoint": [
+      26.5,
+      2.48,
+      -4.0
+    ],
+    "MovingPlatformPoint": [
+      40.0,
+      3.28,
+      -4.0
+    ],
+    "RelayCheckpoint": [
+      49.0,
+      3.08,
       0.0
     ],
     "Charge": [
-      2.2,
-      0.65,
-      0.0
+      56.0,
+      3.65,
+      3.5
+    ],
+    "Rail2Start": [
+      51.5,
+      3.18,
+      3.5
+    ],
+    "Rail2End": [
+      57.5,
+      3.18,
+      3.5
     ],
     "Receiver": [
-      7.5,
-      0.6,
-      -4.0
+      62.0,
+      3.625,
+      -3.5
     ],
-    "CourtyardCheckpoint": [
-      3.0,
-      0.08,
-      0.0
-    ],
-    "ClimbCheckpoint": [
-      13.5,
-      0.08,
-      -4.0
+    "AscentCheckpoint": [
+      69.5,
+      4.28,
+      -3.5
     ],
     "HighRailStart": [
-      20.5,
-      1.05,
-      0.0
+      79.5,
+      5.35,
+      2.5
     ],
     "HighRailEnd": [
-      26.5,
-      1.05,
+      85.5,
+      5.35,
+      2.5
+    ],
+    "GuardianCheckpoint": [
+      90.0,
+      5.88,
       0.0
     ],
     "GuardianSpawn": [
-      31.5,
-      1.5,
-      0.0
-    ],
-    "GuardianCheckpoint": [
-      27.0,
-      0.88,
+      96.0,
+      6.38,
       0.0
     ],
     "Exit": [
-      36.0,
-      0.88,
+      102.5,
+      5.88,
       0.0
-    ],
-    "Echo": [
-      4.0,
-      0.65,
-      4.8
     ]
   },
   "terraces": [
     [
-      "RunicTerrace1",
-      14.2,
-      20.5,
-      0.85
+      "LedgeStepA",
+      -10.0,
+      -7.5,
+      0.8
+    ],
+    [
+      "StairB1",
+      -6.3,
+      -4.2,
+      1.2
+    ],
+    [
+      "StairB2",
+      -2.7,
+      -0.7,
+      1.6
+    ],
+    [
+      "StairB3",
+      1.0,
+      3.0,
+      2.0
+    ],
+    [
+      "TerraceBTop",
+      4.8,
+      9.5,
+      2.4
+    ],
+    [
+      "OffsetAisleC",
+      9.5,
+      17.0,
+      2.4
+    ],
+    [
+      "GalleryEntryTerrace",
+      24.5,
+      29.5,
+      2.4
+    ],
+    [
+      "GalleryPillarE1",
+      31.0,
+      33.2,
+      2.8
+    ],
+    [
+      "GalleryPillarE2",
+      34.8,
+      37.0,
+      3.2
+    ],
+    [
+      "GalleryPillarE4",
+      43.5,
+      45.8,
+      3.2
+    ],
+    [
+      "RelayCourtLanding",
+      47.5,
+      52.0,
+      3.0
+    ],
+    [
+      "RelayCourtFloor",
+      50.0,
+      66.0,
+      3.0
+    ],
+    [
+      "RunicBridge",
+      64.0,
+      68.0,
+      3.6
+    ],
+    [
+      "TerraceG1",
+      68.5,
+      72.5,
+      4.2
+    ],
+    [
+      "TransversalWalkwayG",
+      69.5,
+      72.5,
+      4.2
+    ],
+    [
+      "TerraceG2",
+      73.5,
+      76.5,
+      4.8
+    ],
+    [
+      "HighConduitDockG",
+      78.0,
+      80.5,
+      5.2
+    ],
+    [
+      "SteppingStoneG4",
+      86.5,
+      88.5,
+      5.5
+    ],
+    [
+      "GuardianThreshold",
+      89.5,
+      93.0,
+      5.8
+    ],
+    [
+      "GuardianHallFloor",
+      92.5,
+      103.5,
+      5.8
     ]
   ],
   "boxes": [
     {
-      "name": "ArrivalEarth",
-      "position": [
-        -21.5,
-        -3.5,
-        0.0
-      ],
-      "size": [
-        37,
-        7,
-        44
-      ],
-      "material": "paver",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
-        3.45,
-        0
-      ],
-      "size": [
-        37.08,
-        0.1,
-        44.08
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        3.3,
-        22.012
-      ],
-      "size": [
-        37,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "SanctumEarth",
-      "position": [
-        19.5,
-        -3.5,
-        0.0
-      ],
-      "size": [
-        37,
-        7,
-        44
-      ],
-      "material": "paver",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
-        3.45,
-        0
-      ],
-      "size": [
-        37.08,
-        0.1,
-        44.08
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        3.3,
-        22.012
-      ],
-      "size": [
-        37,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "ArrivalBackWall",
-      "position": [
-        -8.5,
-        0.825,
-        -8.25
-      ],
-      "size": [
-        11,
-        1.65,
-        0.6000000000000005
-      ],
-      "material": "stone",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
-        0.7749999999999999,
-        0
-      ],
-      "size": [
-        11.08,
-        0.1,
-        0.6800000000000005
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        0.625,
-        0.3120000000000003
-      ],
-      "size": [
-        11,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "ArrivalFrontWall",
-      "position": [
-        -8.5,
-        0.825,
-        8.25
-      ],
-      "size": [
-        11,
-        1.65,
-        0.6000000000000005
-      ],
-      "material": "stone",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
-        0.7749999999999999,
-        0
-      ],
-      "size": [
-        11.08,
-        0.1,
-        0.6800000000000005
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        0.625,
-        0.3120000000000003
-      ],
-      "size": [
-        11,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "CourtBackWall",
-      "position": [
-        19.5,
-        0.825,
-        -8.25
-      ],
-      "size": [
-        37,
-        1.65,
-        0.6000000000000005
-      ],
-      "material": "stone",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
-        0.7749999999999999,
-        0
-      ],
-      "size": [
-        37.08,
-        0.1,
-        0.6800000000000005
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        0.625,
-        0.3120000000000003
-      ],
-      "size": [
-        37,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "CourtFrontWall",
-      "position": [
-        19.5,
-        0.825,
-        8.25
-      ],
-      "size": [
-        37,
-        1.65,
-        0.6000000000000005
-      ],
-      "material": "stone",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
-        0.7749999999999999,
-        0
-      ],
-      "size": [
-        37.08,
-        0.1,
-        0.6800000000000005
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        0.625,
-        0.3120000000000003
-      ],
-      "size": [
-        37,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "WestLimit",
-      "position": [
-        -14.5,
-        0.825,
-        0
-      ],
-      "size": [
-        1,
-        1.65,
-        17
-      ],
-      "material": "deep",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "EastLimit",
-      "position": [
-        38.5,
-        4,
-        0
-      ],
-      "size": [
-        1,
-        8,
-        17
-      ],
-      "material": "deep",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
       "name": "CavernBackdrop",
       "position": [
-        12,
-        5,
-        -14
+        42,
+        6,
+        -15
       ],
       "size": [
-        80,
-        14,
-        1
+        150,
+        24,
+        1.2
       ],
       "material": "cavern",
       "solid": false,
@@ -460,67 +264,16 @@
       "group": ""
     },
     {
-      "name": "RuinPier0",
+      "name": "CavernAbyssFloor",
       "position": [
-        -18.0,
-        2.9,
-        -9.95
-      ],
-      "size": [
-        1.1000000000000014,
-        5.8,
-        1.0999999999999996
-      ],
-      "material": "shadow",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
-        2.85,
+        42,
+        -7.5,
         0
       ],
       "size": [
-        1.1800000000000015,
-        0.1,
-        1.1799999999999997
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        2.6999999999999997,
-        0.5619999999999998
-      ],
-      "size": [
-        1.1000000000000014,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "RuinWall0",
-      "position": [
-        -15.5,
-        1.7,
-        -10.05
-      ],
-      "size": [
-        3.8999999999999986,
-        3.4,
-        0.5
+        150,
+        2.0,
+        40
       ],
       "material": "deep",
       "solid": true,
@@ -528,116 +281,65 @@
       "group": ""
     },
     {
-      "name": "Coping",
+      "name": "WestLimitWall",
       "position": [
-        0,
-        1.65,
-        0
-      ],
-      "size": [
-        3.9799999999999986,
-        0.1,
-        0.58
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        1.5,
-        0.262
-      ],
-      "size": [
-        3.8999999999999986,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "RuinPier1",
-      "position": [
-        -13.0,
-        2.35,
-        -9.95
-      ],
-      "size": [
-        1.1000000000000014,
-        4.7,
-        1.0999999999999996
-      ],
-      "material": "shadow",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
-        2.3000000000000003,
-        0
-      ],
-      "size": [
-        1.1800000000000015,
-        0.1,
-        1.1799999999999997
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        2.15,
-        0.5619999999999998
-      ],
-      "size": [
-        1.1000000000000014,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "RuinPier2",
-      "position": [
-        -8.0,
-        3.55,
-        -9.95
-      ],
-      "size": [
-        1.1000000000000005,
-        7.1,
-        1.0999999999999996
-      ],
-      "material": "shadow",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
+        -32,
         3.5,
         0
       ],
       "size": [
-        1.1800000000000006,
+        1.5,
+        9.0,
+        20
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "EastLimitWall",
+      "position": [
+        105,
+        6.5,
+        0
+      ],
+      "size": [
+        1.5,
+        12.0,
+        20
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinCol0",
+      "position": [
+        -16.0,
+        3.75,
+        -10.95
+      ],
+      "size": [
+        1.1000000000000014,
+        7.5,
+        1.0999999999999996
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        3.7,
+        0
+      ],
+      "size": [
+        1.1800000000000015,
         0.1,
         1.1799999999999997
       ],
@@ -650,11 +352,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        3.3499999999999996,
+        3.55,
         0.5619999999999998
       ],
       "size": [
-        1.1000000000000005,
+        1.1000000000000014,
         0.055,
         0.035
       ],
@@ -664,15 +366,15 @@
       "group": ""
     },
     {
-      "name": "RuinWall2",
+      "name": "RuinPerimeterWall0",
       "position": [
-        -5.5,
-        1.7,
-        -10.05
+        -13.0,
+        2.25,
+        -10.95
       ],
       "size": [
-        3.9000000000000004,
-        3.4,
+        4.899999999999999,
+        4.5,
         0.5
       ],
       "material": "deep",
@@ -684,11 +386,11 @@
       "name": "Coping",
       "position": [
         0,
-        1.65,
+        2.2,
         0
       ],
       "size": [
-        3.9800000000000004,
+        4.979999999999999,
         0.1,
         0.58
       ],
@@ -701,11 +403,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.5,
+        2.05,
         0.262
       ],
       "size": [
-        3.9000000000000004,
+        4.899999999999999,
         0.055,
         0.035
       ],
@@ -715,15 +417,15 @@
       "group": ""
     },
     {
-      "name": "RuinPier3",
+      "name": "RuinCol1",
       "position": [
-        -3.0,
-        2.6,
-        -9.95
+        -10.0,
+        3.1,
+        -10.95
       ],
       "size": [
-        1.0999999999999996,
-        5.2,
+        1.1000000000000014,
+        6.2,
         1.0999999999999996
       ],
       "material": "shadow",
@@ -735,7 +437,58 @@
       "name": "Coping",
       "position": [
         0,
-        2.5500000000000003,
+        3.0500000000000003,
+        0
+      ],
+      "size": [
+        1.1800000000000015,
+        0.1,
+        1.1799999999999997
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.9,
+        0.5619999999999998
+      ],
+      "size": [
+        1.1000000000000014,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinCol2",
+      "position": [
+        -4.0,
+        4.4,
+        -10.95
+      ],
+      "size": [
+        1.0999999999999996,
+        8.8,
+        1.0999999999999996
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        4.3500000000000005,
         0
       ],
       "size": [
@@ -752,7 +505,7 @@
       "name": "FrontBand",
       "position": [
         0,
-        2.4,
+        4.2,
         0.5619999999999998
       ],
       "size": [
@@ -766,15 +519,15 @@
       "group": ""
     },
     {
-      "name": "RuinWall3",
+      "name": "RuinPerimeterWall2",
       "position": [
-        -0.5,
-        1.7,
-        -10.05
+        -1.0,
+        2.25,
+        -10.95
       ],
       "size": [
-        3.9000000000000004,
-        3.4,
+        4.9,
+        4.5,
         0.5
       ],
       "material": "deep",
@@ -786,11 +539,11 @@
       "name": "Coping",
       "position": [
         0,
-        1.65,
+        2.2,
         0
       ],
       "size": [
-        3.9800000000000004,
+        4.98,
         0.1,
         0.58
       ],
@@ -803,11 +556,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.5,
+        2.05,
         0.262
       ],
       "size": [
-        3.9000000000000004,
+        4.9,
         0.055,
         0.035
       ],
@@ -817,15 +570,15 @@
       "group": ""
     },
     {
-      "name": "RuinPier4",
+      "name": "RuinCol3",
       "position": [
         2.0,
-        2.9,
-        -9.95
+        3.4,
+        -10.95
       ],
       "size": [
         1.0999999999999999,
-        5.8,
+        6.8,
         1.0999999999999996
       ],
       "material": "shadow",
@@ -837,7 +590,7 @@
       "name": "Coping",
       "position": [
         0,
-        2.85,
+        3.35,
         0
       ],
       "size": [
@@ -854,7 +607,7 @@
       "name": "FrontBand",
       "position": [
         0,
-        2.6999999999999997,
+        3.1999999999999997,
         0.5619999999999998
       ],
       "size": [
@@ -868,66 +621,15 @@
       "group": ""
     },
     {
-      "name": "RuinPier5",
+      "name": "RuinPerimeterWall3",
       "position": [
-        7.0,
-        2.35,
-        -9.95
+        5.0,
+        2.25,
+        -10.95
       ],
       "size": [
-        1.0999999999999996,
-        4.7,
-        1.0999999999999996
-      ],
-      "material": "shadow",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
-        2.3000000000000003,
-        0
-      ],
-      "size": [
-        1.1799999999999997,
-        0.1,
-        1.1799999999999997
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        2.15,
-        0.5619999999999998
-      ],
-      "size": [
-        1.0999999999999996,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "RuinWall5",
-      "position": [
-        9.5,
-        1.7,
-        -10.05
-      ],
-      "size": [
-        3.8999999999999995,
-        3.4,
+        4.9,
+        4.5,
         0.5
       ],
       "material": "deep",
@@ -939,11 +641,11 @@
       "name": "Coping",
       "position": [
         0,
-        1.65,
+        2.2,
         0
       ],
       "size": [
-        3.9799999999999995,
+        4.98,
         0.1,
         0.58
       ],
@@ -956,11 +658,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.5,
+        2.05,
         0.262
       ],
       "size": [
-        3.8999999999999995,
+        4.9,
         0.055,
         0.035
       ],
@@ -970,15 +672,15 @@
       "group": ""
     },
     {
-      "name": "RuinPier6",
+      "name": "RuinCol4",
       "position": [
-        12.0,
-        3.55,
-        -9.95
+        8.0,
+        3.75,
+        -10.95
       ],
       "size": [
-        1.1000000000000014,
-        7.1,
+        1.1000000000000005,
+        7.5,
         1.0999999999999996
       ],
       "material": "shadow",
@@ -990,7 +692,58 @@
       "name": "Coping",
       "position": [
         0,
-        3.5,
+        3.7,
+        0
+      ],
+      "size": [
+        1.1800000000000006,
+        0.1,
+        1.1799999999999997
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        3.55,
+        0.5619999999999998
+      ],
+      "size": [
+        1.1000000000000005,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinCol5",
+      "position": [
+        14.0,
+        3.1,
+        -10.95
+      ],
+      "size": [
+        1.1000000000000014,
+        6.2,
+        1.0999999999999996
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        3.0500000000000003,
         0
       ],
       "size": [
@@ -1007,7 +760,7 @@
       "name": "FrontBand",
       "position": [
         0,
-        3.3499999999999996,
+        2.9,
         0.5619999999999998
       ],
       "size": [
@@ -1021,168 +774,15 @@
       "group": ""
     },
     {
-      "name": "RuinWall6",
-      "position": [
-        14.5,
-        1.7,
-        -10.05
-      ],
-      "size": [
-        3.8999999999999986,
-        3.4,
-        0.5
-      ],
-      "material": "deep",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
-        1.65,
-        0
-      ],
-      "size": [
-        3.9799999999999986,
-        0.1,
-        0.58
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        1.5,
-        0.262
-      ],
-      "size": [
-        3.8999999999999986,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "RuinPier7",
+      "name": "RuinPerimeterWall5",
       "position": [
         17.0,
-        2.6,
-        -9.95
+        2.25,
+        -10.95
       ],
       "size": [
-        1.1000000000000014,
-        5.2,
-        1.0999999999999996
-      ],
-      "material": "shadow",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
-        2.5500000000000003,
-        0
-      ],
-      "size": [
-        1.1800000000000015,
-        0.1,
-        1.1799999999999997
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        2.4,
-        0.5619999999999998
-      ],
-      "size": [
-        1.1000000000000014,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "RuinPier8",
-      "position": [
-        22.0,
-        2.9,
-        -9.95
-      ],
-      "size": [
-        1.1000000000000014,
-        5.8,
-        1.0999999999999996
-      ],
-      "material": "shadow",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
-        2.85,
-        0
-      ],
-      "size": [
-        1.1800000000000015,
-        0.1,
-        1.1799999999999997
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        2.6999999999999997,
-        0.5619999999999998
-      ],
-      "size": [
-        1.1000000000000014,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "RuinWall8",
-      "position": [
-        24.5,
-        1.7,
-        -10.05
-      ],
-      "size": [
-        3.8999999999999986,
-        3.4,
+        4.899999999999999,
+        4.5,
         0.5
       ],
       "material": "deep",
@@ -1194,11 +794,11 @@
       "name": "Coping",
       "position": [
         0,
-        1.65,
+        2.2,
         0
       ],
       "size": [
-        3.9799999999999986,
+        4.979999999999999,
         0.1,
         0.58
       ],
@@ -1211,11 +811,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.5,
+        2.05,
         0.262
       ],
       "size": [
-        3.8999999999999986,
+        4.899999999999999,
         0.055,
         0.035
       ],
@@ -1225,15 +825,15 @@
       "group": ""
     },
     {
-      "name": "RuinPier9",
+      "name": "RuinCol6",
       "position": [
-        27.0,
-        2.35,
-        -9.95
+        20.0,
+        4.4,
+        -10.95
       ],
       "size": [
         1.1000000000000014,
-        4.7,
+        8.8,
         1.0999999999999996
       ],
       "material": "shadow",
@@ -1245,7 +845,7 @@
       "name": "Coping",
       "position": [
         0,
-        2.3000000000000003,
+        4.3500000000000005,
         0
       ],
       "size": [
@@ -1262,7 +862,7 @@
       "name": "FrontBand",
       "position": [
         0,
-        2.15,
+        4.2,
         0.5619999999999998
       ],
       "size": [
@@ -1276,15 +876,15 @@
       "group": ""
     },
     {
-      "name": "RuinWall9",
+      "name": "RuinPerimeterWall6",
       "position": [
-        29.5,
-        1.7,
-        -10.05
+        23.0,
+        2.25,
+        -10.95
       ],
       "size": [
-        3.8999999999999986,
-        3.4,
+        4.899999999999999,
+        4.5,
         0.5
       ],
       "material": "deep",
@@ -1296,11 +896,11 @@
       "name": "Coping",
       "position": [
         0,
-        1.65,
+        2.2,
         0
       ],
       "size": [
-        3.9799999999999986,
+        4.979999999999999,
         0.1,
         0.58
       ],
@@ -1313,11 +913,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.5,
+        2.05,
         0.262
       ],
       "size": [
-        3.8999999999999986,
+        4.899999999999999,
         0.055,
         0.035
       ],
@@ -1327,15 +927,66 @@
       "group": ""
     },
     {
-      "name": "RuinPier10",
+      "name": "RuinCol7",
+      "position": [
+        26.0,
+        3.4,
+        -10.95
+      ],
+      "size": [
+        1.1000000000000014,
+        6.8,
+        1.0999999999999996
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        3.35,
+        0
+      ],
+      "size": [
+        1.1800000000000015,
+        0.1,
+        1.1799999999999997
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        3.1999999999999997,
+        0.5619999999999998
+      ],
+      "size": [
+        1.1000000000000014,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinCol8",
       "position": [
         32.0,
-        3.55,
-        -9.95
+        3.75,
+        -10.95
       ],
       "size": [
         1.0999999999999979,
-        7.1,
+        7.5,
         1.0999999999999996
       ],
       "material": "shadow",
@@ -1347,7 +998,7 @@
       "name": "Coping",
       "position": [
         0,
-        3.5,
+        3.7,
         0
       ],
       "size": [
@@ -1364,7 +1015,7 @@
       "name": "FrontBand",
       "position": [
         0,
-        3.3499999999999996,
+        3.55,
         0.5619999999999998
       ],
       "size": [
@@ -1378,15 +1029,66 @@
       "group": ""
     },
     {
-      "name": "RuinPier11",
+      "name": "RuinPerimeterWall8",
       "position": [
-        37.0,
-        2.6,
-        -9.95
+        35.0,
+        2.25,
+        -10.95
+      ],
+      "size": [
+        4.900000000000006,
+        4.5,
+        0.5
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.2,
+        0
+      ],
+      "size": [
+        4.980000000000006,
+        0.1,
+        0.58
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.05,
+        0.262
+      ],
+      "size": [
+        4.900000000000006,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinCol9",
+      "position": [
+        38.0,
+        3.1,
+        -10.95
       ],
       "size": [
         1.0999999999999943,
-        5.2,
+        6.2,
         1.0999999999999996
       ],
       "material": "shadow",
@@ -1398,7 +1100,7 @@
       "name": "Coping",
       "position": [
         0,
-        2.5500000000000003,
+        3.0500000000000003,
         0
       ],
       "size": [
@@ -1415,7 +1117,7 @@
       "name": "FrontBand",
       "position": [
         0,
-        2.4,
+        2.9,
         0.5619999999999998
       ],
       "size": [
@@ -1429,15 +1131,15 @@
       "group": ""
     },
     {
-      "name": "RuinWall11",
+      "name": "RuinPerimeterWall9",
       "position": [
-        39.5,
-        1.7,
-        -10.05
+        41.0,
+        2.25,
+        -10.95
       ],
       "size": [
-        3.9000000000000057,
-        3.4,
+        4.900000000000006,
+        4.5,
         0.5
       ],
       "material": "deep",
@@ -1449,11 +1151,11 @@
       "name": "Coping",
       "position": [
         0,
-        1.65,
+        2.2,
         0
       ],
       "size": [
-        3.9800000000000058,
+        4.980000000000006,
         0.1,
         0.58
       ],
@@ -1466,11 +1168,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.5,
+        2.05,
         0.262
       ],
       "size": [
-        3.9000000000000057,
+        4.900000000000006,
         0.055,
         0.035
       ],
@@ -1480,1276 +1182,18 @@
       "group": ""
     },
     {
-      "name": "Rubble0",
+      "name": "RuinCol10",
       "position": [
-        19.533417166813784,
-        0.14,
-        -7.697241991401618
+        44.0,
+        4.4,
+        -10.95
       ],
       "size": [
-        0.37709059831668423,
-        0.37917240364545374,
-        0.28680948373237125
+        1.0999999999999943,
+        8.8,
+        1.0999999999999996
       ],
       "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble1",
-      "position": [
-        -7.438750547580574,
-        0.14,
-        7.605840278733559
-      ],
-      "size": [
-        0.38533993324127164,
-        0.3716820041064681,
-        0.4503527181766419
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble2",
-      "position": [
-        24.43830769956474,
-        0.14,
-        7.585486548964811
-      ],
-      "size": [
-        0.4779215905124986,
-        0.34857782705429796,
-        0.4761201125440419
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble3",
-      "position": [
-        -9.191529254134206,
-        0.14,
-        7.67325483536618
-      ],
-      "size": [
-        0.5300617585567067,
-        0.3287954788327797,
-        0.3243312776464282
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble4",
-      "position": [
-        -9.93272088815301,
-        0.14,
-        7.761359153722757
-      ],
-      "size": [
-        0.3782284989814133,
-        0.2911552175670502,
-        0.28971523472086325
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble5",
-      "position": [
-        31.659567196796452,
-        0.14,
-        -7.629928874426354
-      ],
-      "size": [
-        0.6292617580508953,
-        0.18053873703941803,
-        0.36357557976975824
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble6",
-      "position": [
-        22.30023910472996,
-        0.14,
-        -7.726332774415886
-      ],
-      "size": [
-        0.2623445761248057,
-        0.28284250086738716,
-        0.2313925576520313
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble7",
-      "position": [
-        20.973352718066707,
-        0.14,
-        -7.590326548598111
-      ],
-      "size": [
-        0.6076592770657652,
-        0.27447451555093877,
-        0.35605248171134307
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble8",
-      "position": [
-        27.05397075044649,
-        0.14,
-        7.668577165773452
-      ],
-      "size": [
-        0.6033229130796522,
-        0.34517824357531857,
-        0.46716041640088
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble10",
-      "position": [
-        8.04187736508672,
-        0.14,
-        7.804497472277373
-      ],
-      "size": [
-        0.4140302187030654,
-        0.23680451396770819,
-        0.2879346573398998
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble11",
-      "position": [
-        -6.276675294987603,
-        0.14,
-        7.652282586649022
-      ],
-      "size": [
-        0.5048165313487942,
-        0.13178493887255166,
-        0.2627618185682866
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble12",
-      "position": [
-        20.060974748548965,
-        0.14,
-        7.604314141505309
-      ],
-      "size": [
-        0.22991057158204176,
-        0.25150705976277676,
-        0.3969350277405217
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble13",
-      "position": [
-        -14.178098716334057,
-        0.14,
-        7.735749342336893
-      ],
-      "size": [
-        0.2339191517852044,
-        0.15285690296065935,
-        0.32903323982471355
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble14",
-      "position": [
-        30.03742396696685,
-        0.14,
-        -7.771330989086014
-      ],
-      "size": [
-        0.41135094199657185,
-        0.37951226158316326,
-        0.4432460019021693
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble15",
-      "position": [
-        6.871164188334987,
-        0.14,
-        -7.817895286897184
-      ],
-      "size": [
-        0.3731145663511025,
-        0.2896626975785245,
-        0.48504244604041435
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble16",
-      "position": [
-        32.37663604322717,
-        0.14,
-        7.810032504057286
-      ],
-      "size": [
-        0.2947819785693797,
-        0.25237715022663404,
-        0.21846311544901548
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble17",
-      "position": [
-        24.504410075594087,
-        0.14,
-        -7.804600856547804
-      ],
-      "size": [
-        0.3322409762864985,
-        0.24115466412486508,
-        0.35087300122355136
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble18",
-      "position": [
-        35.38040423015983,
-        0.14,
-        7.714910403283497
-      ],
-      "size": [
-        0.522500543119508,
-        0.31185779577795064,
-        0.29180957073191605
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble19",
-      "position": [
-        23.05032857317523,
-        0.14,
-        7.735037455865224
-      ],
-      "size": [
-        0.4561388387766647,
-        0.334763820353138,
-        0.48069944768205924
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble20",
-      "position": [
-        29.456442127626758,
-        0.14,
-        -7.782939370800461
-      ],
-      "size": [
-        0.40624903838269344,
-        0.36181084044349776,
-        0.35388627631429204
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble21",
-      "position": [
-        29.29440485798284,
-        0.14,
-        7.7521813508275494
-      ],
-      "size": [
-        0.5131531005402142,
-        0.29840387630697196,
-        0.29888245918470374
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble22",
-      "position": [
-        -5.458992237542214,
-        0.14,
-        7.813029707169883
-      ],
-      "size": [
-        0.242572211371116,
-        0.2935999595478382,
-        0.3586522999027768
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble23",
-      "position": [
-        6.071207161901178,
-        0.14,
-        -7.610780346938655
-      ],
-      "size": [
-        0.24215258540697407,
-        0.23359348666250834,
-        0.3373733571025853
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble24",
-      "position": [
-        22.280734469907344,
-        0.14,
-        -7.7490142847382835
-      ],
-      "size": [
-        0.32342162012866293,
-        0.3740919263577424,
-        0.31755605123586783
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble25",
-      "position": [
-        34.6166029772923,
-        0.14,
-        -7.70722451627748
-      ],
-      "size": [
-        0.5217406626754397,
-        0.14778771314450426,
-        0.378944228249232
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble26",
-      "position": [
-        -10.35806957209634,
-        0.14,
-        -7.678985721285415
-      ],
-      "size": [
-        0.22099005484687667,
-        0.29747938809109215,
-        0.38394838271535225
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble28",
-      "position": [
-        -7.430631654415588,
-        0.14,
-        7.609173136811533
-      ],
-      "size": [
-        0.579734041168245,
-        0.153362520476944,
-        0.40844060581100294
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble30",
-      "position": [
-        3.0450655496317793,
-        0.14,
-        -7.657560588286533
-      ],
-      "size": [
-        0.3162800074510409,
-        0.21007023662082447,
-        0.477597634998704
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble31",
-      "position": [
-        -3.72685286169504,
-        0.14,
-        7.793701860256257
-      ],
-      "size": [
-        0.22685994813193378,
-        0.3408203369881122,
-        0.3314517158049476
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble32",
-      "position": [
-        34.469234732589854,
-        0.14,
-        -7.701614877356389
-      ],
-      "size": [
-        0.37396119858557236,
-        0.1930451515846705,
-        0.3050881913576314
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble33",
-      "position": [
-        34.12176095773741,
-        0.14,
-        -7.6938947550791905
-      ],
-      "size": [
-        0.21190451390526474,
-        0.17860466980888373,
-        0.2928177212702402
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble35",
-      "position": [
-        -8.048532671481002,
-        0.14,
-        -7.782518601195408
-      ],
-      "size": [
-        0.28374047221154197,
-        0.27809378060804935,
-        0.22579735952427865
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble36",
-      "position": [
-        23.58938730126242,
-        0.14,
-        7.721844718571383
-      ],
-      "size": [
-        0.45994982610142215,
-        0.37836843065903164,
-        0.2006034897383746
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble38",
-      "position": [
-        9.800845938562897,
-        0.14,
-        7.643074401557697
-      ],
-      "size": [
-        0.4091563570534415,
-        0.32914894287029817,
-        0.2418589765468967
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble39",
-      "position": [
-        -6.1849463300502485,
-        0.14,
-        -7.755469815832623
-      ],
-      "size": [
-        0.5529661603087841,
-        0.24733807357084472,
-        0.37946696725495466
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble40",
-      "position": [
-        1.9693674050294057,
-        0.14,
-        7.623270920707053
-      ],
-      "size": [
-        0.23175918716914878,
-        0.3620105591352485,
-        0.2078007738028115
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble41",
-      "position": [
-        -11.304017726442973,
-        0.14,
-        -7.691806015148823
-      ],
-      "size": [
-        0.22837219898275035,
-        0.12915768566992822,
-        0.44585492025539397
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble42",
-      "position": [
-        20.107169069944355,
-        0.14,
-        7.6693931215717095
-      ],
-      "size": [
-        0.3515012847375487,
-        0.3657217894390341,
-        0.23587088875382925
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble43",
-      "position": [
-        16.058799258162963,
-        0.14,
-        -7.732920814881048
-      ],
-      "size": [
-        0.28094896117102164,
-        0.2863432500314238,
-        0.34664110172990625
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble45",
-      "position": [
-        35.14691257887592,
-        0.14,
-        -7.81176160467393
-      ],
-      "size": [
-        0.2770286584063216,
-        0.3162577525485533,
-        0.31589204068903365
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble46",
-      "position": [
-        -14.08420878111588,
-        0.14,
-        7.774796906837743
-      ],
-      "size": [
-        0.2113010819763022,
-        0.3071078470709415,
-        0.3456200314181291
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble47",
-      "position": [
-        19.10423154784109,
-        0.14,
-        -7.775537226497822
-      ],
-      "size": [
-        0.48592965805877064,
-        0.16421077628556596,
-        0.3603923307414769
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble48",
-      "position": [
-        25.248332126078786,
-        0.14,
-        -7.759693425114428
-      ],
-      "size": [
-        0.27390924722760074,
-        0.24678029535519913,
-        0.47153932937735554
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble49",
-      "position": [
-        6.196815725872099,
-        0.14,
-        -7.583145843869114
-      ],
-      "size": [
-        0.4372595373299133,
-        0.21023867799625442,
-        0.2567759930732334
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble50",
-      "position": [
-        11.597878945988235,
-        0.14,
-        -7.602141365386822
-      ],
-      "size": [
-        0.5738964966271421,
-        0.13080171196998694,
-        0.2788698394107353
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble52",
-      "position": [
-        20.09549817547353,
-        0.14,
-        -7.653599925106998
-      ],
-      "size": [
-        0.3822924984632182,
-        0.3601063333921609,
-        0.4585502272145872
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble53",
-      "position": [
-        16.62406931201427,
-        0.14,
-        7.719394456604421
-      ],
-      "size": [
-        0.43417906872085477,
-        0.3525763421848461,
-        0.36879447164826706
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble54",
-      "position": [
-        31.131038842221443,
-        0.14,
-        7.798286639717963
-      ],
-      "size": [
-        0.3746369819300345,
-        0.26910130666199045,
-        0.22823449779185806
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble55",
-      "position": [
-        -8.244423880730743,
-        0.14,
-        7.615731548156032
-      ],
-      "size": [
-        0.5158481116597033,
-        0.22202533881918154,
-        0.264518151217049
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble56",
-      "position": [
-        30.575698643018477,
-        0.14,
-        -7.6413185451962375
-      ],
-      "size": [
-        0.579750999117256,
-        0.29389761535810566,
-        0.3437419624554249
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble57",
-      "position": [
-        3.8360880627371827,
-        0.14,
-        -7.696304220688505
-      ],
-      "size": [
-        0.61450382688889,
-        0.24553978555592088,
-        0.24344073752396825
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble58",
-      "position": [
-        12.98156204598537,
-        0.14,
-        -7.595221028936452
-      ],
-      "size": [
-        0.4170931769275035,
-        0.20674840246652443,
-        0.46558707603421734
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble59",
-      "position": [
-        -7.305700559745803,
-        0.14,
-        7.610637773507535
-      ],
-      "size": [
-        0.32707950192650387,
-        0.20544135212535647,
-        0.3559372987323116
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble60",
-      "position": [
-        4.706251880849642,
-        0.14,
-        7.806504694915056
-      ],
-      "size": [
-        0.5013095204446011,
-        0.32691077455197437,
-        0.365243934275946
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble61",
-      "position": [
-        -4.700804132547686,
-        0.14,
-        -7.581648197431275
-      ],
-      "size": [
-        0.20589246038551245,
-        0.1543673102114299,
-        0.3831661180428022
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble62",
-      "position": [
-        22.939248605770103,
-        0.14,
-        -7.735714255825669
-      ],
-      "size": [
-        0.5263454348124388,
-        0.36478729296820445,
-        0.39179321163127445
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble63",
-      "position": [
-        12.132946190079132,
-        0.14,
-        7.6889401462342954
-      ],
-      "size": [
-        0.5540354456003738,
-        0.13785654915391993,
-        0.42734877234013624
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble64",
-      "position": [
-        14.845311686512296,
-        0.14,
-        7.617481766693887
-      ],
-      "size": [
-        0.3296999373889626,
-        0.35588668654461203,
-        0.48765011720369916
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble66",
-      "position": [
-        -5.740697385890529,
-        0.14,
-        7.807526915513803
-      ],
-      "size": [
-        0.42578653443684894,
-        0.2306067933151249,
-        0.47105611326508673
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble67",
-      "position": [
-        17.387199790251636,
-        0.14,
-        -7.713877363321602
-      ],
-      "size": [
-        0.23541065189914084,
-        0.24917216829158706,
-        0.3564866836366957
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble68",
-      "position": [
-        16.496675041427924,
-        0.14,
-        -7.73221966898437
-      ],
-      "size": [
-        0.44731006680980157,
-        0.3343277617182821,
-        0.4848986635501145
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble69",
-      "position": [
-        27.01745521007357,
-        0.14,
-        7.808053710741925
-      ],
-      "size": [
-        0.5699323851844433,
-        0.3692636300768126,
-        0.2529847962110551
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble70",
-      "position": [
-        29.060085374663885,
-        0.14,
-        -7.623795935830248
-      ],
-      "size": [
-        0.5661902677164323,
-        0.12718669283840922,
-        0.48356333769217147
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble71",
-      "position": [
-        23.198717491943498,
-        0.14,
-        7.719691772241148
-      ],
-      "size": [
-        0.6299931678940582,
-        0.20224279351815289,
-        0.28374391814934197
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble72",
-      "position": [
-        34.55640264903921,
-        0.14,
-        7.58154829866474
-      ],
-      "size": [
-        0.39499957977170297,
-        0.20246945777383235,
-        0.4483075838988525
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble73",
-      "position": [
-        34.610567274023005,
-        0.14,
-        -7.607807899097169
-      ],
-      "size": [
-        0.2792267775903756,
-        0.26599670611243303,
-        0.49823656478993333
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble74",
-      "position": [
-        22.575581801672627,
-        0.14,
-        7.665030881024844
-      ],
-      "size": [
-        0.46215467776568026,
-        0.30425327903770316,
-        0.2822604319300639
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble75",
-      "position": [
-        18.590823442698017,
-        0.14,
-        -7.73247698137015
-      ],
-      "size": [
-        0.427583404369154,
-        0.328439687953972,
-        0.4367322206665945
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble76",
-      "position": [
-        6.338317128386954,
-        0.14,
-        7.685488838280735
-      ],
-      "size": [
-        0.4128319927060456,
-        0.17895749023989227,
-        0.34967294996101383
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble77",
-      "position": [
-        -12.084007395005827,
-        0.14,
-        -7.731202006722538
-      ],
-      "size": [
-        0.3617630616016215,
-        0.3426634359206209,
-        0.40574065129019754
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble78",
-      "position": [
-        8.206968378141113,
-        0.14,
-        -7.613432397662172
-      ],
-      "size": [
-        0.3183209397095218,
-        0.32408859068146145,
-        0.48431303001264187
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Rubble79",
-      "position": [
-        5.436197801521892,
-        0.14,
-        7.721847177442494
-      ],
-      "size": [
-        0.5404840719016364,
-        0.14873363486319913,
-        0.23423816608749626
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "WakePlate",
-      "position": [
-        -9,
-        0.045,
-        0
-      ],
-      "size": [
-        1.2,
-        0.09,
-        1.2
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "WakePlateInset",
-      "position": [
-        -9,
-        0.1,
-        0
-      ],
-      "size": [
-        0.85,
-        0.035,
-        0.85
-      ],
-      "material": "rune_off",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "ArrivalButtress-12",
-      "position": [
-        -12.0,
-        1.25,
-        -3.2
-      ],
-      "size": [
-        1.0,
-        2.5,
-        1.6
-      ],
-      "material": "stone",
       "solid": true,
       "visible": true,
       "group": ""
@@ -2758,13 +1202,13 @@
       "name": "Coping",
       "position": [
         0,
-        1.2,
+        4.3500000000000005,
         0
       ],
       "size": [
-        1.08,
+        1.1799999999999944,
         0.1,
-        1.6800000000000002
+        1.1799999999999997
       ],
       "material": "paver",
       "solid": false,
@@ -2775,11 +1219,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.05,
-        0.812
+        4.2,
+        0.5619999999999998
       ],
       "size": [
-        1.0,
+        1.0999999999999943,
         0.055,
         0.035
       ],
@@ -2789,18 +1233,18 @@
       "group": ""
     },
     {
-      "name": "ArrivalButtress-6",
+      "name": "RuinCol11",
       "position": [
-        -6.0,
-        1.25,
-        -3.2
+        50.0,
+        3.4,
+        -10.95
       ],
       "size": [
-        1.0,
-        2.5,
-        1.6
+        1.0999999999999943,
+        6.8,
+        1.0999999999999996
       ],
-      "material": "stone",
+      "material": "shadow",
       "solid": true,
       "visible": true,
       "group": ""
@@ -2809,13 +1253,13 @@
       "name": "Coping",
       "position": [
         0,
-        1.2,
+        3.35,
         0
       ],
       "size": [
-        1.08,
+        1.1799999999999944,
         0.1,
-        1.6800000000000002
+        1.1799999999999997
       ],
       "material": "paver",
       "solid": false,
@@ -2826,11 +1270,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.05,
-        0.812
+        3.1999999999999997,
+        0.5619999999999998
       ],
       "size": [
-        1.0,
+        1.0999999999999943,
         0.055,
         0.035
       ],
@@ -2840,35 +1284,732 @@
       "group": ""
     },
     {
-      "name": "FirstConduit",
+      "name": "RuinPerimeterWall11",
       "position": [
-        -1.25,
-        0.18,
+        53.0,
+        2.25,
+        -10.95
+      ],
+      "size": [
+        4.900000000000006,
+        4.5,
+        0.5
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.2,
         0
       ],
       "size": [
-        8.5,
-        0.06,
-        0.12
+        4.980000000000006,
+        0.1,
+        0.58
       ],
-      "material": "rail",
+      "material": "paver",
       "solid": false,
       "visible": true,
       "group": ""
     },
     {
-      "name": "FirstGate",
+      "name": "FrontBand",
       "position": [
-        -1.1,
-        2.33,
+        0,
+        2.05,
+        0.262
+      ],
+      "size": [
+        4.900000000000006,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinCol12",
+      "position": [
+        56.0,
+        3.75,
+        -10.95
+      ],
+      "size": [
+        1.0999999999999943,
+        7.5,
+        1.0999999999999996
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        3.7,
+        0
+      ],
+      "size": [
+        1.1799999999999944,
+        0.1,
+        1.1799999999999997
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        3.55,
+        0.5619999999999998
+      ],
+      "size": [
+        1.0999999999999943,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinPerimeterWall12",
+      "position": [
+        59.0,
+        2.25,
+        -10.95
+      ],
+      "size": [
+        4.900000000000006,
+        4.5,
+        0.5
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.2,
+        0
+      ],
+      "size": [
+        4.980000000000006,
+        0.1,
+        0.58
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.05,
+        0.262
+      ],
+      "size": [
+        4.900000000000006,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinCol13",
+      "position": [
+        62.0,
+        3.1,
+        -10.95
+      ],
+      "size": [
+        1.0999999999999943,
+        6.2,
+        1.0999999999999996
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        3.0500000000000003,
+        0
+      ],
+      "size": [
+        1.1799999999999944,
+        0.1,
+        1.1799999999999997
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.9,
+        0.5619999999999998
+      ],
+      "size": [
+        1.0999999999999943,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinCol14",
+      "position": [
+        68.0,
+        4.4,
+        -10.95
+      ],
+      "size": [
+        1.0999999999999943,
+        8.8,
+        1.0999999999999996
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        4.3500000000000005,
+        0
+      ],
+      "size": [
+        1.1799999999999944,
+        0.1,
+        1.1799999999999997
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        4.2,
+        0.5619999999999998
+      ],
+      "size": [
+        1.0999999999999943,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinPerimeterWall14",
+      "position": [
+        71.0,
+        2.25,
+        -10.95
+      ],
+      "size": [
+        4.900000000000006,
+        4.5,
+        0.5
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.2,
+        0
+      ],
+      "size": [
+        4.980000000000006,
+        0.1,
+        0.58
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.05,
+        0.262
+      ],
+      "size": [
+        4.900000000000006,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinCol15",
+      "position": [
+        74.0,
+        3.4,
+        -10.95
+      ],
+      "size": [
+        1.0999999999999943,
+        6.8,
+        1.0999999999999996
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        3.35,
+        0
+      ],
+      "size": [
+        1.1799999999999944,
+        0.1,
+        1.1799999999999997
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        3.1999999999999997,
+        0.5619999999999998
+      ],
+      "size": [
+        1.0999999999999943,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinPerimeterWall15",
+      "position": [
+        77.0,
+        2.25,
+        -10.95
+      ],
+      "size": [
+        4.900000000000006,
+        4.5,
+        0.5
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.2,
+        0
+      ],
+      "size": [
+        4.980000000000006,
+        0.1,
+        0.58
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.05,
+        0.262
+      ],
+      "size": [
+        4.900000000000006,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinCol16",
+      "position": [
+        80.0,
+        3.75,
+        -10.95
+      ],
+      "size": [
+        1.0999999999999943,
+        7.5,
+        1.0999999999999996
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        3.7,
+        0
+      ],
+      "size": [
+        1.1799999999999944,
+        0.1,
+        1.1799999999999997
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        3.55,
+        0.5619999999999998
+      ],
+      "size": [
+        1.0999999999999943,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinCol17",
+      "position": [
+        86.0,
+        3.1,
+        -10.95
+      ],
+      "size": [
+        1.0999999999999943,
+        6.2,
+        1.0999999999999996
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        3.0500000000000003,
+        0
+      ],
+      "size": [
+        1.1799999999999944,
+        0.1,
+        1.1799999999999997
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.9,
+        0.5619999999999998
+      ],
+      "size": [
+        1.0999999999999943,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinPerimeterWall17",
+      "position": [
+        89.0,
+        2.25,
+        -10.95
+      ],
+      "size": [
+        4.900000000000006,
+        4.5,
+        0.5
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.2,
+        0
+      ],
+      "size": [
+        4.980000000000006,
+        0.1,
+        0.58
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.05,
+        0.262
+      ],
+      "size": [
+        4.900000000000006,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinCol18",
+      "position": [
+        92.0,
+        4.4,
+        -10.95
+      ],
+      "size": [
+        1.0999999999999943,
+        8.8,
+        1.0999999999999996
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        4.3500000000000005,
+        0
+      ],
+      "size": [
+        1.1799999999999944,
+        0.1,
+        1.1799999999999997
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        4.2,
+        0.5619999999999998
+      ],
+      "size": [
+        1.0999999999999943,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinPerimeterWall18",
+      "position": [
+        95.0,
+        2.25,
+        -10.95
+      ],
+      "size": [
+        4.900000000000006,
+        4.5,
+        0.5
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.2,
+        0
+      ],
+      "size": [
+        4.980000000000006,
+        0.1,
+        0.58
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.05,
+        0.262
+      ],
+      "size": [
+        4.900000000000006,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RuinCol19",
+      "position": [
+        98.0,
+        3.4,
+        -10.95
+      ],
+      "size": [
+        1.0999999999999943,
+        6.8,
+        1.0999999999999996
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        3.35,
+        0
+      ],
+      "size": [
+        1.1799999999999944,
+        0.1,
+        1.1799999999999997
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        3.1999999999999997,
+        0.5619999999999998
+      ],
+      "size": [
+        1.0999999999999943,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ArrivalCourt",
+      "position": [
+        -14.25,
+        -3.25,
         0.0
       ],
       "size": [
-        0.8,
-        3.74,
-        16
+        8.5,
+        6.5,
+        11.0
       ],
-      "material": "stone",
+      "material": "paver",
       "solid": true,
       "visible": true,
       "group": ""
@@ -2877,13 +2018,13 @@
       "name": "Coping",
       "position": [
         0,
-        1.82,
+        3.2,
         0
       ],
       "size": [
-        0.88,
+        8.58,
         0.1,
-        16.08
+        11.08
       ],
       "material": "paver",
       "solid": false,
@@ -2894,11 +2035,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.6700000000000002,
-        8.012
+        3.05,
+        5.512
       ],
       "size": [
-        0.8,
+        8.5,
         0.055,
         0.035
       ],
@@ -2908,16 +2049,16 @@
       "group": ""
     },
     {
-      "name": "FirstGatePier-7.6",
+      "name": "ArrivalBackWall",
       "position": [
-        -1.1,
-        2.4,
-        -7.6
+        -14.25,
+        2.75,
+        -5.85
       ],
       "size": [
-        1.4,
-        4.8,
-        0.8000000000000007
+        8.5,
+        5.5,
+        0.7000000000000002
       ],
       "material": "stone",
       "solid": true,
@@ -2928,13 +2069,13 @@
       "name": "Coping",
       "position": [
         0,
-        2.35,
+        2.7,
         0
       ],
       "size": [
-        1.48,
+        8.58,
         0.1,
-        0.8800000000000007
+        0.7800000000000001
       ],
       "material": "paver",
       "solid": false,
@@ -2945,11 +2086,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        2.1999999999999997,
-        0.41200000000000037
+        2.55,
+        0.3620000000000001
       ],
       "size": [
-        1.4,
+        8.5,
         0.055,
         0.035
       ],
@@ -2959,33 +2100,33 @@
       "group": ""
     },
     {
-      "name": "FirstGatePier7.6",
+      "name": "ArrivalFrontWall",
       "position": [
-        -1.1,
-        2.4,
-        7.6
+        -14.25,
+        -3.025,
+        5.85
       ],
       "size": [
-        1.4,
-        4.8,
-        0.8000000000000007
+        8.5,
+        6.95,
+        0.7000000000000002
       ],
       "material": "stone",
       "solid": true,
       "visible": true,
-      "group": ""
+      "group": "fg_walls"
     },
     {
       "name": "Coping",
       "position": [
         0,
-        2.35,
+        3.4250000000000003,
         0
       ],
       "size": [
-        1.48,
+        8.58,
         0.1,
-        0.8800000000000007
+        0.7800000000000001
       ],
       "material": "paver",
       "solid": false,
@@ -2996,11 +2137,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        2.1999999999999997,
-        0.41200000000000037
+        3.275,
+        0.3620000000000001
       ],
       "size": [
-        1.4,
+        8.5,
         0.055,
         0.035
       ],
@@ -3010,118 +2151,16 @@
       "group": ""
     },
     {
-      "name": "RailDock-5.5",
+      "name": "LedgeStepA",
       "position": [
-        -5.5,
-        0.04,
-        0
+        -8.75,
+        -2.85,
+        0.0
       ],
       "size": [
-        1.5,
-        0.08,
-        1.5
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "DockLine-5.5-0.7",
-      "position": [
-        -5.5,
-        0.09,
-        -0.7
-      ],
-      "size": [
-        1.5,
-        0.035,
-        0.06
-      ],
-      "material": "gold",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "DockLine-5.50.7",
-      "position": [
-        -5.5,
-        0.09,
-        0.7
-      ],
-      "size": [
-        1.5,
-        0.035,
-        0.06
-      ],
-      "material": "gold",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "RailDock3",
-      "position": [
-        3,
-        0.04,
-        0
-      ],
-      "size": [
-        1.5,
-        0.08,
-        1.5
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "DockLine3-0.7",
-      "position": [
-        3,
-        0.09,
-        -0.7
-      ],
-      "size": [
-        1.5,
-        0.035,
-        0.06
-      ],
-      "material": "gold",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "DockLine30.7",
-      "position": [
-        3,
-        0.09,
-        0.7
-      ],
-      "size": [
-        1.5,
-        0.035,
-        0.06
-      ],
-      "material": "gold",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Monolith",
-      "position": [
-        7.5,
-        1.85,
-        1.5
-      ],
-      "size": [
-        3,
-        3.7,
-        5
+        2.5,
+        7.3,
+        8.0
       ],
       "material": "stone",
       "solid": true,
@@ -3132,11 +2171,62 @@
       "name": "Coping",
       "position": [
         0,
-        1.8,
+        3.6,
         0
       ],
       "size": [
-        3.08,
+        2.58,
+        0.1,
+        8.08
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        3.4499999999999997,
+        4.012
+      ],
+      "size": [
+        2.5,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "StairB1",
+      "position": [
+        -5.25,
+        -2.65,
+        0.0
+      ],
+      "size": [
+        2.0999999999999996,
+        7.7,
+        5.0
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        3.8000000000000003,
+        0
+      ],
+      "size": [
+        2.1799999999999997,
         0.1,
         5.08
       ],
@@ -3149,11 +2239,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.6500000000000001,
+        3.65,
         2.512
       ],
       "size": [
-        3,
+        2.0999999999999996,
         0.055,
         0.035
       ],
@@ -3163,16 +2253,16 @@
       "group": ""
     },
     {
-      "name": "SidePier",
+      "name": "StairB2",
       "position": [
-        11.75,
-        1.1,
-        3.75
+        -1.7000000000000002,
+        -2.45,
+        0.0
       ],
       "size": [
-        1.5,
-        2.2,
-        4.5
+        2.0,
+        8.1,
+        5.0
       ],
       "material": "stone",
       "solid": true,
@@ -3183,13 +2273,13 @@
       "name": "Coping",
       "position": [
         0,
-        1.05,
+        4.0,
         0
       ],
       "size": [
-        1.58,
+        2.08,
         0.1,
-        4.58
+        5.08
       ],
       "material": "paver",
       "solid": false,
@@ -3200,11 +2290,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        0.9000000000000001,
-        2.262
+        3.8499999999999996,
+        2.512
       ],
       "size": [
-        1.5,
+        2.0,
         0.055,
         0.035
       ],
@@ -3214,171 +2304,1395 @@
       "group": ""
     },
     {
-      "name": "Inscription6.64.015",
+      "name": "StairB3",
       "position": [
-        6.6,
         2.0,
-        4.015
+        -2.25,
+        0.0
       ],
       "size": [
-        0.065,
-        1.8,
-        0.03
+        2.0,
+        8.5,
+        5.0
       ],
-      "material": "ochre",
-      "solid": false,
+      "material": "stone",
+      "solid": true,
       "visible": true,
       "group": ""
     },
     {
-      "name": "Inscription7.54.015",
+      "name": "Coping",
       "position": [
-        7.5,
-        2.0,
-        4.015
-      ],
-      "size": [
-        0.065,
-        1.8,
-        0.03
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Inscription8.44.015",
-      "position": [
-        8.4,
-        2.0,
-        4.015
-      ],
-      "size": [
-        0.065,
-        1.8,
-        0.03
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Inscription6.6-1.015",
-      "position": [
-        6.6,
-        2.0,
-        -1.015
-      ],
-      "size": [
-        0.065,
-        1.8,
-        0.03
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Inscription7.5-1.015",
-      "position": [
-        7.5,
-        2.0,
-        -1.015
-      ],
-      "size": [
-        0.065,
-        1.8,
-        0.03
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Inscription8.4-1.015",
-      "position": [
-        8.4,
-        2.0,
-        -1.015
-      ],
-      "size": [
-        0.065,
-        1.8,
-        0.03
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "TraceFront",
-      "position": [
-        4.6,
-        0.09,
+        0,
+        4.2,
         0
       ],
       "size": [
+        2.08,
+        0.1,
+        5.08
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        4.05,
+        2.512
+      ],
+      "size": [
+        2.0,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "TerraceBTop",
+      "position": [
+        7.15,
+        -2.05,
+        0.0
+      ],
+      "size": [
+        4.7,
+        8.9,
+        11.0
+      ],
+      "material": "paver",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        4.4,
+        0
+      ],
+      "size": [
+        4.78,
+        0.1,
+        11.08
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        4.25,
+        5.512
+      ],
+      "size": [
+        4.7,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "SectionBBackWall",
+      "position": [
+        -0.25,
+        3.4000000000000004,
+        -5.85
+      ],
+      "size": [
+        19.5,
+        5.2,
+        0.7000000000000002
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.5500000000000003,
+        0
+      ],
+      "size": [
+        19.58,
+        0.1,
+        0.7800000000000001
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.4,
+        0.3620000000000001
+      ],
+      "size": [
+        19.5,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "SectionBFrontWall",
+      "position": [
+        -2.6,
+        -3.025,
+        5.85
+      ],
+      "size": [
+        14.8,
+        6.95,
+        0.7000000000000002
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": "fg_walls"
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        3.4250000000000003,
+        0
+      ],
+      "size": [
+        14.88,
+        0.1,
+        0.7800000000000001
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        3.275,
+        0.3620000000000001
+      ],
+      "size": [
+        14.8,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BarrierMonolithC",
+      "position": [
+        10.35,
+        4.699999999999999,
+        1.75
+      ],
+      "size": [
+        1.6999999999999993,
+        4.6,
+        7.5
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.25,
+        0
+      ],
+      "size": [
+        1.7799999999999994,
+        0.1,
+        7.58
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.0999999999999996,
+        3.762
+      ],
+      "size": [
+        1.6999999999999993,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "OffsetAisleC",
+      "position": [
+        13.25,
+        -2.05,
+        -3.75
+      ],
+      "size": [
+        7.5,
+        8.9,
+        3.5
+      ],
+      "material": "paver",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        4.4,
+        0
+      ],
+      "size": [
+        7.58,
+        0.1,
+        3.58
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        4.25,
+        1.762
+      ],
+      "size": [
+        7.5,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "OffsetBackWallC",
+      "position": [
+        13.25,
+        4.449999999999999,
+        -5.85
+      ],
+      "size": [
+        7.5,
+        4.1,
+        0.7000000000000002
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        1.9999999999999998,
+        0
+      ],
+      "size": [
+        7.58,
+        0.1,
+        0.7800000000000001
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        1.8499999999999999,
+        0.3620000000000001
+      ],
+      "size": [
+        7.5,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "AisleTrace-4.5",
+      "position": [
+        13.2,
+        2.42,
+        -4.5
+      ],
+      "size": [
+        6.0,
+        0.02,
+        0.08
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "AisleTrace-3.5",
+      "position": [
+        13.2,
+        2.42,
+        -3.5
+      ],
+      "size": [
+        6.0,
+        0.02,
+        0.08
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "AisleTrace-2.5",
+      "position": [
+        13.2,
+        2.42,
+        -2.5
+      ],
+      "size": [
+        6.0,
+        0.02,
+        0.08
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ConduitDockDStart",
+      "position": [
+        16.5,
+        2.42,
+        -4.0
+      ],
+      "size": [
+        1.5,
+        0.06,
+        1.5
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ConduitLineDStart",
+      "position": [
+        16.5,
+        2.46,
+        -4.0
+      ],
+      "size": [
+        1.5,
+        0.02,
+        0.12
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BulkheadPierLeftD",
+      "position": [
+        20.5,
+        4.949999999999999,
+        -5.5
+      ],
+      "size": [
+        1.0,
+        5.1,
+        2.0
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
         2.5,
-        0.035,
-        0.07
-      ],
-      "material": "gold",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "TraceBack",
-      "position": [
-        5.6,
-        0.09,
-        -2.0
+        0
       ],
       "size": [
-        0.07,
-        0.035,
-        4.0
+        1.08,
+        0.1,
+        2.08
       ],
-      "material": "gold",
+      "material": "paver",
       "solid": false,
       "visible": true,
       "group": ""
     },
     {
-      "name": "TraceSocket",
+      "name": "FrontBand",
       "position": [
-        6.5,
-        0.09,
+        0,
+        2.3499999999999996,
+        1.012
+      ],
+      "size": [
+        1.0,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BulkheadPierRightD",
+      "position": [
+        20.5,
+        4.949999999999999,
+        1.25
+      ],
+      "size": [
+        1.0,
+        5.1,
+        9.5
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": "fg_walls"
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.5,
+        0
+      ],
+      "size": [
+        1.08,
+        0.1,
+        9.58
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.3499999999999996,
+        4.762
+      ],
+      "size": [
+        1.0,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "BulkheadLintelD",
+      "position": [
+        20.5,
+        5.24,
         -4.0
       ],
       "size": [
+        1.3999999999999986,
+        4.52,
+        1.0
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.21,
+        0
+      ],
+      "size": [
+        1.4799999999999986,
+        0.1,
+        1.08
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.0599999999999996,
+        0.512
+      ],
+      "size": [
+        1.3999999999999986,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FirstConduit",
+      "position": [
+        21.0,
+        2.58,
+        -4.0
+      ],
+      "size": [
+        9.0,
+        0.06,
+        0.12
+      ],
+      "material": "rail",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ConduitDockDEnd",
+      "position": [
+        25.5,
+        2.42,
+        -4.0
+      ],
+      "size": [
+        1.5,
+        0.06,
+        1.5
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ConduitLineDEnd",
+      "position": [
+        25.5,
+        2.46,
+        -4.0
+      ],
+      "size": [
+        1.5,
+        0.02,
+        0.12
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GalleryEntryTerrace",
+      "position": [
+        27.0,
+        -2.05,
+        -3.85
+      ],
+      "size": [
+        5.0,
+        8.9,
+        3.3
+      ],
+      "material": "paver",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        4.4,
+        0
+      ],
+      "size": [
+        5.08,
+        0.1,
+        3.38
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        4.25,
+        1.662
+      ],
+      "size": [
+        5.0,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GalleryBackWall",
+      "position": [
+        37.25,
+        4.699999999999999,
+        -5.85
+      ],
+      "size": [
+        25.5,
+        4.6,
+        0.7000000000000002
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.25,
+        0
+      ],
+      "size": [
+        25.58,
+        0.1,
+        0.7800000000000001
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.0999999999999996,
+        0.3620000000000001
+      ],
+      "size": [
+        25.5,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GalleryPillarE1",
+      "position": [
+        32.1,
+        -1.8499999999999996,
+        -4.0
+      ],
+      "size": [
+        2.200000000000003,
+        9.3,
+        2.4000000000000004
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        4.6000000000000005,
+        0
+      ],
+      "size": [
+        2.280000000000003,
+        0.1,
+        2.4800000000000004
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        4.45,
+        1.2120000000000002
+      ],
+      "size": [
+        2.200000000000003,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GalleryPillarE2",
+      "position": [
+        35.9,
+        -1.6500000000000004,
+        -4.0
+      ],
+      "size": [
+        2.200000000000003,
+        9.7,
+        2.4000000000000004
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        4.8,
+        0
+      ],
+      "size": [
+        2.280000000000003,
+        0.1,
+        2.4800000000000004
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        4.6499999999999995,
+        1.2120000000000002
+      ],
+      "size": [
+        2.200000000000003,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "MovingPlatform",
+      "position": [
+        40.0,
+        3.12,
+        -4.0
+      ],
+      "size": [
+        2.4,
+        0.25,
+        2.2
+      ],
+      "material": "paver",
+      "solid": true,
+      "visible": true,
+      "group": "moving_platforms"
+    },
+    {
+      "name": "MovingPlatformTrim",
+      "position": [
+        40.0,
+        3.22,
+        -4.0
+      ],
+      "size": [
+        2.46,
+        0.04,
+        2.26
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GalleryPillarE4",
+      "position": [
+        44.65,
+        -1.6500000000000004,
+        -4.0
+      ],
+      "size": [
+        2.299999999999997,
+        9.7,
+        2.4000000000000004
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        4.8,
+        0
+      ],
+      "size": [
+        2.3799999999999972,
+        0.1,
+        2.4800000000000004
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        4.6499999999999995,
+        1.2120000000000002
+      ],
+      "size": [
+        2.299999999999997,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RelayCourtLanding",
+      "position": [
+        49.75,
+        -1.75,
+        -0.25
+      ],
+      "size": [
+        4.5,
+        9.5,
+        10.5
+      ],
+      "material": "paver",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        4.7,
+        0
+      ],
+      "size": [
+        4.58,
+        0.1,
+        10.58
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        4.55,
+        5.262
+      ],
+      "size": [
+        4.5,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RelayCourtFloor",
+      "position": [
+        58.0,
+        -1.75,
+        0.0
+      ],
+      "size": [
+        16.0,
+        9.5,
+        11.0
+      ],
+      "material": "paver",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        4.7,
+        0
+      ],
+      "size": [
+        16.08,
+        0.1,
+        11.08
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        4.55,
+        5.512
+      ],
+      "size": [
+        16.0,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RelayBackWall",
+      "position": [
+        59.0,
+        5.25,
+        -5.85
+      ],
+      "size": [
+        18.0,
+        4.5,
+        0.7000000000000002
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.2,
+        0
+      ],
+      "size": [
+        18.08,
+        0.1,
+        0.7800000000000001
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.05,
+        0.3620000000000001
+      ],
+      "size": [
+        18.0,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RelayFrontWall",
+      "position": [
+        59.0,
+        -1.5250000000000004,
+        5.85
+      ],
+      "size": [
+        18.0,
+        9.95,
+        0.7000000000000002
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": "fg_walls"
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        4.925,
+        0
+      ],
+      "size": [
+        18.08,
+        0.1,
+        0.7800000000000001
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        4.7749999999999995,
+        0.3620000000000001
+      ],
+      "size": [
+        18.0,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GrillePierLeftF",
+      "position": [
+        53.5,
+        5.0,
+        1.9
+      ],
+      "size": [
+        1.0,
+        4.0,
+        1.7999999999999998
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        1.95,
+        0
+      ],
+      "size": [
+        1.08,
+        0.1,
+        1.88
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
         1.8,
-        0.035,
-        0.07
+        0.9119999999999999
       ],
-      "material": "gold",
+      "size": [
+        1.0,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
       "solid": false,
       "visible": true,
       "group": ""
     },
     {
-      "name": "TraceClimb",
+      "name": "GrillePierRightF",
       "position": [
-        11.3,
-        0.09,
-        -4.0
+        53.5,
+        5.0,
+        5.1
       ],
       "size": [
-        5.5,
-        0.035,
-        0.07
+        1.0,
+        4.0,
+        1.7999999999999998
       ],
-      "material": "gold",
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": "fg_walls"
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        1.95,
+        0
+      ],
+      "size": [
+        1.08,
+        0.1,
+        1.88
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        1.8,
+        0.9119999999999999
+      ],
+      "size": [
+        1.0,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GrilleLintelF",
+      "position": [
+        53.5,
+        5.275,
+        3.5
+      ],
+      "size": [
+        1.4000000000000057,
+        3.45,
+        1.4000000000000004
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": "fg_walls"
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        1.675,
+        0
+      ],
+      "size": [
+        1.4800000000000058,
+        0.1,
+        1.4800000000000004
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        1.5250000000000001,
+        0.7120000000000002
+      ],
+      "size": [
+        1.4000000000000057,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RelayConduit",
+      "position": [
+        54.5,
+        3.18,
+        3.5
+      ],
+      "size": [
+        6.0,
+        0.06,
+        0.12
+      ],
+      "material": "rail",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RelayDockStart",
+      "position": [
+        51.5,
+        3.02,
+        3.5
+      ],
+      "size": [
+        1.4,
+        0.05,
+        1.4
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RelayDockEnd",
+      "position": [
+        57.5,
+        3.02,
+        3.5
+      ],
+      "size": [
+        1.4,
+        0.05,
+        1.4
+      ],
+      "material": "shadow",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RelayCentralWall",
+      "position": [
+        59.0,
+        5.0,
+        0.5
+      ],
+      "size": [
+        3.0,
+        4.0,
+        3.0
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        1.95,
+        0
+      ],
+      "size": [
+        3.08,
+        0.1,
+        3.08
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        1.8,
+        1.512
+      ],
+      "size": [
+        3.0,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
       "solid": false,
       "visible": true,
       "group": ""
@@ -3386,9 +3700,9 @@
     {
       "name": "ReceiverBase",
       "position": [
-        7.5,
-        0.3,
-        -4
+        62.0,
+        3.3,
+        -3.5
       ],
       "size": [
         0.8,
@@ -3403,9 +3717,9 @@
     {
       "name": "ReceiverSocket",
       "position": [
-        7.5,
-        0.625,
-        -4
+        62.0,
+        3.625,
+        -3.5
       ],
       "size": [
         0.52,
@@ -3418,33 +3732,16 @@
       "group": ""
     },
     {
-      "name": "EchoPlinth",
+      "name": "ReceiverTrace56.0",
       "position": [
-        4,
-        0.25,
-        4.8
+        56.0,
+        3.02,
+        -3.5
       ],
       "size": [
-        1,
-        0.5,
-        1
-      ],
-      "material": "stone",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "EchoGlyph",
-      "position": [
-        4,
-        0.53,
-        4.8
-      ],
-      "size": [
-        0.6,
-        0.045,
-        0.6
+        1.2,
+        0.02,
+        0.08
       ],
       "material": "gold",
       "solid": false,
@@ -3452,16 +3749,50 @@
       "group": ""
     },
     {
-      "name": "RunicTerrace1",
+      "name": "ReceiverTrace58.0",
       "position": [
-        17.35,
-        0.425,
-        -4.0
+        58.0,
+        3.02,
+        -3.5
       ],
       "size": [
-        6.300000000000001,
-        0.85,
-        3.1999999999999997
+        1.2,
+        0.02,
+        0.08
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ReceiverTrace60.0",
+      "position": [
+        60.0,
+        3.02,
+        -3.5
+      ],
+      "size": [
+        1.2,
+        0.02,
+        0.08
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RunicBridge",
+      "position": [
+        66.0,
+        -1.4500000000000002,
+        -3.5
+      ],
+      "size": [
+        4.0,
+        10.1,
+        3.4000000000000004
       ],
       "material": "stone",
       "solid": true,
@@ -3472,13 +3803,13 @@
       "name": "Coping",
       "position": [
         0,
-        0.375,
+        5.0,
         0
       ],
       "size": [
-        6.380000000000001,
+        4.08,
         0.1,
-        3.28
+        3.4800000000000004
       ],
       "material": "paver",
       "solid": false,
@@ -3489,11 +3820,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        0.22499999999999998,
-        1.6119999999999999
+        4.85,
+        1.7120000000000002
       ],
       "size": [
-        6.300000000000001,
+        4.0,
         0.055,
         0.035
       ],
@@ -3503,14 +3834,14 @@
       "group": ""
     },
     {
-      "name": "Rune15.5",
+      "name": "RuneF64.8",
       "position": [
-        15.5,
-        0.87,
-        -4.0
+        64.8,
+        3.62,
+        -3.5
       ],
       "size": [
-        1.2,
+        0.8,
         0.025,
         0.4
       ],
@@ -3520,14 +3851,14 @@
       "group": ""
     },
     {
-      "name": "Rune17.5",
+      "name": "RuneF66.2",
       "position": [
-        17.5,
-        0.87,
-        -4.0
+        66.2,
+        3.62,
+        -3.5
       ],
       "size": [
-        1.2,
+        0.8,
         0.025,
         0.4
       ],
@@ -3537,14 +3868,14 @@
       "group": ""
     },
     {
-      "name": "Rune19.5",
+      "name": "RuneF67.4",
       "position": [
-        19.5,
-        0.87,
-        -4.0
+        67.4,
+        3.62,
+        -3.5
       ],
       "size": [
-        1.2,
+        0.8,
         0.025,
         0.4
       ],
@@ -3554,18 +3885,18 @@
       "group": ""
     },
     {
-      "name": "TerraceWalkway",
+      "name": "TerraceG1",
       "position": [
-        18.5,
-        0.425,
-        -0.6
+        70.5,
+        -1.1500000000000004,
+        -3.5
       ],
       "size": [
         4.0,
-        0.85,
-        3.5999999999999996
+        10.7,
+        3.4000000000000004
       ],
-      "material": "stone",
+      "material": "paver",
       "solid": true,
       "visible": true,
       "group": ""
@@ -3574,13 +3905,13 @@
       "name": "Coping",
       "position": [
         0,
-        0.375,
+        5.3,
         0
       ],
       "size": [
         4.08,
         0.1,
-        3.6799999999999997
+        3.4800000000000004
       ],
       "material": "paver",
       "solid": false,
@@ -3591,8 +3922,8 @@
       "name": "FrontBand",
       "position": [
         0,
-        0.22499999999999998,
-        1.8119999999999998
+        5.1499999999999995,
+        1.7120000000000002
       ],
       "size": [
         4.0,
@@ -3605,11 +3936,62 @@
       "group": ""
     },
     {
-      "name": "WalkwayTrace-1.5",
+      "name": "TransversalWalkwayG",
       "position": [
-        18.5,
-        0.87,
-        -1.5
+        71.0,
+        -1.1500000000000004,
+        0.75
+      ],
+      "size": [
+        3.0,
+        10.7,
+        5.5
+      ],
+      "material": "paver",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        5.3,
+        0
+      ],
+      "size": [
+        3.08,
+        0.1,
+        5.58
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        5.1499999999999995,
+        2.762
+      ],
+      "size": [
+        3.0,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "WalkwayGTrace-1.0",
+      "position": [
+        71.0,
+        4.22,
+        -1.0
       ],
       "size": [
         0.08,
@@ -3622,27 +4004,10 @@
       "group": ""
     },
     {
-      "name": "WalkwayTrace-0.5",
+      "name": "WalkwayGTrace0.5",
       "position": [
-        18.5,
-        0.87,
-        -0.5
-      ],
-      "size": [
-        0.08,
-        0.02,
-        0.8
-      ],
-      "material": "gold",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "WalkwayTrace0.5",
-      "position": [
-        18.5,
-        0.87,
+        71.0,
+        4.22,
         0.5
       ],
       "size": [
@@ -3656,33 +4021,16 @@
       "group": ""
     },
     {
-      "name": "HighDockStart",
+      "name": "WalkwayGTrace2.0",
       "position": [
-        20.0,
-        0.87,
-        0.0
+        71.0,
+        4.22,
+        2.0
       ],
       "size": [
-        1.2,
-        0.05,
-        1.2
-      ],
-      "material": "shadow",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "HighLineStart",
-      "position": [
-        20.0,
-        0.9,
-        0.0
-      ],
-      "size": [
-        1.2,
+        0.08,
         0.02,
-        0.1
+        0.8
       ],
       "material": "gold",
       "solid": false,
@@ -3690,11 +4038,317 @@
       "group": ""
     },
     {
+      "name": "BlockingPillarG",
+      "position": [
+        73.25,
+        6.35,
+        -3.5
+      ],
+      "size": [
+        1.5,
+        4.3,
+        3.4000000000000004
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.1,
+        0
+      ],
+      "size": [
+        1.58,
+        0.1,
+        3.4800000000000004
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        1.95,
+        1.7120000000000002
+      ],
+      "size": [
+        1.5,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "TerraceG2",
+      "position": [
+        75.0,
+        -0.8499999999999996,
+        2.6
+      ],
+      "size": [
+        3.0,
+        11.3,
+        2.8
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": "fg_walls"
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        5.6000000000000005,
+        0
+      ],
+      "size": [
+        3.08,
+        0.1,
+        2.88
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        5.45,
+        1.412
+      ],
+      "size": [
+        3.0,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "HighConduitDockG",
+      "position": [
+        79.25,
+        -0.6500000000000004,
+        2.6
+      ],
+      "size": [
+        2.5,
+        11.7,
+        2.8
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": "fg_walls"
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        5.8,
+        0
+      ],
+      "size": [
+        2.58,
+        0.1,
+        2.88
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        5.6499999999999995,
+        1.412
+      ],
+      "size": [
+        2.5,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "HighGatePierLeftG",
+      "position": [
+        82.5,
+        7.1,
+        0.4
+      ],
+      "size": [
+        1.0,
+        3.8,
+        2.8
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        1.8499999999999999,
+        0
+      ],
+      "size": [
+        1.08,
+        0.1,
+        2.88
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        1.7,
+        1.412
+      ],
+      "size": [
+        1.0,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "HighGatePierRightG",
+      "position": [
+        82.5,
+        7.1,
+        4.6
+      ],
+      "size": [
+        1.0,
+        3.8,
+        2.8
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": "fg_walls"
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        1.8499999999999999,
+        0
+      ],
+      "size": [
+        1.08,
+        0.1,
+        2.88
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        1.7,
+        1.412
+      ],
+      "size": [
+        1.0,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "HighGateLintelG",
+      "position": [
+        82.5,
+        7.375,
+        2.5
+      ],
+      "size": [
+        1.4000000000000057,
+        3.25,
+        1.4000000000000001
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": "fg_walls"
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        1.575,
+        0
+      ],
+      "size": [
+        1.4800000000000058,
+        0.1,
+        1.4800000000000002
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        1.425,
+        0.7120000000000001
+      ],
+      "size": [
+        1.4000000000000057,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
       "name": "HighConduit",
       "position": [
-        23.5,
-        1.05,
-        0.0
+        82.5,
+        5.35,
+        2.5
       ],
       "size": [
         6.5,
@@ -3707,164 +4361,11 @@
       "group": ""
     },
     {
-      "name": "HighGateLeft",
+      "name": "HighDockStart",
       "position": [
-        23.4,
-        2.1,
-        -2.5
-      ],
-      "size": [
-        0.8000000000000007,
-        4.2,
-        4.0
-      ],
-      "material": "stone",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
-        2.0500000000000003,
-        0
-      ],
-      "size": [
-        0.8800000000000007,
-        0.1,
-        4.08
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        1.9000000000000001,
-        2.012
-      ],
-      "size": [
-        0.8000000000000007,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "HighGateRight",
-      "position": [
-        23.4,
-        2.1,
+        79.5,
+        5.22,
         2.5
-      ],
-      "size": [
-        0.8000000000000007,
-        4.2,
-        4.0
-      ],
-      "material": "stone",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
-        2.0500000000000003,
-        0
-      ],
-      "size": [
-        0.8800000000000007,
-        0.1,
-        4.08
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        1.9000000000000001,
-        2.012
-      ],
-      "size": [
-        0.8000000000000007,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "HighGateLintel",
-      "position": [
-        23.4,
-        2.7750000000000004,
-        0.0
-      ],
-      "size": [
-        1.1999999999999993,
-        2.85,
-        9.0
-      ],
-      "material": "stone",
-      "solid": true,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "Coping",
-      "position": [
-        0,
-        1.375,
-        0
-      ],
-      "size": [
-        1.2799999999999994,
-        0.1,
-        9.08
-      ],
-      "material": "paver",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "FrontBand",
-      "position": [
-        0,
-        1.225,
-        4.512
-      ],
-      "size": [
-        1.1999999999999993,
-        0.055,
-        0.035
-      ],
-      "material": "ochre",
-      "solid": false,
-      "visible": true,
-      "group": ""
-    },
-    {
-      "name": "HighDockEnd",
-      "position": [
-        27.0,
-        0.87,
-        0.0
       ],
       "size": [
         1.2,
@@ -3877,35 +4378,137 @@
       "group": ""
     },
     {
-      "name": "HighLineEnd",
+      "name": "HighDockEnd",
       "position": [
-        27.0,
-        0.9,
-        0.0
+        85.5,
+        5.22,
+        2.5
       ],
       "size": [
         1.2,
-        0.02,
-        0.1
+        0.05,
+        1.2
       ],
-      "material": "gold",
+      "material": "shadow",
       "solid": false,
       "visible": true,
       "group": ""
     },
     {
-      "name": "GuardianHallFloor",
+      "name": "HighConduitExitDockG",
       "position": [
-        31.75,
-        0.425,
+        85.35,
+        -0.6500000000000004,
+        2.5
+      ],
+      "size": [
+        1.7000000000000028,
+        11.7,
+        2.5999999999999996
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": "fg_walls"
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        5.8,
+        0
+      ],
+      "size": [
+        1.780000000000003,
+        0.1,
+        2.6799999999999997
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        5.6499999999999995,
+        1.3119999999999998
+      ],
+      "size": [
+        1.7000000000000028,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "SteppingStoneG4",
+      "position": [
+        87.5,
+        -0.5,
+        2.5
+      ],
+      "size": [
+        2.0,
+        12.0,
+        2.5999999999999996
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": "fg_walls"
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        5.95,
+        0
+      ],
+      "size": [
+        2.08,
+        0.1,
+        2.6799999999999997
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        5.8,
+        1.3119999999999998
+      ],
+      "size": [
+        2.0,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GuardianThreshold",
+      "position": [
+        91.25,
+        -0.34999999999999964,
         0.0
       ],
       "size": [
-        10.5,
-        0.85,
+        3.5,
+        12.3,
         11.0
       ],
-      "material": "stone",
+      "material": "paver",
       "solid": true,
       "visible": true,
       "group": ""
@@ -3914,11 +4517,11 @@
       "name": "Coping",
       "position": [
         0,
-        0.375,
+        6.1000000000000005,
         0
       ],
       "size": [
-        10.58,
+        3.58,
         0.1,
         11.08
       ],
@@ -3931,11 +4534,62 @@
       "name": "FrontBand",
       "position": [
         0,
-        0.22499999999999998,
+        5.95,
         5.512
       ],
       "size": [
-        10.5,
+        3.5,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "GuardianHallFloor",
+      "position": [
+        98.0,
+        -0.34999999999999964,
+        0.0
+      ],
+      "size": [
+        11.0,
+        12.3,
+        11.0
+      ],
+      "material": "paver",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        6.1000000000000005,
+        0
+      ],
+      "size": [
+        11.08,
+        0.1,
+        11.08
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        5.95,
+        5.512
+      ],
+      "size": [
+        11.0,
         0.055,
         0.035
       ],
@@ -3947,14 +4601,14 @@
     {
       "name": "GuardianHallBackWall",
       "position": [
-        31.75,
-        2.675,
-        -5.6
+        96.75,
+        7.800000000000001,
+        -5.85
       ],
       "size": [
-        10.5,
-        3.65,
-        0.39999999999999947
+        14.5,
+        4.000000000000001,
+        0.7000000000000002
       ],
       "material": "stone",
       "solid": true,
@@ -3965,13 +4619,13 @@
       "name": "Coping",
       "position": [
         0,
-        1.775,
+        1.9500000000000004,
         0
       ],
       "size": [
-        10.58,
+        14.58,
         0.1,
-        0.4799999999999995
+        0.7800000000000001
       ],
       "material": "paver",
       "solid": false,
@@ -3982,11 +4636,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.625,
-        0.21199999999999974
+        1.8000000000000005,
+        0.3620000000000001
       ],
       "size": [
-        10.5,
+        14.5,
         0.055,
         0.035
       ],
@@ -3998,31 +4652,31 @@
     {
       "name": "GuardianHallFrontWall",
       "position": [
-        31.75,
-        1.5250000000000001,
-        5.6
+        96.75,
+        -0.125,
+        5.85
       ],
       "size": [
-        10.5,
-        1.35,
-        0.39999999999999947
+        14.5,
+        12.75,
+        0.7000000000000002
       ],
       "material": "stone",
       "solid": true,
       "visible": true,
-      "group": ""
+      "group": "fg_walls"
     },
     {
       "name": "Coping",
       "position": [
         0,
-        0.625,
+        6.325,
         0
       ],
       "size": [
-        10.58,
+        14.58,
         0.1,
-        0.4799999999999995
+        0.7800000000000001
       ],
       "material": "paver",
       "solid": false,
@@ -4033,11 +4687,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        0.47500000000000003,
-        0.21199999999999974
+        6.175,
+        0.3620000000000001
       ],
       "size": [
-        10.5,
+        14.5,
         0.055,
         0.035
       ],
@@ -4047,18 +4701,18 @@
       "group": ""
     },
     {
-      "name": "ArenaPillar28.5-3.5",
+      "name": "ArenaPillar94.0_-3.5",
       "position": [
-        28.5,
-        2.225,
+        94.0,
+        7.15,
         -3.5
       ],
       "size": [
-        0.7999999999999972,
-        2.75,
-        0.7999999999999998
+        0.9000000000000057,
+        2.7,
+        0.9000000000000004
       ],
-      "material": "stone",
+      "material": "shadow",
       "solid": true,
       "visible": true,
       "group": ""
@@ -4067,13 +4721,13 @@
       "name": "Coping",
       "position": [
         0,
-        1.325,
+        1.3,
         0
       ],
       "size": [
-        0.8799999999999971,
+        0.9800000000000056,
         0.1,
-        0.8799999999999998
+        0.9800000000000003
       ],
       "material": "paver",
       "solid": false,
@@ -4084,11 +4738,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.175,
-        0.4119999999999999
+        1.1500000000000001,
+        0.4620000000000002
       ],
       "size": [
-        0.7999999999999972,
+        0.9000000000000057,
         0.055,
         0.035
       ],
@@ -4098,18 +4752,18 @@
       "group": ""
     },
     {
-      "name": "ArenaPillar28.53.5",
+      "name": "ArenaPillar94.0_3.5",
       "position": [
-        28.5,
-        2.225,
+        94.0,
+        7.15,
         3.5
       ],
       "size": [
-        0.7999999999999972,
-        2.75,
-        0.7999999999999998
+        0.9000000000000057,
+        2.7,
+        0.9000000000000004
       ],
-      "material": "stone",
+      "material": "shadow",
       "solid": true,
       "visible": true,
       "group": ""
@@ -4118,13 +4772,13 @@
       "name": "Coping",
       "position": [
         0,
-        1.325,
+        1.3,
         0
       ],
       "size": [
-        0.8799999999999971,
+        0.9800000000000056,
         0.1,
-        0.8799999999999998
+        0.9800000000000003
       ],
       "material": "paver",
       "solid": false,
@@ -4135,11 +4789,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.175,
-        0.4119999999999999
+        1.1500000000000001,
+        0.4620000000000002
       ],
       "size": [
-        0.7999999999999972,
+        0.9000000000000057,
         0.055,
         0.035
       ],
@@ -4149,18 +4803,18 @@
       "group": ""
     },
     {
-      "name": "ArenaPillar34.0-3.5",
+      "name": "ArenaPillar99.0_-3.5",
       "position": [
-        34.0,
-        2.225,
+        99.0,
+        7.15,
         -3.5
       ],
       "size": [
-        0.7999999999999972,
-        2.75,
-        0.7999999999999998
+        0.9000000000000057,
+        2.7,
+        0.9000000000000004
       ],
-      "material": "stone",
+      "material": "shadow",
       "solid": true,
       "visible": true,
       "group": ""
@@ -4169,13 +4823,13 @@
       "name": "Coping",
       "position": [
         0,
-        1.325,
+        1.3,
         0
       ],
       "size": [
-        0.8799999999999971,
+        0.9800000000000056,
         0.1,
-        0.8799999999999998
+        0.9800000000000003
       ],
       "material": "paver",
       "solid": false,
@@ -4186,11 +4840,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.175,
-        0.4119999999999999
+        1.1500000000000001,
+        0.4620000000000002
       ],
       "size": [
-        0.7999999999999972,
+        0.9000000000000057,
         0.055,
         0.035
       ],
@@ -4200,18 +4854,18 @@
       "group": ""
     },
     {
-      "name": "ArenaPillar34.03.5",
+      "name": "ArenaPillar99.0_3.5",
       "position": [
-        34.0,
-        2.225,
+        99.0,
+        7.15,
         3.5
       ],
       "size": [
-        0.7999999999999972,
-        2.75,
-        0.7999999999999998
+        0.9000000000000057,
+        2.7,
+        0.9000000000000004
       ],
-      "material": "stone",
+      "material": "shadow",
       "solid": true,
       "visible": true,
       "group": ""
@@ -4220,13 +4874,13 @@
       "name": "Coping",
       "position": [
         0,
-        1.325,
+        1.3,
         0
       ],
       "size": [
-        0.8799999999999971,
+        0.9800000000000056,
         0.1,
-        0.8799999999999998
+        0.9800000000000003
       ],
       "material": "paver",
       "solid": false,
@@ -4237,11 +4891,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.175,
-        0.4119999999999999
+        1.1500000000000001,
+        0.4620000000000002
       ],
       "size": [
-        0.7999999999999972,
+        0.9000000000000057,
         0.055,
         0.035
       ],
@@ -4253,14 +4907,14 @@
     {
       "name": "DoorRecess",
       "position": [
-        36.8,
-        2.2,
+        103.2,
+        7.2,
         0.0
       ],
       "size": [
         0.2,
-        2.4,
-        2.2
+        2.8,
+        2.6
       ],
       "material": "void",
       "solid": false,
@@ -4270,14 +4924,14 @@
     {
       "name": "ExitPillarLeft",
       "position": [
-        36.55,
-        2.3249999999999997,
-        -1.35
+        102.9,
+        7.4,
+        -1.5
       ],
       "size": [
-        0.5,
-        2.9499999999999997,
-        0.5
+        0.6000000000000085,
+        3.2,
+        0.6000000000000001
       ],
       "material": "stone",
       "solid": true,
@@ -4288,13 +4942,13 @@
       "name": "Coping",
       "position": [
         0,
-        1.4249999999999998,
+        1.55,
         0
       ],
       "size": [
-        0.58,
+        0.6800000000000085,
         0.1,
-        0.58
+        0.68
       ],
       "material": "paver",
       "solid": false,
@@ -4305,11 +4959,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.275,
-        0.262
+        1.4000000000000001,
+        0.31200000000000006
       ],
       "size": [
-        0.5,
+        0.6000000000000085,
         0.055,
         0.035
       ],
@@ -4321,14 +4975,14 @@
     {
       "name": "ExitPillarRight",
       "position": [
-        36.55,
-        2.3249999999999997,
-        1.35
+        102.9,
+        7.4,
+        1.5
       ],
       "size": [
-        0.5,
-        2.9499999999999997,
-        0.5
+        0.6000000000000085,
+        3.2,
+        0.6000000000000001
       ],
       "material": "stone",
       "solid": true,
@@ -4339,13 +4993,13 @@
       "name": "Coping",
       "position": [
         0,
-        1.4249999999999998,
+        1.55,
         0
       ],
       "size": [
-        0.58,
+        0.6800000000000085,
         0.1,
-        0.58
+        0.68
       ],
       "material": "paver",
       "solid": false,
@@ -4356,11 +5010,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.275,
-        0.262
+        1.4000000000000001,
+        0.31200000000000006
       ],
       "size": [
-        0.5,
+        0.6000000000000085,
         0.055,
         0.035
       ],
@@ -4372,14 +5026,14 @@
     {
       "name": "ExitLintel",
       "position": [
-        36.5,
-        3.4,
+        102.8,
+        8.8,
         0.0
       ],
       "size": [
-        0.6,
-        0.35,
-        3.2
+        0.7,
+        0.45,
+        3.6
       ],
       "material": "ochre",
       "solid": false,
@@ -4389,14 +5043,14 @@
     {
       "name": "ExitSeal",
       "position": [
-        36.7,
-        2.1,
+        103.0,
+        7.2,
         0.0
       ],
       "size": [
-        0.06,
-        1.7,
-        0.16
+        0.08,
+        2.2,
+        0.2
       ],
       "material": "rune_off",
       "solid": false,

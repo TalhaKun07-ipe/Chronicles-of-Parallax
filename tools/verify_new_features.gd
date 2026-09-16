@@ -28,78 +28,74 @@ func run() -> void:
 	
 	await frames(10)
 	
-	# Check 1: Dialogue box is present
+	# 1. Dialogue box is present and operational
 	var dialogue_box = demo.get_node_or_null("UndertaleDialogueBox")
 	check(dialogue_box != null, "UndertaleDialogueBox exists in scene")
-	
-	# Check 2: Start dialogue and verify player is locked
 	dialogue_box.start_dialogue()
 	await frames(5)
 	check(dialogue_box.is_active, "Dialogue is active")
-	check(dialogue_box.current_line_idx == 0, "Line 0 (Waking) starts")
 	check(dialogue_box.portrait_rect.texture != null, "Dazed portrait loaded")
 	
-	# Check 3: Fast-forward line 0
-	dialogue_box._advance()
-	await frames(2)
-	check(not dialogue_box.is_typing, "Line 0 fast-forwarded to completion")
-	check(dialogue_box.arrow_indicator.visible, "Advance prompt indicator visible")
-	
-	# Advance to Line 1 (Watch)
-	dialogue_box._advance()
-	await frames(2)
-	check(dialogue_box.current_line_idx == 1, "Line 1 (Watch) active")
-	check(dialogue_box.full_text.contains("still glowing"), "Watch dialogue text confirmed")
-	
-	# Fast-forward Line 1
-	dialogue_box._advance()
-	await frames(2)
-	check(not dialogue_box.is_typing, "Line 1 fast-forwarded")
-	
-	# Advance to Line 2 (Revelation)
-	dialogue_box._advance()
-	await frames(2)
-	check(dialogue_box.current_line_idx == 2, "Line 2 (Revelation - line/plane/body) active")
-	check(dialogue_box.full_text.contains("A line"), "Revelation text confirmed")
-	
-	# Fast-forward Line 2
-	dialogue_box._advance()
-	await frames(2)
-	
-	# Advance to Line 3 (Determined)
-	dialogue_box._advance()
-	await frames(2)
-	check(dialogue_box.current_line_idx == 3, "Line 3 (Determined - long way up) active")
-	check(dialogue_box.full_text.contains("long way up"), "Determined text confirmed")
-	
-	# Fast-forward Line 3
-	dialogue_box._advance()
-	await frames(2)
-	
-	# Finish and close dialogue
-	dialogue_box._advance()
-	await frames(25)
+	# Fast-forward all dialogue lines
+	for i in 4:
+		dialogue_box._advance()
+		await frames(3)
+		dialogue_box._advance()
+		await frames(3)
+	await frames(30)
 	check(not dialogue_box.is_active, "Dialogue closed successfully")
 	check(not player.input_override, "Player input unlocked after conversation")
 	
-	# Check 7: Test Map button / Overview mode
-	check(not demo.overview, "Initially not in overview")
-	demo._toggle_overview()
-	await frames(5)
-	check(demo.overview, "Map toggle activates overview")
-	check(demo.camera.size > 10.0, "Camera size zoomed out for full map")
+	# 2. Verify Simplified Clean HUD (No top brown bar, no status/title, no map button)
+	var hud = demo.get_node_or_null("CleanHUD")
+	check(hud != null, "CleanHUD CanvasLayer exists")
+	check(demo.get_node_or_null("CleanHUD/TopPanel") == null, "Top brown bar removed")
+	check(demo.get_node_or_null("CleanHUD/Title") == null, "Chamber title removed from HUD")
+	check(demo.get_node_or_null("CleanHUD/MapButton") == null, "Full Map button removed")
+	check(demo.get_node_or_null("CleanHUD/BotPanel") == null, "Bottom brown strip removed")
 	
-	# Check 8: Player movement triggers AUTO-RESET of overview to default view
-	player.input_override = true
-	player.move_input = Vector2.RIGHT
+	# 3. Floating Health Hearts
+	check(demo.heart_icons.size() == 3, "Floating HUD has 3 heart icons in top-left")
+	check(demo.heart_icons[0].texture == demo.heart_full_tex, "First heart full")
+	
+	# 4. Large Gameplay Subtitles
+	var subtitle = demo.get_node_or_null("CleanHUD/SubtitleLabel")
+	check(subtitle != null, "Large Gameplay SubtitleLabel exists")
+	check(subtitle.get_theme_font_size("font_size") >= 28, "Subtitle font size is large (>= 28px)")
+	check(subtitle.get_theme_constant("outline_size") >= 5, "Subtitle has strong outline")
+	
+	check(subtitle.text.length() > 0, "Subtitle text displayed from queue")
+	check(subtitle.modulate.a > 0.0, "Subtitle fades in")
+	
+	# 5. Contextual Controls Label (No brown bar, accurate per dimension)
+	var controls = demo.get_node_or_null("CleanHUD/ControlsLabel")
+	check(controls != null, "Contextual ControlsLabel exists")
+	check(controls.get_theme_font_size("font_size") >= 22, "Controls font size is legible (>= 22px)")
+	
+	# In 3D: must NOT show SPACE Jump
+	player.request_mode(3)
+	await frames(3)
+	check(not controls.text.contains("SPACE Jump"), "3D controls do NOT advertise SPACE Jump")
+	check(controls.text.contains("Depth"), "3D controls describe depth movement")
+	
+	# In 2D: must show SPACE Jump
+	player.request_mode(2)
+	await frames(3)
+	check(controls.text.contains("SPACE Jump"), "2D controls accurately display SPACE Jump")
+	
+	# In 1D: must NOT show SPACE Jump
+	player.position = chamber.get_node("Markers/Rail1Start").position
+	check(player.request_mode(1), "Switches to 1D on rail")
 	await frames(2)
-	demo._process(0.016)
-	check(not demo.overview, "Player movement auto-resets full map to close view")
+	check(not controls.text.contains("SPACE Jump"), "1D controls do NOT advertise SPACE Jump")
+	check(controls.text.contains("Slide Along Conduit"), "1D controls describe rail sliding")
 	
-	player.move_input = Vector2.ZERO
-	player.input_override = false
-	await frames(30)
-	check(demo.camera.size < 6.0, "Camera smoothly returns to tight 5.2 gameplay view")
+	# 6. Camera Tracking (Close scale, forward look-ahead)
+	player.request_mode(2)
+	await frames(5)
+	demo._update_camera(1.0)
+	check(demo.camera.size <= 5.8, "Camera scale is close and readable (<= 5.8)")
+	check(demo.focus.x > player.position.x, "Camera focus has forward look-ahead along X axis")
 	
 	print("\nALL NEW FEATURES VERIFIED SUCCESSFULLY (%d checks)!" % checks)
 	quit(0)

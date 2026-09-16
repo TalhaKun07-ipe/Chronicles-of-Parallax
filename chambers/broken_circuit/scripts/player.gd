@@ -72,7 +72,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			request_mode(clampi(mode + pair[1],1,3))
 			return
 	if InputMap.has_action("jump") and event.is_action_pressed("jump"):
-		jump_buffer = 0.12
+		if mode == 2:
+			jump_buffer = 0.12
 		return
 	if InputMap.has_action("interact_strike") and event.is_action_pressed("interact_strike"):
 		var mapped_message: String = chamber.try_interact(global_position)
@@ -86,7 +87,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_3: request_mode(3)
 		KEY_Q, KEY_Z: request_mode(maxi(1, mode - 1))
 		KEY_E, KEY_X: request_mode(mini(3, mode + 1))
-		KEY_SPACE: jump_buffer = 0.12
+		KEY_SPACE:
+			if mode == 2:
+				jump_buffer = 0.12
 		KEY_F:
 			var message: String = chamber.try_interact(global_position)
 			if not message.is_empty():
@@ -104,6 +107,8 @@ func has_clearance(at: Vector3) -> bool:
 func request_mode(target: int) -> bool:
 	if target == mode:
 		return true
+	jump_buffer = 0.0 # Clear incompatible jump buffers during dimension changes
+	var preserved_vy: float = velocity.y
 	if target == 1:
 		var found: Dictionary = chamber.rail_near(position)
 		if found.is_empty():
@@ -114,6 +119,8 @@ func request_mode(target: int) -> bool:
 		shape_node.shape = rod
 		shape_node.position.y = 0
 		sprite.position.y = 0
+		velocity = Vector3.ZERO
+		coyote = 0.0
 	else:
 		var destination := position
 		# Restore feet to floor height when leaving the rail, without changing X/Z.
@@ -130,8 +137,12 @@ func request_mode(target: int) -> bool:
 		shape_node.position.y = 0.575
 		sprite.position.y = 0.576
 		plane_z = position.z
+		# Preserve existing vertical velocity across 2D <-> 3D transitions without extra impulse or jump reset
+		velocity.y = preserved_vy
+		velocity.z = 0.0
+		if target != 2:
+			coyote = 0.0
 	mode = target
-	velocity = Vector3.ZERO
 	chamber.set_spatial_mode(mode)
 	mode_changed.emit(mode)
 	_update_sprite()
@@ -150,41 +161,59 @@ func _physics_process(delta: float) -> void:
 		position.y = active_rail.start.y
 		position.z = active_rail.start.z
 	else:
-		var direction := Vector3(move_input.x, 0, move_input.y if mode == 3 else 0.0)
-		# Ground controls follow the angled camera in volume mode.
+		var on_floor := is_on_floor()
+		var direction := Vector3.ZERO
 		if mode == 3:
+			# Depth steering requires being grounded so player cannot bypass puzzles by midair lane steering
+			var input_z: float = move_input.y if on_floor else 0.0
+			direction = Vector3(move_input.x, 0, input_z)
 			direction = direction.rotated(Vector3.UP, deg_to_rad(-45.0))
-		if direction.length() > 1:
-			direction = direction.normalized()
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
-		coyote = 0.1 if is_on_floor() else maxf(0, coyote - delta)
+			if direction.length() > 1:
+				direction = direction.normalized()
+			velocity.x = direction.x * SPEED
+			velocity.z = direction.z * SPEED if on_floor else 0.0
+		else: # mode == 2
+			direction = Vector3(move_input.x, 0, 0.0)
+			if direction.length() > 1:
+				direction = direction.normalized()
+			velocity.x = direction.x * SPEED
+			velocity.z = 0.0
+
+		coyote = 0.1 if (on_floor and mode == 2) else maxf(0, coyote - delta)
 		jump_buffer = maxf(0, jump_buffer - delta)
 		if override_jump:
-			jump_buffer = 0.12
+			if mode == 2:
+				jump_buffer = 0.12
 			override_jump = false
-		if jump_buffer > 0 and coyote > 0:
+
+		# Only 2D can initiate a jump!
+		if mode == 2 and jump_buffer > 0 and coyote > 0:
 			velocity.y = JUMP
 			jump_buffer = 0
 			coyote = 0
 		else:
 			velocity.y -= GRAVITY * delta
+
 		move_and_slide()
 		if mode == 2:
 			position.z = plane_z
 	chamber.tick_player(global_position)
 	
-	# Checkpoint zones
-	if position.x > 1.8 and checkpoint.x < 1:
-		checkpoint = Vector3(3.0, 0.08, 0.0)
-	if chamber.powered and position.x < 14:
-		checkpoint = Vector3(13.5, 0.08, -4.0)
-	if position.x >= 18.0 and position.x < 21.0 and position.y > 0.7:
-		checkpoint = Vector3(19.0, 0.88, 0.0)
-	if position.x >= 26.5 and position.x < 37.0 and position.y > 0.7:
-		checkpoint = Vector3(27.5, 0.88, 0.0)
+	# Checkpoint zones across the 8 sections
+	if position.x >= 90.0:
+		checkpoint = Vector3(91.0, 5.88, 0.0)
+	elif position.x >= 69.0:
+		checkpoint = Vector3(69.5, 4.28, -3.5)
+	elif position.x >= 49.0:
+		checkpoint = Vector3(49.5, 3.08, 0.0)
+	elif position.x >= 26.0:
+		checkpoint = Vector3(26.5, 2.48, -4.0)
+	elif position.x >= 15.0:
+		checkpoint = Vector3(15.5, 2.48, -4.0)
+	elif position.x >= 6.0:
+		checkpoint = Vector3(6.5, 2.48, 0.0)
 		
-	if position.y < -2.8:
+	if position.y < -6.0:
 		respawn()
 		
 	chamber.try_collect(global_position)
@@ -231,15 +260,16 @@ func take_damage(amount: int, from_pos: Vector3) -> void:
 func respawn() -> void:
 	position = checkpoint
 	velocity = Vector3.ZERO
-	mode = 3
+	var target_mode: int = 2 if ((position.x >= 26.0 and position.x < 48.0) or (position.x >= 68.0 and position.x < 71.0)) else 3
+	mode = target_mode
 	plane_z = position.z
 	shape_node.shape = humanoid
 	shape_node.position.y = 0.575
 	sprite.position.y = 0.576
 	invulnerable_timer = 0.0
 	sprite.visible = true
-	chamber.set_spatial_mode(3)
-	mode_changed.emit(3)
+	chamber.set_spatial_mode(mode)
+	mode_changed.emit(mode)
 	
 	var g = get_node_or_null("/root/Global")
 	if g:
