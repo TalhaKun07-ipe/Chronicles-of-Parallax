@@ -723,5 +723,25 @@ Degrees_of_Escape/
   * `tools/verify_new_features.gd`: **20/20 checks passed 100%**.
   * `tools/verify_full_flow.gd`: **100% passed**.
 
+### Session 15: Chamber 1 to Axiom Warden Transition Fix & Black Screen Freeze Elimination
+* **Black Screen Freeze Root Cause Diagnosis:**
+  * `chambers/broken_circuit/Demo.tscn` contains an `Integration` child node executing `chambers/broken_circuit/scripts/integration.gd`.
+  * In `integration.gd`, `_complete()` was connected to `chamber.chamber_completed` and held a hardcoded `next_room = "res://scenes/levels/Chamber1_DimensionalTrial.tscn"`.
+  * Upon completing Chamber 1, `integration.gd` fired after 1.6s, triggering `SceneTransition.change_chamber("res://scenes/levels/Chamber1_DimensionalTrial.tscn")`.
+  * `Chamber1_DimensionalTrial.tscn` threw an unhandled null pointer error in `HUD.gd:59` during `_ready()`, terminating script execution while the `SceneTransition` overlay (`color_rect.modulate.a = 1.0`) was still fully black, leaving the game permanently frozen on a black screen.
+* **Resolution & Hardening:**
+  * In `chambers/broken_circuit/scripts/integration.gd`: Changed `next_room` to `"res://chambers/axiom_warden/AxiomWarden.tscn"`.
+  * In `scripts/autoload/SceneTransition.gd`:
+    * Added re-entrancy protection to `fade_in_from_black()` so it cannot conflict with an active `change_chamber()` tween.
+    * Added safe error fallback: if `change_scene_to_file()` returns an error, `color_rect.modulate.a` is immediately cleared to 0.0 and `is_transitioning` reset to false.
+    * Guarded `SoundManager` lookups with `has_method("play_sfx")`.
+* **Automated Transition Verification:**
+  * Created `tools/verify_chamber_transition.gd`:
+    * Spawns `BrokenCircuitDemo`, powers the circuit, steps through the exit portal, and waits for `SceneTransition`.
+    * Confirms active scene becomes `AxiomWardenChamber`.
+    * Confirms transition overlay fades out to full transparency (`a = 0.00`).
+  * All 5 automated suites pass 100% (`verify_chamber_transition.gd`, `verify_axiom_warden.gd`, `verify_route.gd`, `verify_new_features.gd`, `verify_full_flow.gd`).
+
+
 
 

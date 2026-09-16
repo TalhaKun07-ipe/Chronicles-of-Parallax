@@ -47,8 +47,10 @@ func _dimension(mode: int) -> void:
 	if dimension_ids.has(key) and global_state.has_method("set_dimension"):
 		global_state.call("set_dimension",dimension_ids[key])
 func _complete() -> void:
-	_set_existing("exit_open",true)
-	await get_tree().create_timer(1.6).timeout
-	var next_room: String="res://scenes/levels/Chamber1_DimensionalTrial.tscn"
-	if transition and transition.has_method("change_chamber") and ResourceLoader.exists(next_room):
-		transition.call("change_chamber",next_room)
+	_set_existing("exit_open", true)
+	await get_tree().create_timer(1.2).timeout
+	var next_room: String = "res://chambers/axiom_warden/AxiomWarden.tscn"
+	if transition and transition.has_method("change_chamber"):
+		transition.call("change_chamber", next_room)
+	elif ResourceLoader.exists(next_room):
+		get_tree().change_scene_to_file(next_room)

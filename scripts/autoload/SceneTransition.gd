@@ -26,7 +26,9 @@ func change_chamber(target_scene_path: String, duration: float = 0.35) -> void:
 		return
 	is_transitioning = true
 	
-	SoundManager.play_sfx("unlock")
+	var sm = get_node_or_null("/root/SoundManager")
+	if sm and sm.has_method("play_sfx"):
+		sm.play_sfx("unlock")
 	
 	# Fade out to black
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
@@ -37,6 +39,9 @@ func change_chamber(target_scene_path: String, duration: float = 0.35) -> void:
 	var err = get_tree().change_scene_to_file(target_scene_path)
 	if err != OK:
 		push_error("Failed to load chamber: " + target_scene_path)
+		color_rect.modulate.a = 0.0
+		is_transitioning = false
+		return
 	
 	# Wait brief moment for new scene tree initialization
 	await get_tree().process_frame
@@ -50,6 +55,8 @@ func change_chamber(target_scene_path: String, duration: float = 0.35) -> void:
 	is_transitioning = false
 
 func fade_in_from_black(duration: float = 0.5) -> void:
+	if is_transitioning:
+		return
 	color_rect.modulate.a = 1.0
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tween.tween_property(color_rect, "modulate:a", 0.0, duration)
