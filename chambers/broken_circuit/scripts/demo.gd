@@ -105,6 +105,8 @@ func _ready() -> void:
 		var g = get_node_or_null("/root/Global")
 		if g and "exit_open" in g:
 			g.exit_open = true
+		if get_tree().current_scene == self:
+			get_tree().create_timer(1.8).timeout.connect(_enter_axiom_sanctum)
 	)
 	chamber.plate_activated.connect(_plate_activated)
 	
@@ -401,3 +403,13 @@ func _tone(frequency: float, duration: float) -> void:
 	add_child(audio)
 	audio.finished.connect(audio.queue_free)
 	audio.play()
+
+func _enter_axiom_sanctum() -> void:
+	if not is_inside_tree() or get_tree().current_scene != self:
+		return
+	var transition = get_node_or_null("/root/SceneTransition")
+	if transition and transition.has_method("change_chamber"):
+		transition.change_chamber("res://chambers/axiom_warden/AxiomWarden.tscn")
+	else:
+		get_tree().change_scene_to_file("res://chambers/axiom_warden/AxiomWarden.tscn")
+

@@ -136,6 +136,95 @@ func generate_sound(type: String) -> AudioStreamWAV:
 				var s16 = int(clamp(val * 15000.0, -32767, 32767))
 				data.append(s16 & 0xFF)
 				data.append((s16 >> 8) & 0xFF)
+		"boss_warning":
+			num_samples = int(22050 * 0.22)
+			for i in range(num_samples):
+				var t = float(i) / 22050.0
+				var freq = 480.0 + (t / 0.22) * 360.0
+				var pulse = sin(2.0 * PI * 28.0 * t) * 0.3 + 0.7
+				var val = sin(2.0 * PI * freq * t) * pulse * (1.0 - t / 0.22)
+				var s16 = int(clamp(val * 18000.0, -32767, 32767))
+				data.append(s16 & 0xFF)
+				data.append((s16 >> 8) & 0xFF)
+		"boss_sweep":
+			num_samples = int(22050 * 0.35)
+			for i in range(num_samples):
+				var t = float(i) / 22050.0
+				var freq = 120.0 + sin(t / 0.35 * PI) * 280.0
+				var noise = (randf() * 2.0 - 1.0) * (0.35 * (1.0 - t / 0.35))
+				var val = (sin(2.0 * PI * freq * t) * 0.8 + noise) * (1.0 - t / 0.35)
+				var s16 = int(clamp(val * 24000.0, -32767, 32767))
+				data.append(s16 & 0xFF)
+				data.append((s16 >> 8) & 0xFF)
+		"boss_beam":
+			num_samples = int(22050 * 0.40)
+			for i in range(num_samples):
+				var t = float(i) / 22050.0
+				var freq = 880.0 - (t / 0.40) * 440.0
+				var buzz = sin(2.0 * PI * 95.0 * t) * 0.4
+				var val = (sin(2.0 * PI * freq * t) * 0.7 + buzz) * (1.0 - t / 0.40)
+				var s16 = int(clamp(val * 20000.0, -32767, 32767))
+				data.append(s16 & 0xFF)
+				data.append((s16 >> 8) & 0xFF)
+		"boss_bolts":
+			num_samples = int(22050 * 0.16)
+			for i in range(num_samples):
+				var t = float(i) / 22050.0
+				var freq = 740.0 + sin(t * 120.0) * 180.0
+				var val = sin(2.0 * PI * freq * t) * exp(-t * 22.0)
+				var s16 = int(clamp(val * 19000.0, -32767, 32767))
+				data.append(s16 & 0xFF)
+				data.append((s16 >> 8) & 0xFF)
+		"boss_lane":
+			num_samples = int(22050 * 0.32)
+			for i in range(num_samples):
+				var t = float(i) / 22050.0
+				var freq = 85.0 + (t / 0.32) * 60.0
+				var hum = sin(2.0 * PI * freq * t) * 0.7 + sin(2.0 * PI * freq * 2.0 * t) * 0.3
+				var val = hum * (1.0 - t / 0.32)
+				var s16 = int(clamp(val * 22000.0, -32767, 32767))
+				data.append(s16 & 0xFF)
+				data.append((s16 >> 8) & 0xFF)
+		"boss_slam":
+			num_samples = int(22050 * 0.45)
+			for i in range(num_samples):
+				var t = float(i) / 22050.0
+				var freq = 90.0 * exp(-t * 6.0)
+				var rumble = (randf() * 2.0 - 1.0) * 0.5 * exp(-t * 8.0)
+				var val = (sin(2.0 * PI * freq * t) * 0.8 + rumble) * exp(-t * 5.0)
+				var s16 = int(clamp(val * 28000.0, -32767, 32767))
+				data.append(s16 & 0xFF)
+				data.append((s16 >> 8) & 0xFF)
+		"boss_nova":
+			num_samples = int(22050 * 0.50)
+			for i in range(num_samples):
+				var t = float(i) / 22050.0
+				var freq1 = 330.0 + (t / 0.50) * 550.0
+				var freq2 = 660.0 - (t / 0.50) * 300.0
+				var val = (sin(2.0 * PI * freq1 * t) * 0.5 + sin(2.0 * PI * freq2 * t) * 0.5) * (1.0 - t / 0.50)
+				var s16 = int(clamp(val * 22000.0, -32767, 32767))
+				data.append(s16 & 0xFF)
+				data.append((s16 >> 8) & 0xFF)
+		"boss_core_open":
+			num_samples = int(22050 * 0.65)
+			for i in range(num_samples):
+				var t = float(i) / 22050.0
+				var step = int(t * 3.0 / 0.65)
+				var freq = 523.25 if step == 0 else (659.25 if step == 1 else 783.99)
+				var val = sin(2.0 * PI * freq * t) * (1.0 - t / 0.65)
+				var s16 = int(clamp(val * 20000.0, -32767, 32767))
+				data.append(s16 & 0xFF)
+				data.append((s16 >> 8) & 0xFF)
+		"boss_hit":
+			num_samples = int(22050 * 0.28)
+			for i in range(num_samples):
+				var t = float(i) / 22050.0
+				var noise = (randf() * 2.0 - 1.0) * 0.6 * exp(-t * 14.0)
+				var metallic = sin(2.0 * PI * 340.0 * t) * 0.5 * exp(-t * 9.0)
+				var val = (metallic + noise) * (1.0 - t / 0.28)
+				var s16 = int(clamp(val * 25000.0, -32767, 32767))
+				data.append(s16 & 0xFF)
+				data.append((s16 >> 8) & 0xFF)
 		_:
 			return null
 			

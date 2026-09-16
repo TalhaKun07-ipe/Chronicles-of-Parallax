@@ -1,0 +1,2815 @@
+From 7a7d290be68d6993f11062b0b1f35c4ad5721ff4 Mon Sep 17 00:00:00 2001
+From: Codex <codex@local.invalid>
+Date: Wed, 16 Sep 2026 06:27:32 -0500
+Subject: [PATCH] Add Axiom Sanctum approach and six-strike dimensional boss
+ encounter
+
+---
+ GAME_DEV_LOG.md                               |  14 +
+ HOW_WE_CODE.md                                |  18 +
+ chambers/axiom_warden/AxiomWarden.tscn        |   6 +
+ .../axiom_warden/assets/john_rod_0d_point.png | Bin 0 -> 299 bytes
+ .../axiom_warden/assets/john_rod_0d_pulse.png | Bin 0 -> 723 bytes
+ .../axiom_warden/assets/john_rod_1d_rod.png   | Bin 0 -> 478 bytes
+ .../assets/john_rod_1d_rod_active.png         | Bin 0 -> 625 bytes
+ .../axiom_warden/assets/john_rod_25d_back.png | Bin 0 -> 1739 bytes
+ .../assets/john_rod_25d_front.png             | Bin 0 -> 1772 bytes
+ .../axiom_warden/assets/john_rod_25d_idle.png | Bin 0 -> 1878 bytes
+ .../axiom_warden/assets/john_rod_25d_turn.png | Bin 0 -> 1889 bytes
+ .../assets/john_rod_25d_walk_1.png            | Bin 0 -> 1919 bytes
+ .../assets/john_rod_25d_walk_2.png            | Bin 0 -> 1890 bytes
+ .../assets/john_rod_2d_crouch.png             | Bin 0 -> 1572 bytes
+ .../axiom_warden/assets/john_rod_2d_idle.png  | Bin 0 -> 1758 bytes
+ .../axiom_warden/assets/john_rod_2d_jump.png  | Bin 0 -> 1663 bytes
+ .../axiom_warden/assets/john_rod_2d_land.png  | Bin 0 -> 1777 bytes
+ .../assets/john_rod_2d_walk_1.png             | Bin 0 -> 1730 bytes
+ .../assets/john_rod_2d_walk_2.png             | Bin 0 -> 1730 bytes
+ .../assets/john_rod_2d_walk_3.png             | Bin 0 -> 1852 bytes
+ .../assets/john_rod_2d_walk_4.png             | Bin 0 -> 1757 bytes
+ .../assets/john_rod_3d_back_idle.png          | Bin 0 -> 1651 bytes
+ .../assets/john_rod_3d_back_walk_1.png        | Bin 0 -> 1541 bytes
+ .../assets/john_rod_3d_back_walk_2.png        | Bin 0 -> 1693 bytes
+ .../assets/john_rod_3d_front_idle.png         | Bin 0 -> 1699 bytes
+ .../assets/john_rod_3d_front_walk_1.png       | Bin 0 -> 1825 bytes
+ .../assets/john_rod_3d_front_walk_2.png       | Bin 0 -> 1751 bytes
+ .../assets/john_rod_3d_iso_idle.png           | Bin 0 -> 1809 bytes
+ .../assets/john_rod_3d_iso_walk_1.png         | Bin 0 -> 1798 bytes
+ .../assets/john_rod_3d_iso_walk_2.png         | Bin 0 -> 1763 bytes
+ .../assets/john_rod_3d_side_idle.png          | Bin 0 -> 1501 bytes
+ .../assets/john_rod_3d_side_walk_1.png        | Bin 0 -> 1724 bytes
+ .../assets/john_rod_3d_side_walk_2.png        | Bin 0 -> 1663 bytes
+ .../axiom_warden/assets/john_rod_idle.png     | Bin 0 -> 1699 bytes
+ chambers/axiom_warden/scripts/encounter.gd    | 442 ++++++++++++++++++
+ chambers/axiom_warden/scripts/geometry.gd     |  44 ++
+ chambers/axiom_warden/scripts/hazard.gd       |  80 ++++
+ chambers/axiom_warden/scripts/hud.gd          | 133 ++++++
+ chambers/axiom_warden/scripts/player.gd       | 202 ++++++++
+ chambers/axiom_warden/scripts/sound.gd        |  40 ++
+ chambers/axiom_warden/scripts/warden.gd       | 112 +++++
+ chambers/broken_circuit/scripts/demo.gd       |   9 +
+ docs/AXIOM_WARDEN.md                          | 128 +++++
+ tools/verify_axiom_warden.gd                  | 153 ++++++
+ 44 files changed, 1381 insertions(+)
+ create mode 100644 chambers/axiom_warden/AxiomWarden.tscn
+ create mode 100644 chambers/axiom_warden/assets/john_rod_0d_point.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_0d_pulse.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_1d_rod.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_1d_rod_active.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_25d_back.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_25d_front.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_25d_idle.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_25d_turn.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_25d_walk_1.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_25d_walk_2.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_2d_crouch.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_2d_idle.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_2d_jump.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_2d_land.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_2d_walk_1.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_2d_walk_2.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_2d_walk_3.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_2d_walk_4.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_3d_back_idle.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_3d_back_walk_1.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_3d_back_walk_2.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_3d_front_idle.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_3d_front_walk_1.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_3d_front_walk_2.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_3d_iso_idle.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_3d_iso_walk_1.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_3d_iso_walk_2.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_3d_side_idle.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_3d_side_walk_1.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_3d_side_walk_2.png
+ create mode 100644 chambers/axiom_warden/assets/john_rod_idle.png
+ create mode 100644 chambers/axiom_warden/scripts/encounter.gd
+ create mode 100644 chambers/axiom_warden/scripts/geometry.gd
+ create mode 100644 chambers/axiom_warden/scripts/hazard.gd
+ create mode 100644 chambers/axiom_warden/scripts/hud.gd
+ create mode 100644 chambers/axiom_warden/scripts/player.gd
+ create mode 100644 chambers/axiom_warden/scripts/sound.gd
+ create mode 100644 chambers/axiom_warden/scripts/warden.gd
+ create mode 100644 docs/AXIOM_WARDEN.md
+ create mode 100644 tools/verify_axiom_warden.gd
+
+diff --git a/GAME_DEV_LOG.md b/GAME_DEV_LOG.md
+index a7ff6c3..42371a4 100644
+--- a/GAME_DEV_LOG.md
++++ b/GAME_DEV_LOG.md
+@@ -678,3 +678,17 @@ Degrees_of_Escape/
+   * Verified all documentation, staged all updates, and synchronized directly with the remote GitHub repository.
+ 
+ 
++
++## 2026-09-16 — Axiom Sanctum boss chamber source prototype
++
++Added `chambers/axiom_warden/AxiomWarden.tscn` and seven scripts: volumetric geometry helpers, dimensional player controller, articulated Warden, continuous hazard collision, dialogue/combat HUD, encounter director, and standalone synthesized sound. Reused 31 supplied John Rod PNGs locally within the chamber folder.
++
++The chamber begins with four rising terrace gaps and checkpoints. The arena introduces the Warden in six dialogue pages, draws John's luminous rod, then runs five damaging phases, a false defeat, a revival dialogue, and a final surge followed by the sixth finishing hit. A bottom health bar, warning tells, three floor rails, F melee, 3D armor, 1D/2D core vulnerability, arena retry, pause, and completion signal are included. Rewind stays locked.
++
++Design rationale: large floor and camera framing support dodging at readable scale. High attacks reward 1D, low lasers punish remaining in 1D, and depth locks require 3D movement. A recovery window accepts one successful hit, preventing repeated F presses from skipping the encounter. Boss stone/brass and cyan energy match the existing chamber palette. No face, eyes or hair were added to John.
++
++Integration: Chamber 1's completion signal schedules the new scene after 1.6 seconds only when Demo is the current live scene. Optional Global health/dimension synchronization bypasses its legacy full-scene death reload. Existing SoundManager remains untouched.
++
++Corrections during static review: removed oversized dark boss blocks that would conceal the stone surfaces; corrected beam animation pose naming; changed hazard mode access to an explicit dynamic property lookup; extended the pattern tail so the last hazard completes before recovery; made arena falls apply damage after resetting invulnerability.
++
++Validation: all new scripts, the new encounter verification script and modified Demo passed gdparse syntax parsing. Local resource/PNG/package integrity checks completed. Godot is absent locally; runtime testing, screenshot inspection and the required three repository suites remain pending. Automatic approval review rejected source/assets upload to the external testing service. No claim of engine-test success or final difficulty balance is made. Changes have not been pushed to GitHub.
+diff --git a/HOW_WE_CODE.md b/HOW_WE_CODE.md
+index 8f13dde..e939c06 100644
+--- a/HOW_WE_CODE.md
++++ b/HOW_WE_CODE.md
+@@ -421,3 +421,21 @@ All retro pixel art and chamber layouts are generated using Python scripts:
+ >    git push origin master
+ >    ```
+ >    Never leave code uncommitted or unpushed to the remote repository.
++
++## Axiom Sanctum architecture — source prototype, 2026-09-16
++
++`chambers/axiom_warden/AxiomWarden.tscn` attaches `encounter.gd` to a Node3D. `_ready()` builds the world, player, procedural boss, hazard container, Camera3D and CanvasLayer HUD. This implementation is self-contained; it does not replace the shared player controller used by Chamber 1.
++
++- `geometry.gd`: reusable box mesh/collision and torus constructors, stone and emissive materials. Collision exists on floor/platform bodies; visual trim does not change collision.
++- `player.gd`: CharacterBody3D, faceless Sprite3D, upright capsule or 1D rod collider, direct key input, coyote time, jump buffer, preserved midair momentum, clearance-tested expansion, ground-rail entry, 0.45-second melee cooldown. Dimension numbers are local 1/2/3; Global maps 3D to enum index 4. It exposes signals `struck`, `fell`, `mode_changed`, and `notice`.
++- `warden.gd`: genuine 3D mesh hierarchy with animated torso, axe arm, emitter arm, halo, chest doors and floating core. Poses include idle, sweep, beam, bolts, lane, hit, fallen, revive and dead. Animation does not drive collision.
++- `hazard.gd`: beam, lane, sweep, bolt and body intersection rules. Amber warnings are harmless. Bolts use previous/current segment intersection and sweeps cover the previous/current radial interval. Dimension does not grant generic hazard immunity. Each hazard reports at most one hit.
++- `hud.gd`: always-processing CanvasLayer child with typewriter dialogue, faceless geometric portraits, bottom segmented boss health, top player health, objective, pause, retry and completion overlays. Dialogue uses Z/Space/Enter/click; Esc skips it. The HUD continues receiving pause input while gameplay is paused.
++- `encounter.gd`: explicit states `approach`, `dialogue`, `draw_weapon`, `combat`, `opening`, `stagger`, `false_defeat`, `revival_dialogue`, `surge`, `collapse`, `victory`, `defeated`. `events_for_phase()` holds telegraphed deterministic schedules. `try_strike()` checks phase, range, dimension and exposed core before incrementing hits. Hits 1–4 advance, 5 revives once, 6 completes. `clear_hazards()` disables and removes hazards before deferred freeing, preventing a stale hit during transitions.
++- `sound.gd`: standalone-only six-voice tone synthesizer implementing `play_sfx`. Integrated projects keep their current SoundManager.
++
++`boss_hit(total)` exposes accepted strikes; `chamber_completed` fires once after final collapse. No rewind reward fires. Arena retry resets all boss phases and player health at the checkpoint, skipping completed approach/dialogue. Health is assigned and `Global.health_changed` emitted directly, avoiding the shared autoload's scene-reload defeat behavior.
++
++Integration modifies only Demo's chamber-complete handler and adds `_enter_axiom_sanctum()`. A current_scene guard keeps existing headless fixtures from advancing scenes unexpectedly. Production scene transition is deferred after a 1.6-second timer.
++
++`tools/verify_axiom_warden.gd` exercises physics jump feasibility, rail constraints, mode switching, geometric hazard cases, hit gating, six-hit state flow, actual final-surge spawns, retry and pause. It parses successfully but has not been run in Godot. Run it plus `verify_route.gd`, `verify_new_features.gd`, and `verify_full_flow.gd` before merging. Human playtesting and visual camera inspection are also pending.
+diff --git a/chambers/axiom_warden/AxiomWarden.tscn b/chambers/axiom_warden/AxiomWarden.tscn
+new file mode 100644
+index 0000000..8653c2d
+--- /dev/null
++++ b/chambers/axiom_warden/AxiomWarden.tscn
+@@ -0,0 +1,6 @@
++[gd_scene load_steps=2 format=3]
++
++[ext_resource type="Script" path="res://chambers/axiom_warden/scripts/encounter.gd" id="1"]
++
++[node name="AxiomWardenChamber" type="Node3D"]
++script = ExtResource("1")
+diff --git a/chambers/axiom_warden/assets/john_rod_0d_point.png b/chambers/axiom_warden/assets/john_rod_0d_point.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..8a2464a0b5560a109c600bef2d49ff5b123dc7e8
+GIT binary patch
+literal 299
+zcmeAS@N?(olHy`uVBq!ia0vp^4j|0I3?%1nZ+ru!6p}rHd>I(3)EF2VS{N990fib~
+zFff!FFfhDIU|_JC!N4G1FlSew4N$@(z$e5NNNcK_X{ebwIS1alb?5rc+eYRtYN|%J
+zZ{N9j^UmZ+)22+Bp{i_n?b^*Llc!IfJWWI0)Y{r(;)KbQCQeb;a?nsW(b6;n8WJ_r
+zRT@Y!mIV0)GdMiEkp|)<dAqwXbg;^L06FX>p1!W^uQ+)*IQ2gi{&xThxq7-dhD02G
+zd%>Nr!9ak;QC-G^FX7++kb4bokFJ!yznam@$iT3Fli%ywh((u{$6V9pWdHVf%~nm}
+lUpw;Na(=#8#lZ04D)$T_MiD`s?qZ;U44$rjF6*2UngEQ3VnzS}
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_0d_pulse.png b/chambers/axiom_warden/assets/john_rod_0d_pulse.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..72a886eafa780f3fbfbb72c708edcc8b585fb13f
+GIT binary patch
+literal 723
+zcmV;^0xbQBP)<h;3K|Lk000e1NJLTq002M$002M;0{{R3owtGP0000WV@Og>004R>
+z004l5008;`004mK004C`008P>0026e000+ooVrmw0003>P)t-s0000hDl#lBH7YAJ
+zBPA><D>N%CGg4AkNla7W;^o-e;M&~b-{R-q;pOAy=1)>sK0!$)C@|dK;xI5eEiO0P
+z-sLPUH!d$Y-QeRaFE%hTJLBZ&C@L}G;^;3hIVmhO=I84j9w#U%GA%GTW@v9GDKP#0
+z{U#|eFEBc%sjw$2GxqoRDk?MQ=<CbQ)F~=5va+`+EHnK6|0gLj*xKLe>+b99@3*_c
+zDJwFotFbIDH!CeQ`1$<L(%9<k@6y%Uy}-w{w!0`RGAJo9{{H{Hz{R}2!>_NlEiXDM
+zEHn7}`zI(ct+2EvDK8)*D;^ytF*7@Ead_nB>n$%h;Ns`p-s3JVHs|T=BqlE|FFDrP
+z-6||MD=anK-sLGOG)+-fN=;SN*4fq8+S}aW+1%jR+TPgP-APMRR#;vyFF7YDFDfiG
+zC@VDp008lBEeHSr00DGTPE!Ct=GbNc0004EOGiWihy@);00007bV*G`2kHq82njHK
+zdGfUY008SrL_t(o!((6=1*2dTjDk@xVgMr(GYcyl+1lATIJvlac=`AR$kQ(<Bn)AQ
+zh>DS;UtB^G#*~tlA;SP!IRsl?fpq<fO2|BA6;k!9szGRV4G68NMWO-9+F(jYS5F_z
+zFfb(51x6s!*u>P#+ycb1v?9>}Ya0;BYHMfj05-tUi9`dOT_8c=>ISje-Gf8}JiQ>a
+zyf=jQ@g>m!20wpfUO*tJ`WYC4f)Q+`5YqKCD20Z>m@?rJWEj8@85Ip-#Kgvtqo08x
+zJ|QtFIVCkMJ%c>`K#-Xw=$xHHw)Rml3P!;w7zINP000SH7`Tg{Cx8F|002ovPDHLk
+FV1mQeCr$tW
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_1d_rod.png b/chambers/axiom_warden/assets/john_rod_1d_rod.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..08c449ff49a6abe43288c4795200759c3a5daa2f
+GIT binary patch
+literal 478
+zcmeAS@N?(olHy`uVBq!ia0vp^4j|0I3?%1nZ+ru!6p}rHd>I(3)EF2VS{N990fib~
+zFff!FFfhDIU|_JC!N4G1FlSew4NzilfKP}kkk-^T)X+50)-lr6Gt<!2*U>fA(lOH1
+zGE~>p(>E~J)-~4FG1kyB(9tv1&@$B3H`UQK)-y2E);7}7HPJILH!`)EJAe6<84D**
+zUodUf;=W09rp;P3Y5M%>vlq{ryL95Tc~fRAm^o+Z)R~KB&09Ki?ve>p=S`itaK`K<
+zQ$bqhPoK4L(zFE&mab9L&{tN~)zUH1&@$50G1k^K)zmgt*D_MqGE~zrP*Ky<&@xun
+zG}O>GR#eu~(K7?OJZvw^BOt|C666=m;PC858i<qR?e4<R!7A$k<gk}``ns~e;^gJv
+zG^nlov=u1S?CIhd5^?zLh0{__0TQi=E9V|@Tgp85f@8>!?EIG{|F?%uPq;MsU{!kd
+zC*Em`fEpYwZ@p61UK+Y~`FGyQ(c4bSo?~k>li8V^c9p|tneqAg`qNgI3bb8Jd;R{~
+zN5zkizDUeD7uoADO}u0$mt)YBpi8~0ewR;CS#|vL*MHybf#!XvmX{3V4!E4_SOMfQ
+Nc)I$ztaD0e0szS>rpy2U
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_1d_rod_active.png b/chambers/axiom_warden/assets/john_rod_1d_rod_active.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..3c9bf02e9fd256715bd03fa5e6e46af2353b4f93
+GIT binary patch
+literal 625
+zcmeAS@N?(olHy`uVBq!ia0vp^4j|0I3?%1nZ+ru!6p}rHd>I(3)EF2VS{N990fib~
+zFff!FFfhDIU|_JC!N4G1FlSew4FdzCV1Q4ED^P)zrHhT7uZwGtriO)~p}mozgT9`f
+ziHWnRiHot3gQ<y=v5}Lhsk6Dci?K0~?PzA|VruGQV(M&a>|$u>WME)#V&rIS>}+TV
+zBpr=Sob~l>4UAn(E&PnkeALy=v~{fa9y+`K@VR}5fav_eW0&?EI=BDu`8@~E?cRT8
+z@4+*B51rq2;LNW5r}rE@yYJB1JqOS1+IM>Ip>w+roH=mxlBR~ao}TTkJ5O)idUE^D
+z)9W`MU%&b2#?439Z#}+w`^gO;y7l<hohLVMKfZJK*_G>$w6(3ieE#|R^`|eNzpJVk
+zYiU}js+p*(n`&s7sj3=lXqaniT4-vTtEri4sGDhMT4<=7>g&5XIEJ{nM*~A+YAdG|
+zkYX$e@(X5gcy=QV#7XjYcVXyYmGuB}*h@TpUD;o8@^Ww*)K-4l3KTlz>Eaj?aX2|a
+zf^~6%NKaFs0hb#iFQc-sF*h@_wzM_7y0|&NzWjcM^$P1J80_y@F~eeg%aSQurts{S
+zuwzbn`b1PhWa^aAkkG4FLQPG!ZkbwI^7YGB9-iJUJ-xnLOnOawe9m%M9=>zv(xFqg
+zj@`O;?$Etk=kDD*c<Iu`ONZ{Aym{-=p+onMUge#iR?hFw#-^VyA0N+Z|G%NZVLwBw
+z!u<r+`x728?7zUEz`+xIAiKK4<%z@b!x{+3YOpXY?vh&T<+A<=&^HX8u6{1-oD!M<
+D4ubaD
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_25d_back.png b/chambers/axiom_warden/assets/john_rod_25d_back.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..0c82ee929b2818b00f5080248265d8d2f12c796b
+GIT binary patch
+literal 1739
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_25d_front.png b/chambers/axiom_warden/assets/john_rod_25d_front.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..2615d7c493d73dd33386145a2e5acaaed1623b37
+GIT binary patch
+literal 1772
+zcmV<I1{3*-P)<h;3K|Lk000e1NJLTq002M$002M;1^@s6s%dfF0000WV@Og>004R>
+z004l5008;`004mK004C`008P>0026e000+ooVrmw00006VoOIv00000008+zyMF)x
+z00(qQO+^Rl2@MA^9VBH{1^@sCVo5|nRCwC$o852Q))~g1LsF9Ki(tT-&Q>gu5-F>R
+zvwUpxE{3juLo;9)HlWvC2MilfpdTo(>s`!fl8bfNkj~j!3{A48$(ABc>c(l)v`cI+
+zik%PJQMx#5K17Nil9yN($!8ZylWMjz46vz0)9+4)6v^k|d(L^!t0SOIn>KACMC;L5
+z^(ypCn@*|BWLFp0XV<gY&$a5LHG}{B><S&T%uSoV#Z8;P$*o)Zd1(I;I%b(~4*ro{
+zYr0$4h?ib?g>!C&uMO;=t{L})YH5uJ4!lRtcA4r<x26Gxs&me(uy6gwB?b27HqyFY
+zV%7Diujy?)6FwR~NzZn;F}Gn^aYOqL(zR@kjgCiZfE2||<d^~wn4CE;mOJMsKmQp3
+z0ZA7B!<8Qq1A-ugkRB{d2mwiwVBRQ2YCt6DT9&S5Q%h;fhPQR?CcU!5WOu6dx&ZwU
+z7cUfXworhUQWpu#^r%!~3da9Ffy6>0O8wFC>z%*hp?8MpS~hc8gK9cWO;ztEMGi;a
+z|Cm`-Z@n4d3({JKCysx@!+&|7b54bhRi<azbV?S74j-eQHd<Hwm&x?#?9~kJ9^B7!
+zXD%|A$upbG|9^=80z=DlWcXuN9k=PiBN+t0OeU2fgF0j(K?ni0N2Q+4HO+`fvyRL<
+zm4%7Ioeu;c2tY!(P{UWco`^OBx=W-HP&iw_)P*8;zWydA&&@yxfzzi8fFeWh$uzw?
+ztSYa*_%c1);kIXf$ZRUZ4~9OZXO@}E7#uz_Li>8DDF#Fm0oipKzWDMh`0cK}ID6(4
+zBq;$|mLbU!YLz(*kBmU+h{MRVXdd92WsV#_#lGG?0)Vdd^26bioO3+_Kt7k_i4Q(y
+z)pn^p9&J}x^$6&UbrJy1Uz|pLZXN(2i#xXsf&c(8H8UfMS7t#1pP84@vmx0Uk)Zcv
+z=~*_%PZgM4+jUQrp*_jt!zbxl<$G<tdY*?49;IhF%%r1>f>nzEBV%y<%qZSDa1_sc
+zZyT<eH||e!k^})jlJ4Jrx;Q0l*TL9m0h5zw(U;j0i3zJ>KsKfF^xr<k(9x4f#3lH*
+zstw1(zz0b%Z2aC!zjy(z=OOR|+@_0E_aoR9v}Br9*W=zjhxz<-KV{!nH!l*AH#YLv
+zkrVXF<weI-HOu{b57RZvbWNMCWiyprM?-%E@&q-h(z6{7{A!Rnb@}u*ujM&?eufp-
+zW3Rq=A=I1AF`LeE$Id^{wQRa&o33e7Pd((*q+^yjFz^PG4|ve-RF?Kllb+?!vuvI_
+zcm9E*db4?Me{GOEw*Q`bdgTpJR`O!I2KRuH0R3Cbo)eRSSS*g&e|(OwCD&rUG7nwX
+zSu7TpTnkKJo)WJQ{E`q7idTzGSud<8702b7(-YkD_Fq|bEA+}PbH+m++AE1?+Wga7
+z2dSrZ{$ShpS+QN#ZryI00g=}OBt^#TH52h5j?uAkkU%^hYnJ|K*^tfCwaQ%kL^qAK
+z26fe-YnFNJ=ts;x{`ICr!HN!o|Bc%G0%S$TnnVJZu3i!V5Cj3YZrK2-^L8`zM{5A$
+zGD1Iu9J^opkHupULO?{{8v#T-28@lK!sz%UrY}$3o6h`N9SDe6N3`#vDFz53;lj+7
+zhPJK!{Rkz2ef$30+6JW8rAdbHDsznwpxk-$v$LPKwgJ!o_&Laugx$NgH?+%=3<$u#
+zTO4Uw0|X?5VF;pew!3tBT6A`F;=51vBcn#Y;)~1x>F)3UOQ9rU0D&-!J{5?}09lbC
+zB(Y?u2lW7QtU1|WbX_0>`~@E|Y4LPN5+K3<ED^ODm9oR%y|Hgmocr@W-IB$(-+H%o
+z#{d9;kT6&M*P`aMu0d85#1heWgGdcv5I`(Z(&%`s6CsJKH=Wit0FuDd-`)Z>*|;OL
+zUR!`H%U~07fk+LQ7@t5cuR)RIhIUzzK@yUPzTy?h3dFM=hJJu}JdV2WBNl7i2^NGQ
+z$PjEo#V-;AzOlI<LYA?xFprKz2NH7QV8<{7gai@oevOBVJN18uxlFX1rJJ(|UxJ|S
+zBmP(%KYI3ANV1^s*HOD&!;Ml2pS(AQ8LQCR;o)32S#?}iU5|Fjq+K%U*$xMHzsvQh
+z)%!=uLlXhtdFp8_%-5hO3TpK_;z|sD=z}1_ptWCqn>KCQv}x0(Is6+ro-ZT(2%P}{
+O0000<MNUMnLSTZhIYQ+C
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_25d_idle.png b/chambers/axiom_warden/assets/john_rod_25d_idle.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..3e123cee56309950b02943f2054e2bd74e4f6206
+GIT binary patch
+literal 1878
+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
+QK>z>%07*qoM6N<$g5`^ap#T5?
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_25d_turn.png b/chambers/axiom_warden/assets/john_rod_25d_turn.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..0bd9f325dde6676e4d4c65511e35df4b5bdad833
+GIT binary patch
+literal 1889
+zcmV-n2cGzeP)<h;3K|Lk000e1NJLTq002M$002M;1^@s6s%dfF0000WV@Og>004R>
+z004l5008;`004mK004C`008P>0026e000+ooVrmw00006VoOIv00000008+zyMF)x
+z00(qQO+^Rl2@MA^AbbrO7XSbT*GWV{RCwC$n_FyD#~H`}GiT4PFHmBWsv*Yq+Iz)V
+z4sC^^R7%x0p{NguswQm-V0fvjwu%&~59vcx^{Ps=>McT5AEGJ*0)k-0C{@)+Z9q){
+zd)Jp;L%=p`8yA~G3K;Kw_neu3AC}O#;J5BM>1uzEXO1-U{pXuG-+bR3piZ4SbsVIp
+zE6TB<F&46U=9be8wFl|uc!X0Og#tkyeC1Vm8yX<)bZgr-HgD-g>E;b=ee!cirRE$P
+z&j)y%>c}oCm|h>0E@S7e-OwfCx&CjUW&L_Q+`a*JSvhUHv+RHQ029MweCeg1u5kH3
+z|M3)uPo7~ZUvOn9NGCe+xBDrDfDi%$uO42}_WTRq1ciWB3Y-0#92db60i<Do09qeh
+z4_jF)+EO#qLMaUrD8qKzerE&#2_Yp~*SBD;vG$&3U!xBIAfz+Haa;f^txzmlFbo5q
+zdFruy+Lf{)1faC@8=)ftTv?hItq-h0YI+vG{Q1wYIo!KqtqTIeFkrag0gln#*2VoV
+zA7C;z&V|KA20JPNP@p5g_~{s@Cnsz7D*ynqi*uq}wlFk$0T1|^aP#&pe4_Q^Ja+Ub
+z0{(V<<*6^bVZU>cAOM7;QL<p;^+SgN5=tw4|0h4f!t5+2=Po%O1-i!m-yGnPLj!E<
+zYjgD+064e=Rv-*~aocCHII-yZtUD?|G!*6NnK&Q)bQo)zn-PA}eGhQX_&|sw@5VTN
+z?jp~{63pICvyjO#+!c0J1V=m|>JRbAYlrd9nK5kJz8z9ZKnRdTp-^zs{^}F*2RZWh
+zIDh-AKd`;Mn*o1-6Y&JQJ3Bc#6lWouW3VaWnio{n1G+YJ^4O7M@HUtj9v{J#E3?8t
+zBczb9ZG}C1_CnhVk8JC8%l_&K;D4xt0|Ns%JNh18J9q-8|Mpg;feK11?EA&<P%f8Y
+zcsw{hcpU!jjkOgCKJuw8kkUYUX&HZc;~3`WuLuCJsR2!F=?z0`jmh^ep^(X;$!u`L
+z{_6426A`}h`$NnvrAhMc>~?oXnT(Aym(H;5;Z6qI1H8U?mHBk0wmjh4U#G;reLqHO
+zDurUcfUb?51OQ#K0Zm9L;VnqmCXmY&AUz&*cXZcQM(EPqv?wVX$#?>jsVM+}>GQ&4
+zn$SwaDi(2hc1B!(e+kO6F)@+E#AuQ|kxh(*LkxFSKV@F^IABkIKbA6ilnW(90zIVE
+zP^yyn@HJPG(mS608j^|gNRCcGD`F%*g2ZS7@pv4WTT2Z2s~0R)JuR-ag=_!34#Oj%
+zv<(vyN>@Z+Q>FX)YqMhS-hL`eqwkY__|~_dM=4*z<BvZIPoocpVN`pV)n(v~w>bRn
+zS$4E_GC7i9a(JA%<qY%L?5Z;x4fgQFn}6cS*<o&MZ~gy1Gd#F8z(^p>us_K0p;7+u
+z2ft=+Im2SXom#+$apWv;BR(UhW~PN94G0n*kAW9o{2sJY=xTR<=XYFy53no?5E8|r
+zg;F*TD59yc*-iVMW$f%IM^48W_6OM$+{E1NG!wA|Lu<Nf^Dy+^2myFa69T}6)I}i-
+ziAXdEQ#QI~zq0~R6IR&<?nK6Omo7s{iMFj9YF~gJe}qCxm<<MGL*@Jb%(KscBu)$t
+z*1iC_VjfaTSY;a*r=}{&Py!_3ZEUK20oJUo6h)=+pG2@_l_3oSphh_0&Q%%51UPi?
+zAOK>=)4T3I6Q+SvCr_eWD8W|l+z@d@fXK!!N@3vZU)_P`wI93tJT;dRKC`kPxK$Xf
+zdavO?hy#Oz(9|fy##m}(MKOeMHyW<G0IF=m)&#Z2?EK6<m7wM2ECAx>jrUy@qG}{#
+z2_}cf7+&Q}-y7{?KAmM|>9#AbP}O`uFc7YUJQA?1(tY14lnc<*fOMx!Sk)yUsUbkL
+ztZTvC;{1Irw3UK{0JJ-MK~)7f{Q4090$+II^Q#Zw&JD7f^MKgd7!4s|*<~QV`s^yL
+zP$(2YO$2KtD;#R;V{1zb1b{ue`Z05Je%0wUJrY+Jufc1YptBcNswV)=95T1kFuh*H
+z$A;iv)3NHz&ZJUeUF$k%rD1x!wIM+2@{HKIdnXpI{tMFd;{4Tf*c6JcDuS{#q{jfM
+zYeN745awEZ_l56ZES7*(wh<pXz3RJ$X+T>F!f^e@%>SOAt_X)tondxqnZZ?pp@sPc
+z=9kmV-byo{&ajxxv6QR)Q1RiqVl}9GVdTQxlz49UE;jglNL`-3?-U<D`Zm6_{V}|A
+zCILf82q{4lf*Rh2>h23437_kY^idfKN?B0UkdTlb4+IEL)`#=|NPHy5S*K2&I(6#Q
+bsV)8u^F=X-VVKH800000NkvXXu0mjfQa)(z
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_25d_walk_1.png b/chambers/axiom_warden/assets/john_rod_25d_walk_1.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..2aa63a4c402d42788391fab8e4dcd2f6726e5496
+GIT binary patch
+literal 1919
+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
+FV1l7rehdHr
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_25d_walk_2.png b/chambers/axiom_warden/assets/john_rod_25d_walk_2.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..5560a3faf70d8604e7995c73af1229b5e0793d2f
+GIT binary patch
+literal 1890
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_2d_crouch.png b/chambers/axiom_warden/assets/john_rod_2d_crouch.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..b7c170b7119a409417a7036c5012c49518920042
+GIT binary patch
+literal 1572
+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
+WgB^-FahCi50000<MNUMnLSTY!g4419
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_2d_idle.png b/chambers/axiom_warden/assets/john_rod_2d_idle.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..37b0425003704a93fe1001991e481d2648bb8f43
+GIT binary patch
+literal 1758
+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
+A@&Et;
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_2d_jump.png b/chambers/axiom_warden/assets/john_rod_2d_jump.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..ed5d32953c5919b48680dad8513bde5b80805ea8
+GIT binary patch
+literal 1663
+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
+JPDHLkV1n8t`|SV#
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_2d_land.png b/chambers/axiom_warden/assets/john_rod_2d_land.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..4c66f25e9c9221b6a02cd7b24743f7aaa4967699
+GIT binary patch
+literal 1777
+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
+TvJh)600000NkvXXu0mjfxRGAm
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_2d_walk_1.png b/chambers/axiom_warden/assets/john_rod_2d_walk_1.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..c1b559e7dc59f457886268f08d82dd6b9bf30966
+GIT binary patch
+literal 1730
+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
+Y0u~36Kz_)CkN^Mx07*qoM6N<$f`bn&(*OVf
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_2d_walk_2.png b/chambers/axiom_warden/assets/john_rod_2d_walk_2.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..f0f6160c6f3401be78fe0ddaf4907636fc16b732
+GIT binary patch
+literal 1730
+zcmV;z20i(SP)<h;3K|Lk000e1NJLTq002M$002M;1^@s6s%dfF0000WV@Og>004R>
+z004l5008;`004mK004C`008P>0026e000+ooVrmw00006VoOIv00000008+zyMF)x
+z00(qQO+^Rl2@MA(IBMbr*8l(pI7vi7RCwC$n_Fxg)fvbCXJ&U}CqxOLM6vfWyR$b3
+zMFF7%3JFM6RjMK$dQnwM8w3xi4-qs$C_;T`t4ftBgj7|9!UIq#q!l!U2vJB-XowO*
+zQs;t+tz_+8U$C7J48CA{cjt0u{(Z2qyIt2j?F^ah?`5@fRyybZo%5aVobQ_jnl!nl
+z5q@-<)6z7|Do7VCD_T(;9`t1#o|D&fI*z2YY<8YJ%X6LQC@qU8kDX#VnWW$2Ybd14
+zV@FQ#`Zd?r2wl5+4Nn|D#nQzhH+O6drV-k2Tu(<j%<9=C1!gpzj&1X7=b2y{;EBg}
+zvCvakR$QU$A}7bknT%?|GD0r7krU$+)S}D#c&a_l&#sJ7k9)fpD2?twx+YX1Ah5hH
+zRaH<f&q7s0Ug~eW0V1ImOioT==dQ<>{oTFa`vF>8TA?sl9smH?_2_O|hQZY4)c;jy
+zTNd9scsPLS=P7*DL)*5g$7+p`j3p@zgHQhIX?7&_;2J=SNBPcM@30QX=Fc8}jO%V#
+zA6)TY5>3Q;{OAduK7EE}rNXEF@B)9na}U#cI{4!Mn~avCQLZo<_5b+W@F=hp5j6~u
+za2@Hles~&mlN(|z4G#h!roWiMib%w7{T_;sXXrW(A9{E<Z@uYeO3R{cTFhoLzPf=Y
+zE)d_8r(;ww*jK`lw_nBN)FgT@^g&SsEW`3sf8%N2qH~~skfh5W?bt~G(ApC0FBF;6
+zQta<7GMCEwz8N-z8#6H;dh;O9pX=tHUp~DcG8NT$X=sGGWSUmhVCTQPsIT=WA~e(m
+z*378*);I6Q>j#hGwSCVlJXeK^RoAVAEhR2r{sbX92(R%aAT^G3EJbNc{$kf}nTgfT
+zZaS7?wOnR8t}`1?ktE+ebc9->&GS{zFtaOy`1JA>bbfFMrO~09q-RJ80VEt(qBt^_
+z5WRKFEy!=Y$!q<M#hxv*`@^2PS<Pt~R%gphMH2+(PKKswvUs7F>2!cHLV7&S^7IVb
+z*0ueQ3+OD*Ofwr_y#0-RI!0+*Ja+UXw{P3dZ`^(x@7lhNTeoa&s6iTf5_F}6fPi%D
+zCE5tXG8ewzefypG{!bsl13$hG&prD*R8@f@fOJL&0Y+L{uD;qqDxRV_JIfbee3hFL
+zw=K-19!=6Ts=V*s`@eE_^YI)v=^a<ETR2kk%!#wSIlY+k&&70-WTB^*?dvxL{3uLd
+z_1aaC_TtTtVS$(avLBXN#qj7bv<>mAcZQck-;ia8mZfEwEcEm)h_tFz?tS?+<}{rj
+zmxkEiSEAnLPdcojE8ybbd2|=LF*PxT!|xqm>{Jb*HL?N{4)*-!_lQTM=(^a2L^Kwx
+zm5|fY%qKF;wAaRVY1w?`ZwHu9&85OlpE^&gQe}5nH?>&6jIb2avUuS2x0%-$mwhhV
+zL9<ffk$=4xtjf?*2q6G>{&OC)T1K%@!uD-<VE3cDgS`r*W$_>T-()^hyYVI3qqM43
+zUK$!@F6~XG*xN$fJg!S9idy%4`0^!j_}!CiTfY|c=-lUv3n&7xrGz5tyT9k#cVcXE
+z22y&HG4{m(uH&Mmr3I?8ME9zK5M6{ksuFwd0`2Q`s*x~`esBhcY1Xu9?Fsf5N_b$$
+zPcZiR6;GVNa|5hi8N&3$B=+z9Ge$odtq~bkRfNJ3ghOG^#^bpQRH|i6O@4t$sJ<wo
+zK!E_Ts&!Rx4KO`D4nYBBi6Gb0cL9grKaIY@f@gPs&kZm!GmGv*KT4wmbs_}_;Z^+e
+z3&)at<*#ql&A$>+=}5_FTQt~5VWAMFRbLKUsf5vA9Dpjk9g?R}V3VHZP-z6e`}LD`
+zZB@g703d{dTtcTq7okuHu5?ix8EBYacxnLCkRTl_^~T)Fa0mjx-{1Hr6ako)3CDHu
+z@xTZk-0{PPjmc93IFulW@#%@Wwi#QB@80trx&%lELMTub1q{-rXqyK2y?lV1<6ob5
+zf;`=ENP(G373W9#zc$nAsR2|~#n|WLervA5+q-}OEX&5mbe;+bYyQeB9f`rwVP95-
+zr=9-sPkULlY`8AxHabOt>$-3q7yF)j3VqkgUuV7~cE?;*D7w|(>QIv=O`0@m(&XCY
+YKNz$fwfu!yYXATM07*qoM6N<$f@YjNv;Y7A
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_2d_walk_3.png b/chambers/axiom_warden/assets/john_rod_2d_walk_3.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..424b3d23c8273b949818a8388b529bcc6de84254
+GIT binary patch
+literal 1852
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_2d_walk_4.png b/chambers/axiom_warden/assets/john_rod_2d_walk_4.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..cad1ce2b2861a0b9c6dbe523c0ba8cc2e6777852
+GIT binary patch
+literal 1757
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_3d_back_idle.png b/chambers/axiom_warden/assets/john_rod_3d_back_idle.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..367356ab609d46b8cbbc668ac72d994b0d65d5b4
+GIT binary patch
+literal 1651
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_3d_back_walk_1.png b/chambers/axiom_warden/assets/john_rod_3d_back_walk_1.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..7cb3ca12062d6581e45347259ed7493e519ac9b5
+GIT binary patch
+literal 1541
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_3d_back_walk_2.png b/chambers/axiom_warden/assets/john_rod_3d_back_walk_2.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..fc90f232a3c9250c734de867a2eb76c84df8207b
+GIT binary patch
+literal 1693
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_3d_front_idle.png b/chambers/axiom_warden/assets/john_rod_3d_front_idle.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..e1d06220ad5cf31efcf5eca8613ca77c57061b1a
+GIT binary patch
+literal 1699
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_3d_front_walk_1.png b/chambers/axiom_warden/assets/john_rod_3d_front_walk_1.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..3cb75d79d76ec27b4eb99f9866b0d0c00befd20a
+GIT binary patch
+literal 1825
+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
+P00000NkvXXu0mjf<e*d8
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_3d_front_walk_2.png b/chambers/axiom_warden/assets/john_rod_3d_front_walk_2.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..8373cbc4198494946340dca5d762f696f34b876c
+GIT binary patch
+literal 1751
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_3d_iso_idle.png b/chambers/axiom_warden/assets/john_rod_3d_iso_idle.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..172d0372e1a538af43c1229f34802605912fbe44
+GIT binary patch
+literal 1809
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_3d_iso_walk_1.png b/chambers/axiom_warden/assets/john_rod_3d_iso_walk_1.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..189e3084bdd9ae1f630ea8f8b930884ed48ff28f
+GIT binary patch
+literal 1798
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_3d_iso_walk_2.png b/chambers/axiom_warden/assets/john_rod_3d_iso_walk_2.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..0ebca7789b9481fa29624f42339aec4b3baac3c1
+GIT binary patch
+literal 1763
+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
+FV1h~fSMLA-
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_3d_side_idle.png b/chambers/axiom_warden/assets/john_rod_3d_side_idle.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..e10a4b6bd3e1b361dbc2f4daf5852eb8ae22e3e4
+GIT binary patch
+literal 1501
+zcmV<31tR*1P)<h;3K|Lk000e1NJLTq002M$002M;1^@s6s%dfF0000WV@Og>004R>
+z004l5008;`004mK004C`008P>0026e000+ooVrmw00006VoOIv00000008+zyMF)x
+z00(qQO+^Rl2@MA)2C|qbJpcd&Q%OWYRCwC$np<pCMHqm;nR9l#B?=`FN-5p#ZkJ0d
+zUVx|pOhlt5#!E0pMSL?vc|lElzy}jdjK&z1c*7_`MU9vEK#d`Y&{7nLVnvV=jS!`&
+zG^P*=ZTHgMGxPhfg<yQ~#hHZN@A15x`M)#s|1;+ws8OS;Q9fRpY)Z<cL_NlqIoAKX
+zmoa!_?wtA3)4f*)2L`2(%gOw7R(y}iDPM2zlBd^ikXen*k{`{<f$x8+9szAFS?Su@
+zBW*1i0a(<2wTu^wl1Zk$Nzg7|_Ugtr*tMsZSlj||E}zFnmX}}K=qrA=0uqS?mVn%p
+zO5Tg2iimO)RfhmXh=m~%pGf@1PCWLP2Am2A!T@Uxlqz359*ZF&gkj)KfK#%`IkIcV
+zZb>Iw1z_pIr7~V9NJqB4I+9@7l+a3XMaMz_?tkcB22T!ADCd2}Pw4Vx{U`fX7!T#n
+zd+y`<CD+R8)sN8q%|8C<@2{TSU|YIPdb;<@z#o6ghaY#!+)P{bY=q8}PNwDX!9Gbf
+zH+v7>Z5f<kJQ}BA>J*grpZ&cE&=Hu(qRQ5H{O(DmQnF#gW*HqmCxx+`w52lMmw{8Z
+zeYst-$&5^!(jbLgUbb)R@+!dT5@>0fE%A6A*221VPaz`Qw0sGzsn+V)2yN}$%I^I~
+zQ3y+KSjLrCEWjGeGtWKmD}J{EMn?0PauKCqc5@P~19T8Dc~ZlrFCd#r3kX|3*@Qw<
+zE=Sz9Vih97-FMx>{1!jw0cQf<e0vi+cK=9ZOBC!l)22_Qv9XbSA&*1?LD@(AZUkhL
+z83}d3`<q_k_x=+q2trKRAdzM9Rf~wCh>e@yqb2UXBsvkG(V!G{@fZLi7Nr$IpfKY_
+zjI~^M-C~CLlj)PEI+fsN3224IaQmGr0jSe)j4^~^$iSH)_4A=VKKs0rBZrT&Z~uNu
+zg`yP4@=ioJIS&7J;+QfeD>IvCGkd`-DGnFWI^b|`F91t#T%rKdvr-Zd<E&i0mPB3L
+z#n9Z*k!_cqUv){#tfY(%k4SE0R0<<wl1}^G3OlO;r|X9iQN$8;#N#pI_4O#Nu_fa(
+zes=<fj{K#<P;=j^M|tAO^@L%7Ak-%k)gb_2&6-D;d|5qRJ36stgVvhJ`0ELHBa_NV
+zdt1BY$8z%NXJ1rD4!D>=YobyKr4$}}BK`!#f_lP0S2{(pORU`e7xwh*l~*>rCB=ME
+za>Hk3UfaCt_#bc{g`$uvp|nE9VwA1FMCi0J0?^u;k*I7K7#zTqBg7iC^4Aw}J_C%g
+zpoAGSo0v0iE<q4hPj?s~j0I?=u~xV&J_)p9{j)DrkAQdHeusg<Av!<bLfIG)A&fa+
+ziT(s=G`}7npzr7rr3Da$c<hh3uL1(rRw5oR6%hm-cqvAH1Zb@gTS<B*vIr1)yd&h4
+z`Khez{JL9iU4F-fv|kv_i-<@^#?NNR=?oYzl?aq(;KcC@&y+fUW6aMia4Nvs%Fobp
+zbkR?ci9JxD{ItrQ3V8R!59t2(5W4=N_>}@{G1gBha4JBQLTSaZW5+M-eWS>L*50nl
+zxvc_LD)$60V!^x)in#*oUwrA(7BF*qqbRNUWXqfXcpeKYXMsTbIS@J9gNhN9z=IDz
+z#?8yFkuVI%<wtmY%~}*Nmh*F0(3yZR(40DR7G;E<y@#+OD5cN{##&-Qf<mz%7z;`>
+zdhQ%Enr8m*)54j6lc)bu53F4AujlEelqjW`-f%g6y?u0le~?%ZaO%_<C*$&W44WXT
+z)BNz=0eX-8f(;ZOZF(K0gwX%cYSgGvqehJympFd|TI4+^s?y>F00000NkvXXu0mjf
+Dv2eaI
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_3d_side_walk_1.png b/chambers/axiom_warden/assets/john_rod_3d_side_walk_1.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..25c063b556b05c301629c472c13a3f015e3ae5bb
+GIT binary patch
+literal 1724
+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
+SBxPj)0000<MNUMnLSTY}5F(TS
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_3d_side_walk_2.png b/chambers/axiom_warden/assets/john_rod_3d_side_walk_2.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..ea6fda2719ed447003bb49b597a65560a8e5cb53
+GIT binary patch
+literal 1663
+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
+JPDHLkV1iZ>76$+T
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/assets/john_rod_idle.png b/chambers/axiom_warden/assets/john_rod_idle.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..e1d06220ad5cf31efcf5eca8613ca77c57061b1a
+GIT binary patch
+literal 1699
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/chambers/axiom_warden/scripts/encounter.gd b/chambers/axiom_warden/scripts/encounter.gd
+new file mode 100644
+index 0000000..4d02566
+--- /dev/null
++++ b/chambers/axiom_warden/scripts/encounter.gd
+@@ -0,0 +1,442 @@
++extends Node3D
++## Five successful strikes, false defeat, one revival, one finishing strike.
++signal boss_hit(total: int)
++signal chamber_completed
++
++const Geo = preload("res://chambers/axiom_warden/scripts/geometry.gd")
++const Player = preload("res://chambers/axiom_warden/scripts/player.gd")
++const Warden = preload("res://chambers/axiom_warden/scripts/warden.gd")
++const Hazard = preload("res://chambers/axiom_warden/scripts/hazard.gd")
++const Hud = preload("res://chambers/axiom_warden/scripts/hud.gd")
++const START: Vector3 = Vector3(-35, -2.35, 0)
++const CHECKPOINT: Vector3 = Vector3(-8, 0.06, 0)
++const TITLES: Array[String] = ["I / THE MEASURE", "II / THE EDGE", "III / THE PLANE", "IV / THE VOLUME", "V / THE FRACTURE", "VI / LAST DECREE"]
++const TAUNTS: Array[String] = ["A line can still cut stone.", "Then I shall sweep away your hiding place.", "You slip between my laws...", "I will close every path.", "The seal... cannot... break."]
++
++var player: Player
++var boss: Warden
++var hud: Hud
++var camera: Camera3D
++var hazards: Node3D
++var state: String = "approach"
++var hits: int = 0
++var health: int = 3
++var phase_time: float = 0
++var state_time: float = 0
++var next_event: int = 0
++var pattern: Array[Dictionary] = []
++var pattern_end: float = 0
++var core_open: bool = false
++var arena_checkpoint: bool = false
++var platform_checkpoint: Vector3 = START
++var dialogue_pages: Array[Dictionary] = []
++var dialogue_index: int = 0
++var dialogue_reason: String = "intro"
++var defeated_count: int = 0
++var gate: MeshInstance3D
++var exit_seal: MeshInstance3D
++var focus: Vector3 = START
++var camera_blend: float = 1
++var message_timer: float = 0
++var auto_start: bool = false
++
++func _ready() -> void:
++	_build_world()
++	player = Player.new()
++	player.name = "Player"
++	player.position = START
++	add_child(player)
++	player.struck.connect(try_strike)
++	player.fell.connect(_fall)
++	player.mode_changed.connect(_dimension_changed)
++	player.notice.connect(show_message)
++	boss = Warden.new()
++	boss.name = "AxiomWarden"
++	boss.position = Vector3(9, 0, 0)
++	add_child(boss)
++	hazards = Node3D.new()
++	hazards.name = "Hazards"
++	add_child(hazards)
++	var canvas: CanvasLayer = CanvasLayer.new()
++	canvas.name = "EncounterHUD"
++	add_child(canvas)
++	hud = Hud.new()
++	canvas.add_child(hud)
++	hud.advance_requested.connect(advance_dialogue)
++	hud.skip_requested.connect(skip_dialogue)
++	hud.pause_requested.connect(toggle_pause)
++	hud.retry_requested.connect(retry)
++	hud.voice_tick.connect(func() -> void: sfx("typewriter"))
++	camera = Camera3D.new()
++	camera.name = "ChamberCamera"
++	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
++	camera.size = 9.5
++	camera.current = true
++	add_child(camera)
++	_sync_health()
++	var global: Node = get_node_or_null("/root/Global")
++	if global:
++		global.set("current_chamber_id", "axiom_warden")
++		global.set("rewind_unlocked", false)
++		global.set("is_rewinding", false)
++	_dimension_changed(3)
++	var transition: Node = get_node_or_null("/root/SceneTransition")
++	if transition and transition.has_method("fade_in_from_black"):
++		transition.call("fade_in_from_black", 0.4)
++	_update_camera(1.0)
++
++func _build_world() -> void:
++	var stone: Material = Geo.material(Color("6c4b2a"))
++	var tile_a: Material = Geo.material(Color("927043"))
++	var tile_b: Material = Geo.material(Color("89653a"))
++	var gold: Material = Geo.material(Color("d0a156"))
++	var dark: Material = Geo.material(Color("362617"))
++	var cyan: Material = Geo.material(Color("48cbbf"), true)
++	var environment_node: WorldEnvironment = WorldEnvironment.new()
++	var env: Environment = Environment.new()
++	env.background_mode = Environment.BG_COLOR
++	env.background_color = Color("170f09")
++	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
++	env.ambient_light_color = Color("d6b78a")
++	env.ambient_light_energy = 0.65
++	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
++	environment_node.environment = env
++	add_child(environment_node)
++	var light: DirectionalLight3D = DirectionalLight3D.new()
++	light.rotation_degrees = Vector3(-55, -35, 0)
++	light.light_color = Color("ffe0ac")
++	light.light_energy = 1.15
++	light.shadow_enabled = true
++	add_child(light)
++	# A short four-terrace ascent, generous landings, one-unit gaps, 0.6-unit rises.
++	var terraces: Array[Vector3] = [Vector3(-33, -2.4, 8), Vector3(-26, -1.8, 4), Vector3(-21, -1.2, 4), Vector3(-16, -0.6, 4)]
++	for t: Vector3 in terraces:
++		Geo.box(self, Vector3(t.x, t.y - 1.5, 0), Vector3(t.z, 3, 5.5), stone, true)
++		Geo.box(self, Vector3(t.x, t.y - 0.05, 0), Vector3(t.z + 0.08, 0.1, 5.6), gold)
++		for x: int in int(t.z):
++			for z: int in 5:
++				Geo.box(self, Vector3(t.x - t.z / 2 + x + 0.5, t.y + 0.015, z - 2.0), Vector3(0.96, 0.035, 0.96), tile_a if (x + z) % 2 == 0 else tile_b)
++	Geo.box(self, Vector3(1, -1.0, 0), Vector3(28, 2, 14), stone, true)
++	for x: int in 14:
++		for z: int in 7:
++			Geo.box(self, Vector3(-12 + x * 2, 0.012, -6 + z * 2), Vector3(1.96, 0.025, 1.96), tile_a if (x + z) % 2 == 0 else tile_b)
++	# Visible rails are useful shelter from HIGH attacks, but LOW attacks intersect them.
++	for z: float in [-4.0, 0.0, 4.0]:
++		Geo.box(self, Vector3(1.3, 0.04, z), Vector3(24.5, 0.06, 0.30), dark)
++		Geo.box(self, Vector3(1.3, 0.08, z), Vector3(24.5, 0.035, 0.065), cyan)
++		for x: float in [-10.8, 13.4]:
++			Geo.box(self, Vector3(x, 0.08, z), Vector3(0.45, 0.08, 0.5), gold)
++	for z: float in [-7.0, 7.0]:
++		Geo.box(self, Vector3(1, 0.16, z), Vector3(28.4, 0.32, 0.3), gold)
++	for x: float in [-11.0, -5.0, 1.0, 7.0, 13.0]:
++		Geo.box(self, Vector3(x, 2.2, -8), Vector3(1.0, 4.4, 1.0), stone)
++		Geo.box(self, Vector3(x, 4.45, -8), Vector3(1.35, 0.24, 1.35), gold)
++		Geo.box(self, Vector3(x, 2.5, -7.47), Vector3(0.13, 1.6, 0.05), gold)
++		Geo.ring(self, Vector3(x, 3.45, -7.4), 0.23, 0.025, gold).rotation_degrees.x = 90
++	Geo.box(self, Vector3(1, 0.7, -8), Vector3(27, 1.4, 0.55), dark)
++	# End portal and its seal stay closed until the sixth, final strike.
++	for z: float in [-2.1, 2.1]:
++		Geo.box(self, Vector3(14.5, 2.5, z), Vector3(0.8, 5, 0.8), stone)
++	Geo.box(self, Vector3(14.5, 5, 0), Vector3(1, 0.4, 5.1), gold)
++	exit_seal = Geo.box(self, Vector3(14.5, 2.0, 0), Vector3(0.15, 4.0, 3.4), Geo.material(Color("39685d"), true))
++	gate = Geo.box(self, Vector3(-12.7, 1.7, 0), Vector3(0.18, 3.4, 5.5), Geo.material(Color("367d75"), true))
++	gate.visible = false
++	var ring: MeshInstance3D = Geo.ring(self, Vector3(9, 0.06, 0), 2.5, 0.035, gold)
++	ring.name = "WardenDais"
++	var checkpoint_ring: MeshInstance3D = Geo.ring(self, Vector3(-8, 0.04, 0), 0.65, 0.045, cyan)
++	checkpoint_ring.name = "Checkpoint"
++
++func _physics_process(delta: float) -> void:
++	state_time += delta
++	message_timer = maxf(0, message_timer - delta)
++	if state == "approach":
++		if player.position.x > -27 and player.is_on_floor(): platform_checkpoint = Vector3(-26, -1.75, 0)
++		if player.position.x > -22 and player.is_on_floor(): platform_checkpoint = Vector3(-21, -1.15, 0)
++		if player.position.x > -17 and player.is_on_floor(): platform_checkpoint = Vector3(-16, -0.55, 0)
++		if player.position.x > -10.0 and player.is_on_floor(): begin_intro()
++	elif state == "draw_weapon":
++		player.armed = true
++		player.weapon.scale.x = clampf(state_time / 0.8, 0.05, 1.0)
++		if state_time > 1.4: begin_phase()
++	elif state == "combat" or state == "surge":
++		phase_time += delta
++		while next_event < pattern.size() and phase_time >= float(pattern[next_event].time):
++			spawn_attack(str(pattern[next_event].kind))
++			next_event += 1
++		if phase_time >= pattern_end:
++			clear_hazards()
++			core_open = true
++			boss.exposed = true
++			boss.set_pose("idle")
++			_set_state("opening")
++			show_message("CORE EXPOSED — get close in 1D or 2D and press F.")
++			sfx("unlock")
++	elif state == "opening":
++		# Final opening remains available; early missed openings repeat the same phase.
++		if hits < 5 and state_time > 7.0: begin_phase()
++	elif state == "stagger":
++		if state_time > 1.25: begin_phase()
++	elif state == "false_defeat":
++		if state_time > 2.5: begin_revival()
++	elif state == "collapse":
++		if state_time > 2.0:
++			_set_state("victory")
++			hud.victory = true
++			exit_seal.visible = false
++			chamber_completed.emit()
++	if state in ["combat", "surge", "opening"] and player.mode == 3 and player.position.distance_to(boss.position) < 1.8:
++		# Contact is volumetric; all explicit weapon/energy hazards are geometric.
++		hurt_player()
++	_update_hud()
++
++func _process(delta: float) -> void:
++	_update_camera(delta)
++
++func _update_camera(delta: float) -> void:
++	if not is_instance_valid(camera): return
++	var in_arena: bool = state != "approach"
++	var flat: bool = player.mode == 2
++	var goal: Vector3 = Vector3(1.0, 1.6, 0) if in_arena else player.position + Vector3(2.2, 1.4, 0)
++	var target_size: float = (18.5 if not flat else 17.0) if in_arena else 9.5
++	if state in ["dialogue", "draw_weapon", "revival_dialogue"]:
++		goal = Vector3(1.0, 1.8, 0)
++		target_size = 15.5
++	focus = focus.lerp(goal, minf(delta * 5, 1.0))
++	camera_blend = lerpf(camera_blend, 0.0 if flat else 1.0, minf(delta * 7, 1))
++	var offset: Vector3 = Vector3(0, 0, 24).lerp(Vector3(-12, 15, 18), camera_blend)
++	camera.position = focus + offset
++	camera.look_at(focus)
++	camera.size = lerpf(camera.size, target_size, minf(delta * 5, 1))
++
++func _set_state(value: String) -> void:
++	state = value
++	state_time = 0
++
++func begin_intro() -> void:
++	arena_checkpoint = true
++	player.arena_active = true
++	player.locked = true
++	player.reset_at(CHECKPOINT)
++	health = 3
++	_sync_health()
++	gate.visible = true
++	dialogue_reason = "intro"
++	dialogue_pages = [
++		{"speaker": "AXIOM WARDEN", "text": "That watch held this sanctuary together. You pulled it free."},
++		{"speaker": "JOHN ROD", "text": "I didn't know. I'm trying to find a way out."},
++		{"speaker": "AXIOM WARDEN", "text": "Then return the Chrono-Lens. No stolen freedom passes this gate."},
++		{"speaker": "JOHN ROD", "text": "You want me to become a point again? ...No. I'm leaving on my own two feet."},
++		{"speaker": "AXIOM WARDEN", "text": "Hide in a line. Flatten into a plane. My blade and my light will still find you."},
++		{"speaker": "JOHN ROD", "text": "The watch is shaping something... A rod of light. All right. Let's see what it can do."}
++	]
++	dialogue_index = 0
++	_set_state("dialogue")
++	_show_page()
++
++func _show_page() -> void:
++	var page: Dictionary = dialogue_pages[dialogue_index]
++	hud.say(str(page.speaker), str(page.text))
++
++func advance_dialogue() -> void:
++	dialogue_index += 1
++	if dialogue_index >= dialogue_pages.size(): finish_dialogue()
++	else: _show_page()
++
++func skip_dialogue() -> void:
++	finish_dialogue()
++
++func finish_dialogue() -> void:
++	if state not in ["dialogue", "revival_dialogue"]: return
++	hud.dialogue_visible = false
++	if dialogue_reason == "intro":
++		_set_state("draw_weapon")
++		player.armed = true
++		player.weapon.scale.x = 0.05
++		sfx("transform")
++		show_message("John draws a rod of light from the Chrono-Lens.")
++	else:
++		boss.set_pose("revive")
++		begin_phase()
++
++func events_for_phase(index: int) -> Array[Dictionary]:
++	match index:
++		0: return [{"time": 1.0, "kind": "bolts"}, {"time": 3.5, "kind": "sweep"}]
++		1: return [{"time": 0.8, "kind": "sweep"}, {"time": 3.2, "kind": "beam"}, {"time": 5.4, "kind": "bolts"}]
++		2: return [{"time": 0.8, "kind": "beam"}, {"time": 3.2, "kind": "lane"}, {"time": 5.4, "kind": "sweep"}]
++		3: return [{"time": 0.8, "kind": "lane"}, {"time": 3.4, "kind": "bolts"}, {"time": 5.8, "kind": "beam"}, {"time": 8.0, "kind": "sweep"}]
++		4: return [{"time": 0.8, "kind": "sweep"}, {"time": 3.0, "kind": "beam"}, {"time": 5.2, "kind": "lane"}, {"time": 7.6, "kind": "bolts"}, {"time": 10.0, "kind": "sweep"}]
++	return [{"time": 1.0, "kind": "sweep"}, {"time": 3.3, "kind": "beam"}, {"time": 5.6, "kind": "bolts"}, {"time": 8.2, "kind": "lane"}, {"time": 10.5, "kind": "sweep"}, {"time": 12.8, "kind": "beam"}]
++
++func begin_phase() -> void:
++	player.locked = false
++	player.armed = true
++	player.weapon.scale = Vector3.ONE
++	core_open = false
++	boss.exposed = false
++	boss.set_pose("idle")
++	phase_time = 0
++	next_event = 0
++	pattern = events_for_phase(hits)
++	pattern_end = float(pattern[-1].time) + (4.6 if str(pattern[-1].kind) == "bolts" else 4.3)
++	_set_state("surge" if hits == 5 else "combat")
++	hud.fight_visible = true
++	show_message("FINAL SURGE — survive the last decree." if hits == 5 else TITLES[hits])
++
++func spawn_attack(kind: String) -> void:
++	boss.set_pose(kind)
++	match kind:
++		"sweep":
++			spawn_hazard("sweep", Vector3(9, 0.85, 0), 1.05, 3.0)
++			show_message("HIGH SWEEP — jump, or flatten onto a cyan rail with 1.")
++		"beam":
++			spawn_hazard("beam", Vector3(1, 0.20, player.position.z), 1.3, 0.65)
++			show_message("LOW LASER — 1D is exposed. Press 2 + SPACE, or sidestep in 3D.")
++		"lane":
++			spawn_hazard("lane", Vector3(1, 1.55, player.position.z), 1.45, 0.7)
++			show_message("DEPTH LOCK — press 3 and leave the amber floor lane.")
++		"bolts":
++			var count: int = 3 if hits < 3 else 5
++			for i: int in count:
++				var h: Hazard = spawn_hazard("bolt", Vector3(7.8, 0.95, (i - (count - 1) * 0.5) * 0.5), 0.85, 3.6)
++				var aim: Vector3 = player.position - h.position
++				aim.y = 0
++				h.direction = aim.normalized().rotated(Vector3.UP, (i - (count - 1) * 0.5) * 0.14)
++				h.speed = 6.5 + hits * 0.25
++			show_message("PRISM VOLLEY — jump in 2D, sidestep in 3D, or slide under in 1D.")
++	sfx("transform")
++
++func spawn_hazard(kind: String, at: Vector3, delay: float, lifetime: float) -> Hazard:
++	var hazard: Hazard = Hazard.new()
++	hazard.kind = kind
++	hazard.position = at
++	hazard.warning = delay
++	hazard.duration = lifetime
++	hazard.target = player
++	hazards.add_child(hazard)
++	hazard.hit_player.connect(hurt_player)
++	return hazard
++
++func try_strike() -> bool:
++	if not player.armed or player.locked or state not in ["combat", "opening", "surge"]: return false
++	if player.position.distance_to(Vector3(boss.position.x, player.position.y, boss.position.z)) > 2.8 or absf(player.position.y) > 1.4:
++		show_message("Get closer to the Warden, then press F.")
++		return false
++	if player.mode == 3:
++		show_message("3D armor deflects the rod. Strike in 1D or 2D.")
++		sfx("error")
++		return false
++	if not core_open:
++		show_message("Its core is sealed. Survive this pattern to expose it.")
++		return false
++	hits += 1
++	core_open = false
++	boss.exposed = false
++	clear_hazards()
++	boss_hit.emit(hits)
++	sfx("hurt")
++	if hits == 5:
++		boss.set_pose("fallen")
++		player.locked = true
++		_set_state("false_defeat")
++		show_message("The Warden falls silent...")
++	elif hits == 6:
++		boss.set_pose("dead")
++		player.locked = true
++		_set_state("collapse")
++		sfx("victory")
++		var global: Node = get_node_or_null("/root/Global")
++		if global:
++			global.set("rewind_unlocked", false)
++	else:
++		boss.set_pose("hit")
++		_set_state("stagger")
++		show_message(TAUNTS[hits - 1])
++	return true
++
++func begin_revival() -> void:
++	clear_hazards()
++	dialogue_reason = "revival"
++	dialogue_pages = [
++		{"speaker": "AXIOM WARDEN", "text": "Five seals broken... but my final law remains."},
++		{"speaker": "JOHN ROD", "text": "Of course it does."},
++		{"speaker": "AXIOM WARDEN", "text": "LET EVERY DIMENSION BURN."}
++	]
++	dialogue_index = 0
++	_set_state("revival_dialogue")
++	_show_page()
++
++func hurt_player() -> void:
++	if state not in ["combat", "surge", "opening"] or player.invulnerable > 0: return
++	health = maxi(0, health - 1)
++	player.invulnerable = 1.2
++	_sync_health()
++	sfx("hurt")
++	if health == 0:
++		clear_hazards()
++		player.locked = true
++		_set_state("defeated")
++		hud.defeated = true
++		defeated_count += 1
++
++func _fall() -> void:
++	if state == "approach":
++		player.reset_at(platform_checkpoint)
++		show_message("The watch catches you. Try the next jump again.")
++	else:
++		player.reset_at(CHECKPOINT)
++		player.invulnerable = 0
++		hurt_player()
++
++func retry() -> void:
++	if state != "defeated": return
++	clear_hazards()
++	hits = 0
++	health = 3
++	hud.defeated = false
++	hud.final_round = false
++	player.reset_at(CHECKPOINT)
++	player.arena_active = true
++	player.armed = true
++	boss.core.visible = true
++	_sync_health()
++	begin_phase()
++
++func toggle_pause() -> void:
++	hud.paused = not hud.paused
++	get_tree().paused = hud.paused
++
++func clear_hazards() -> void:
++	for hazard: Node in hazards.get_children():
++		hazard.set_physics_process(false)
++		hazards.remove_child(hazard)
++		hazard.queue_free()
++
++func _sync_health() -> void:
++	if is_instance_valid(hud): hud.health = health
++	var global: Node = get_node_or_null("/root/Global")
++	if global:
++		# Do not call Global.take_damage: its legacy defeat handler reloads the approach.
++		global.set("current_health", health)
++		global.emit_signal("health_changed", health)
++
++func _dimension_changed(mode: int) -> void:
++	var global: Node = get_node_or_null("/root/Global")
++	if global and global.has_method("set_dimension"):
++		global.call("set_dimension", 4 if mode == 3 else mode)
++	sfx("transform")
++
++func show_message(message: String) -> void:
++	if is_instance_valid(hud): hud.objective = message
++	message_timer = 3.0
++
++func _update_hud() -> void:
++	hud.health = health
++	hud.dimension = player.mode
++	hud.hits = hits
++	hud.final_round = hits >= 5 and state != "false_defeat"
++	hud.phase_name = TITLES[mini(hits, 5)]
++	if core_open: hud.phase_name += "  /  CORE OPEN — F"
++
++func sfx(cue: String) -> void:
++	var sound: Node = get_node_or_null("/root/SoundManager")
++	if sound and sound.has_method("play_sfx"): sound.call("play_sfx", cue)
+diff --git a/chambers/axiom_warden/scripts/geometry.gd b/chambers/axiom_warden/scripts/geometry.gd
+new file mode 100644
+index 0000000..a3fbf5c
+--- /dev/null
++++ b/chambers/axiom_warden/scripts/geometry.gd
+@@ -0,0 +1,44 @@
++extends RefCounted
++## Reusable, genuinely volumetric construction; collision never follows camera state.
++
++static func material(color: Color, glow: bool = false) -> StandardMaterial3D:
++	var m: StandardMaterial3D = StandardMaterial3D.new()
++	m.albedo_color = color
++	m.roughness = 0.85
++	if glow:
++		m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
++		m.emission_enabled = true
++		m.emission = color
++		m.emission_energy_multiplier = 1.4
++	return m
++
++static func box(parent: Node3D, at: Vector3, size: Vector3, mat: Material, solid: bool = false) -> MeshInstance3D:
++	var mesh: MeshInstance3D = MeshInstance3D.new()
++	var shape: BoxMesh = BoxMesh.new()
++	shape.size = size
++	mesh.mesh = shape
++	mesh.material_override = mat
++	mesh.position = at
++	parent.add_child(mesh)
++	if solid:
++		var body: StaticBody3D = StaticBody3D.new()
++		var collider: CollisionShape3D = CollisionShape3D.new()
++		var bounds: BoxShape3D = BoxShape3D.new()
++		bounds.size = size
++		collider.shape = bounds
++		body.add_child(collider)
++		mesh.add_child(body)
++	return mesh
++
++static func ring(parent: Node3D, at: Vector3, radius: float, thickness: float, mat: Material) -> MeshInstance3D:
++	var mesh: MeshInstance3D = MeshInstance3D.new()
++	var torus: TorusMesh = TorusMesh.new()
++	torus.inner_radius = radius - thickness
++	torus.outer_radius = radius + thickness
++	torus.rings = 40
++	torus.ring_segments = 8
++	mesh.mesh = torus
++	mesh.material_override = mat
++	mesh.position = at
++	parent.add_child(mesh)
++	return mesh
+diff --git a/chambers/axiom_warden/scripts/hazard.gd b/chambers/axiom_warden/scripts/hazard.gd
+new file mode 100644
+index 0000000..4c0805a
+--- /dev/null
++++ b/chambers/axiom_warden/scripts/hazard.gd
+@@ -0,0 +1,80 @@
++extends Node3D
++## Continuous collision in world space. No blanket immunity by dimension.
++const Geo = preload("res://chambers/axiom_warden/scripts/geometry.gd")
++signal hit_player
++var kind: String = "beam"
++var warning: float = 1.15
++var duration: float = 0.7
++var age: float = 0.0
++var direction: Vector3 = Vector3.LEFT
++var speed: float = 7.0
++var radius: float = 0.3
++var previous_radius: float = 0.3
++var previous_position: Vector3
++var damaged: bool = false
++var target: CharacterBody3D
++var visual: MeshInstance3D
++var warning_mat: StandardMaterial3D
++var active_mat: StandardMaterial3D
++
++func _ready() -> void:
++	warning_mat = Geo.material(Color("d9973e"), true)
++	active_mat = Geo.material(Color("60f8ed"), true)
++	previous_position = global_position
++	match kind:
++		"beam": visual = Geo.box(self, Vector3.ZERO, Vector3(25, 0.07, 0.12), warning_mat)
++		"lane": visual = Geo.box(self, Vector3(0, -position.y + 0.035, 0), Vector3(25, 0.04, 1.5), warning_mat)
++		"sweep": visual = Geo.ring(self, Vector3.ZERO, 1.0, 0.05, warning_mat)
++		"bolt": visual = Geo.box(self, Vector3.ZERO, Vector3(0.38, 0.38, 0.38), active_mat)
++		"body": visual = Geo.ring(self, Vector3.ZERO, 1.8, 0.07, warning_mat)
++
++func is_dangerous() -> bool:
++	return age >= warning and age < warning + duration
++
++func intersects(feet: Vector3, height: float, player_radius: float, player_mode: int) -> bool:
++	if not is_dangerous(): return false
++	var low: float = feet.y
++	var high: float = feet.y + height
++	if player_mode == 1:
++		low -= 0.065
++		high = low + 0.13
++	match kind:
++		"beam":
++			return absf(feet.x - global_position.x) < 12.5 + player_radius and absf(feet.z - global_position.z) < 0.2 + player_radius and low < global_position.y + 0.14 and high > global_position.y - 0.14
++		"lane":
++			return absf(feet.x - global_position.x) < 12.5 + player_radius and absf(feet.z - global_position.z) < 0.75 + player_radius and low < 3.3
++		"sweep":
++			var dist: float = Vector2(feet.x - global_position.x, feet.z - global_position.z).length()
++			return dist >= previous_radius - player_radius - 0.16 and dist <= radius + player_radius + 0.16 and low < global_position.y + 0.15 and high > global_position.y - 0.15
++		"bolt":
++			var center: Vector3 = feet + Vector3.UP * (height * 0.5 if player_mode != 1 else 0.0)
++			var closest: Vector3 = Geometry3D.get_closest_point_to_segment(center, previous_position, global_position)
++			return Vector2(center.x - closest.x, center.z - closest.z).length() < player_radius + 0.22 and low < closest.y + 0.22 and high > closest.y - 0.22
++		"body":
++			return player_mode == 3 and feet.distance_to(global_position) < 1.9
++	return false
++
++func _physics_process(delta: float) -> void:
++	age += delta
++	previous_position = global_position
++	previous_radius = radius
++	if is_dangerous():
++		visual.material_override = active_mat
++		if kind == "bolt":
++			global_position += direction * speed * delta
++			visual.rotation += Vector3(1, 2, 1) * delta
++		elif kind == "sweep":
++			radius = 1.0 + (age - warning) * speed
++			visual.scale = Vector3(radius, 1, radius)
++		elif kind == "lane":
++			visual.position.y = 0
++			visual.scale.y = 75
++		elif kind == "beam":
++			visual.scale = Vector3(1, 3.0, 2.5)
++	elif kind == "sweep":
++		visual.scale = Vector3(1.7, 1, 1.7)
++	if is_instance_valid(target) and not damaged and intersects(target.global_position, 1.14, 0.19, int(target.get("mode"))):
++		damaged = true
++		hit_player.emit()
++	if age > warning + duration:
++		queue_free()
+diff --git a/chambers/axiom_warden/scripts/hud.gd b/chambers/axiom_warden/scripts/hud.gd
+new file mode 100644
+index 0000000..0a6af88
+--- /dev/null
++++ b/chambers/axiom_warden/scripts/hud.gd
+@@ -0,0 +1,133 @@
++extends Control
++signal advance_requested
++signal skip_requested
++signal pause_requested
++signal retry_requested
++signal voice_tick
++
++var health: int = 3
++var dimension: int = 3
++var hits: int = 0
++var fight_visible: bool = false
++var final_round: bool = false
++var objective: String = "Reach the upper sanctum."
++var phase_name: String = "THE ASCENT"
++var hint: String = "A/D move   W/S depth   SPACE jump   1/2/3 form   F strike   ESC pause"
++var dialogue_visible: bool = false
++var speaker: String = ""
++var text_body: String = ""
++var revealed: float = 0
++var paused: bool = false
++var defeated: bool = false
++var victory: bool = false
++var line_label: Label
++var age: float = 0
++var font: Font
++
++func _ready() -> void:
++	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
++	mouse_filter = Control.MOUSE_FILTER_IGNORE
++	process_mode = Node.PROCESS_MODE_ALWAYS
++	font = ThemeDB.fallback_font
++	line_label = Label.new()
++	line_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
++	line_label.add_theme_font_size_override("font_size", 23)
++	line_label.add_theme_color_override("font_color", Color("f3eddc"))
++	line_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
++	add_child(line_label)
++
++func say(who: String, words: String) -> void:
++	speaker = who
++	text_body = words
++	revealed = 0
++	dialogue_visible = true
++
++func _process(delta: float) -> void:
++	age += delta
++	if dialogue_visible:
++		var previous: int = int(revealed)
++		if previous < text_body.length():
++			var rate: float = 29.0
++			if previous > 0 and text_body[previous - 1] in [".", "?", "!", ","]:
++				rate = 5.0
++			revealed = minf(text_body.length(), revealed + delta * rate)
++			if int(revealed) != previous and int(revealed) % 3 == 0:
++				voice_tick.emit()
++	line_label.visible = dialogue_visible
++	line_label.position = Vector2(190, size.y - 170)
++	line_label.size = Vector2(maxf(200, size.x - 260), 112)
++	line_label.text = "* " + text_body.substr(0, int(revealed))
++	queue_redraw()
++
++func _unhandled_input(event: InputEvent) -> void:
++	var pressed: bool = event is InputEventKey and event.pressed and not event.echo
++	var key: int = 0
++	if pressed:
++		key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
++	var clicked: bool = event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT
++	if dialogue_visible:
++		if pressed and key == KEY_ESCAPE:
++			skip_requested.emit()
++			get_viewport().set_input_as_handled()
++		elif clicked or (pressed and key in [KEY_SPACE, KEY_ENTER, KEY_Z]):
++			if revealed < text_body.length(): revealed = text_body.length()
++			else: advance_requested.emit()
++			get_viewport().set_input_as_handled()
++	elif pressed and key == KEY_ENTER and defeated:
++		retry_requested.emit()
++		get_viewport().set_input_as_handled()
++	elif pressed and key == KEY_ESCAPE and not defeated and not victory:
++		pause_requested.emit()
++		get_viewport().set_input_as_handled()
++
++func label(at: Vector2, words: String, color: Color = Color("e9d8b2"), font_size: int = 18) -> void:
++	draw_string(font, at, words, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, color)
++
++func _draw() -> void:
++	var w: float = size.x
++	var h: float = size.y
++	draw_rect(Rect2(0, 0, w, 70), Color(0.055, 0.035, 0.02, 0.92))
++	draw_line(Vector2(0, 70), Vector2(w, 70), Color("8c6835"), 2)
++	label(Vector2(24, 29), "02 / THE AXIOM SANCTUM", Color("e4bd73"), 20)
++	label(Vector2(24, 54), objective, Color("c9bea4"), 16)
++	label(Vector2(w - 250, 30), "%dD   /   JOHN ROD" % dimension, Color("6af3e8"), 18)
++	for i: int in 3:
++		label(Vector2(w - 135 + i * 34, 58), "♥", Color("ec574b") if i < health else Color("574238"), 27)
++	draw_rect(Rect2(0, h - 32, w, 32), Color(0.04, 0.025, 0.015, 0.94))
++	label(Vector2(24, h - 10), hint, Color("c9bea4"), 16)
++	if fight_visible and not dialogue_visible:
++		var x: float = w * 0.18
++		var bw: float = w * 0.64
++		label(Vector2(x, h - 84), "AXIOM WARDEN  /  " + phase_name, Color("f1d8a2"), 18)
++		draw_rect(Rect2(x - 3, h - 73, bw + 6, 25), Color("d6b572"))
++		draw_rect(Rect2(x, h - 70, bw, 19), Color("30211c"))
++		var count: int = 1 if final_round else 5
++		var remaining: int = (1 if hits < 6 else 0) if final_round else maxi(0, 5 - hits)
++		for i: int in remaining:
++			draw_rect(Rect2(x + i * bw / count + 2, h - 68, bw / count - 4, 15), Color("f39540") if final_round else Color("bc4637"))
++	if dialogue_visible:
++		var rect: Rect2 = Rect2(32, h - 231, w - 64, 188)
++		draw_rect(rect.grow(5), Color.WHITE)
++		draw_rect(rect.grow(2), Color.BLACK)
++		draw_rect(rect, Color.WHITE, false, 2)
++		draw_rect(rect.grow(-3), Color.BLACK)
++		label(Vector2(190, h - 190), speaker, Color("f1c981"), 21)
++		var center: Vector2 = Vector2(105, h - 157)
++		if speaker == "JOHN ROD":
++			# John has a hollow head and wire limbs, never a human face.
++			draw_arc(center, 22, 0, TAU, 32, Color("dee3e7"), 4)
++			draw_line(center + Vector2(0, 23), center + Vector2(0, 71), Color("dee3e7"), 4)
++			draw_polyline(PackedVector2Array([center + Vector2(0, 31), center + Vector2(-25, 46), center + Vector2(-8, 61)]), Color("dee3e7"), 4)
++			draw_polyline(PackedVector2Array([center + Vector2(0, 31), center + Vector2(24, 45), center + Vector2(35, 25)]), Color("dee3e7"), 4)
++		else:
++			draw_arc(center, 41, 0, TAU, 12, Color("ba8a39"), 5)
++			draw_rect(Rect2(center - Vector2(24, 30), Vector2(48, 68)), Color("75502a"))
++			draw_rect(Rect2(center - Vector2(24, 30), Vector2(48, 68)), Color("ddb464"), false, 3)
++			draw_line(center - Vector2(0, 18), center + Vector2(0, 24), Color("4aeada"), 5)
++		label(Vector2(w - 265, h - 57), "Z / SPACE / ENTER    ▾", Color("b8b4ac"), 14)
++	if paused or defeated or victory:
++		draw_rect(Rect2(Vector2.ZERO, size), Color(0.02, 0.015, 0.01, 0.72))
++		var title: String = "PAUSED" if paused else ("THE WARDEN HAS FALLEN" if victory else "THE WATCH STILL TICKS")
++		label(Vector2(w * 0.27, h * 0.44), title, Color("f4d69d"), 34)
++		var detail: String = "ESC to return" if paused else ("Chamber complete. Time remains sealed for now." if victory else "ENTER to retry at the arena checkpoint")
++		label(Vector2(w * 0.27, h * 0.51), detail, Color("e3dbca"), 20)
+diff --git a/chambers/axiom_warden/scripts/player.gd b/chambers/axiom_warden/scripts/player.gd
+new file mode 100644
+index 0000000..895aa17
+--- /dev/null
++++ b/chambers/axiom_warden/scripts/player.gd
+@@ -0,0 +1,202 @@
++extends CharacterBody3D
++signal struck
++signal fell
++signal mode_changed(value: int)
++signal notice(message: String)
++
++const Geo = preload("res://chambers/axiom_warden/scripts/geometry.gd")
++const ART: String = "res://chambers/axiom_warden/assets/"
++const SPEED: float = 5.4
++const GRAVITY: float = 18.0
++const JUMP: float = 6.5
++var mode: int = 3
++var plane_z: float = 0.0
++var locked: bool = false
++var armed: bool = false
++var arena_active: bool = false
++var input_override: bool = false
++var move_input: Vector2 = Vector2.ZERO
++var override_jump: bool = false
++var invulnerable: float = 0.0
++var attack_timer: float = 0.0
++var swing_time: float = 0.0
++var jump_buffer: float = 0.0
++var coyote: float = 0.0
++var age: float = 0.0
++var facing: float = 1.0
++var sprite: Sprite3D
++var shape_node: CollisionShape3D
++var humanoid: CapsuleShape3D
++var rod: BoxShape3D
++var weapon: Node3D
++var textures: Dictionary = {}
++
++func _ready() -> void:
++	floor_snap_length = 0.18
++	humanoid = CapsuleShape3D.new()
++	humanoid.radius = 0.19
++	humanoid.height = 1.14
++	rod = BoxShape3D.new()
++	rod.size = Vector3(0.62, 0.13, 0.13)
++	shape_node = CollisionShape3D.new()
++	shape_node.shape = humanoid
++	shape_node.position.y = 0.58
++	add_child(shape_node)
++	sprite = Sprite3D.new()
++	sprite.pixel_size = 0.024
++	sprite.position.y = 0.576
++	sprite.billboard = BaseMaterial3D.BILLBOARD_ENABLED
++	sprite.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
++	sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
++	add_child(sprite)
++	weapon = Node3D.new()
++	weapon.position = Vector3(0.25, 0.64, 0)
++	add_child(weapon)
++	Geo.box(weapon, Vector3(0.42, 0, 0), Vector3(1.25, 0.06, 0.06), Geo.material(Color("fff2bd"), true))
++	Geo.box(weapon, Vector3(-0.15, 0, 0), Vector3(0.22, 0.1, 0.1), Geo.material(Color("997137")))
++	weapon.visible = false
++	_update_sprite()
++
++func _unhandled_key_input(event: InputEvent) -> void:
++	if locked or not event is InputEventKey or not event.pressed or event.echo:
++		return
++	var key: int = event.physical_keycode if event.physical_keycode != 0 else event.keycode
++	match key:
++		KEY_1: request_mode(1)
++		KEY_2: request_mode(2)
++		KEY_3: request_mode(3)
++		KEY_Q: request_mode(3 if mode == 1 else mode - 1)
++		KEY_E: request_mode(1 if mode == 3 else mode + 1)
++		KEY_SPACE: jump_buffer = 0.14
++		KEY_F: strike()
++
++func strike() -> bool:
++	if locked or not armed or attack_timer > 0:
++		return false
++	attack_timer = 0.45
++	swing_time = 0.24
++	struck.emit()
++	return true
++
++func request_mode(target: int) -> bool:
++	if locked or target < 1 or target > 3:
++		return false
++	if target == mode:
++		return true
++	if target == 1:
++		# Three visible parallel rails cross the arena. No mid-air teleport onto a rail.
++		var nearest: float = roundf(position.z / 4.0) * 4.0
++		if not arena_active or not is_on_floor() or absf(position.z - nearest) > 0.48 or absf(nearest) > 4.1:
++			notice.emit("1D needs a cyan floor rail. Align first, then press 1.")
++			return false
++		plane_z = nearest
++		position.z = nearest
++		position.y = 0.2
++		shape_node.shape = rod
++		shape_node.position.y = 0
++	else:
++		var at: Vector3 = position
++		if mode == 1:
++			at.y = 0.05
++		var query: PhysicsShapeQueryParameters3D = PhysicsShapeQueryParameters3D.new()
++		query.shape = humanoid
++		query.transform = Transform3D(Basis.IDENTITY, at + Vector3(0, 0.6, 0))
++		query.exclude = [get_rid()]
++		query.collision_mask = 1
++		if not get_world_3d().direct_space_state.intersect_shape(query, 1).is_empty():
++			notice.emit("No clearance to expand here.")
++			return false
++		position = at
++		plane_z = at.z
++		shape_node.shape = humanoid
++		shape_node.position.y = 0.58
++		if mode == 1:
++			coyote = 0.12
++	# Keep upward momentum when switching 2D/3D during a jump.
++	if target == 1:
++		velocity = Vector3.ZERO
++	mode = target
++	mode_changed.emit(mode)
++	_update_sprite()
++	return true
++
++func _physics_process(delta: float) -> void:
++	age += delta
++	invulnerable = maxf(0, invulnerable - delta)
++	attack_timer = maxf(0, attack_timer - delta)
++	swing_time = maxf(0, swing_time - delta)
++	weapon.visible = armed
++	weapon.position.y = 0.02 if mode == 1 else 0.64
++	weapon.rotation.z = sin((0.24 - swing_time) / 0.24 * PI) * 1.3 if swing_time > 0 else -0.25
++	weapon.rotation.y = 0 if facing > 0 else PI
++	if locked:
++		velocity = Vector3.ZERO
++		_update_sprite()
++		return
++	if not input_override:
++		move_input = Vector2(float(Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT)) - float(Input.is_physical_key_pressed(KEY_A) or Input.is_physical_key_pressed(KEY_LEFT)), float(Input.is_physical_key_pressed(KEY_S) or Input.is_physical_key_pressed(KEY_DOWN)) - float(Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP)))
++	if absf(move_input.x) > 0.1:
++		facing = signf(move_input.x)
++	if mode == 1:
++		velocity = Vector3(move_input.x * 7.0, 0, 0)
++		move_and_slide()
++		position.x = clampf(position.x, -10.8, 13.4)
++		position.y = 0.2
++		position.z = plane_z
++	else:
++		var direction: Vector3 = Vector3(move_input.x, 0, move_input.y if mode == 3 else 0.0)
++		if mode == 3:
++			direction = direction.rotated(Vector3.UP, deg_to_rad(-35.0))
++		direction = direction.limit_length(1.0)
++		velocity.x = direction.x * SPEED
++		velocity.z = direction.z * SPEED
++		coyote = 0.11 if is_on_floor() else maxf(0, coyote - delta)
++		jump_buffer = maxf(0, jump_buffer - delta)
++		if override_jump:
++			jump_buffer = 0.14
++			override_jump = false
++		if jump_buffer > 0 and coyote > 0:
++			velocity.y = JUMP
++			jump_buffer = 0
++			coyote = 0
++		else:
++			velocity.y -= GRAVITY * delta
++		move_and_slide()
++		if mode == 2:
++			position.z = plane_z
++		if arena_active:
++			position.x = clampf(position.x, -10.8, 13.4)
++			position.z = clampf(position.z, -6.1, 6.1)
++	if position.y < -6:
++		fell.emit()
++	_update_sprite()
++
++func reset_at(at: Vector3) -> void:
++	position = at
++	velocity = Vector3.ZERO
++	mode = 3
++	plane_z = at.z
++	shape_node.shape = humanoid
++	shape_node.position.y = 0.58
++	move_input = Vector2.ZERO
++	jump_buffer = 0
++	invulnerable = 1.5
++	mode_changed.emit(mode)
++
++func _update_sprite() -> void:
++	var moving: bool = move_input.length() > 0.1 and not locked
++	var file: String = "john_rod_3d_iso_idle.png"
++	if mode == 1:
++		file = "john_rod_1d_rod_active.png" if moving else "john_rod_1d_rod.png"
++	elif mode == 2:
++		file = "john_rod_2d_walk_%d.png" % (1 + int(age * 9) % 4) if moving else "john_rod_2d_idle.png"
++		if not is_on_floor() and not locked:
++			file = "john_rod_2d_jump.png"
++	elif moving:
++		file = "john_rod_3d_iso_walk_%d.png" % (1 + int(age * 7) % 2)
++	if not textures.has(file):
++		textures[file] = load(ART + file)
++	sprite.texture = textures[file]
++	sprite.position.y = 0 if mode == 1 else 0.576
++	sprite.flip_h = facing < 0
++	sprite.visible = invulnerable <= 0 or int(invulnerable * 15) % 2 == 0
+diff --git a/chambers/axiom_warden/scripts/sound.gd b/chambers/axiom_warden/scripts/sound.gd
+new file mode 100644
+index 0000000..77d577f
+--- /dev/null
++++ b/chambers/axiom_warden/scripts/sound.gd
+@@ -0,0 +1,40 @@
++extends Node
++## Small synthesized cues for the standalone demo; the full game keeps its SoundManager.
++var voices: Array[AudioStreamPlayer] = []
++var next_voice: int = 0
++var clips: Dictionary = {}
++
++func _ready() -> void:
++	for i: int in 6:
++		var voice: AudioStreamPlayer = AudioStreamPlayer.new()
++		voice.volume_db = -17
++		add_child(voice)
++		voices.append(voice)
++	for cue: String in ["typewriter", "transform", "error", "hurt", "unlock", "victory"]:
++		clips[cue] = synth(cue)
++
++func synth(cue: String) -> AudioStreamWAV:
++	var duration: float = 0.045 if cue == "typewriter" else 0.22
++	if cue == "victory": duration = 0.8
++	var frequencies: Dictionary = {"typewriter": 310.0, "transform": 540.0, "error": 130.0, "hurt": 95.0, "unlock": 780.0, "victory": 660.0}
++	var hz: float = frequencies[cue]
++	var samples: int = int(duration * 22050)
++	var bytes: PackedByteArray = PackedByteArray()
++	bytes.resize(samples * 2)
++	for i: int in samples:
++		var t: float = float(i) / 22050.0
++		var envelope: float = minf(t * 150, 1.0) * (1.0 - t / duration)
++		var wave: float = sin(TAU * hz * t + (t * t * 1600 if cue == "transform" else 0.0))
++		bytes.encode_s16(i * 2, int(wave * envelope * 12000))
++	var stream: AudioStreamWAV = AudioStreamWAV.new()
++	stream.format = AudioStreamWAV.FORMAT_16_BITS
++	stream.mix_rate = 22050
++	stream.data = bytes
++	return stream
++
++func play_sfx(cue: String) -> void:
++	if not clips.has(cue) or voices.is_empty(): return
++	var voice: AudioStreamPlayer = voices[next_voice]
++	next_voice = (next_voice + 1) % voices.size()
++	voice.stream = clips[cue]
++	voice.play()
+diff --git a/chambers/axiom_warden/scripts/warden.gd b/chambers/axiom_warden/scripts/warden.gd
+new file mode 100644
+index 0000000..248f8b1
+--- /dev/null
++++ b/chambers/axiom_warden/scripts/warden.gd
+@@ -0,0 +1,112 @@
++extends Node3D
++## Articulated 3D interpretation of the approved Axiom Warden sprite design.
++const Geo = preload("res://chambers/axiom_warden/scripts/geometry.gd")
++var torso: Node3D
++var axe_arm: Node3D
++var emitter_arm: Node3D
++var halo: MeshInstance3D
++var core: MeshInstance3D
++var left_door: Node3D
++var right_door: Node3D
++var core_light: OmniLight3D
++var age: float = 0.0
++var pose: String = "idle"
++var pose_time: float = 0.0
++var exposed: bool = false
++var stone: Material
++var brass: Material
++var dark: Material
++var energy: Material
++
++func block(parent: Node3D, at: Vector3, size: Vector3) -> MeshInstance3D:
++	Geo.box(parent, at - Vector3(0, size.y / 2, 0), Vector3(size.x + 0.06, 0.08, size.z + 0.06), dark)
++	var part: MeshInstance3D = Geo.box(parent, at + Vector3(0, 0.025, 0), size, stone)
++	Geo.box(parent, at + Vector3(0, size.y / 2, 0), Vector3(size.x + 0.04, 0.08, size.z + 0.04), brass)
++	return part
++
++func _ready() -> void:
++	stone = Geo.material(Color("896033"))
++	brass = Geo.material(Color("d1a24f"))
++	dark = Geo.material(Color("332416"))
++	energy = Geo.material(Color("4df9e8"), true)
++	for x: float in [-0.65, 0.65]:
++		block(self, Vector3(x, 0.25, 0.15), Vector3(0.95, 0.5, 1.3))
++		block(self, Vector3(x, 0.95, 0), Vector3(0.65, 0.9, 0.7))
++		block(self, Vector3(x, 1.65, 0), Vector3(0.7, 0.55, 0.75))
++	torso = Node3D.new()
++	torso.position.y = 1.85
++	add_child(torso)
++	block(torso, Vector3(0, 0.15, 0), Vector3(1.4, 0.45, 0.9))
++	# Open cubic chest cage: front, back, and side edges enclose a floating core.
++	for x: float in [-0.67, 0.67]:
++		for z: float in [-0.52, 0.52]:
++			Geo.box(torso, Vector3(x, 1.0, z), Vector3(0.14, 1.45, 0.14), brass)
++	for y: float in [0.32, 1.7]:
++		for z: float in [-0.52, 0.52]:
++			Geo.box(torso, Vector3(0, y, z), Vector3(1.5, 0.14, 0.15), brass)
++		for x: float in [-0.67, 0.67]:
++			Geo.box(torso, Vector3(x, y, 0), Vector3(0.15, 0.14, 1.1), brass)
++	core = Geo.box(torso, Vector3(0, 1.0, 0), Vector3(0.53, 0.53, 0.53), energy)
++	core_light = OmniLight3D.new()
++	core_light.position = Vector3(0, 1.0, 0.7)
++	core_light.light_color = Color("52e5e1")
++	core_light.omni_range = 5.5
++	core_light.light_energy = 0.9
++	torso.add_child(core_light)
++	for side: int in [-1, 1]:
++		var door: Node3D = Node3D.new()
++		door.position = Vector3(side * 0.7, 1.0, 0.56)
++		torso.add_child(door)
++		Geo.box(door, Vector3(-side * 0.31, 0, 0), Vector3(0.59, 1.15, 0.13), brass)
++		Geo.box(door, Vector3(-side * 0.31, 0, 0.08), Vector3(0.45, 0.95, 0.05), stone)
++		if side < 0: left_door = door
++		else: right_door = door
++	block(torso, Vector3(0, 2.2, 0), Vector3(0.8, 0.95, 0.65))
++	Geo.box(torso, Vector3(0, 2.2, 0.35), Vector3(0.09, 0.65, 0.06), energy)
++	halo = Geo.ring(torso, Vector3(0, 2.22, -0.5), 0.94, 0.085, brass)
++	halo.rotation_degrees.x = 90
++	for side: int in [-1, 1]:
++		var arm: Node3D = Node3D.new()
++		arm.position = Vector3(side * 1.03, 1.5, 0)
++		torso.add_child(arm)
++		block(arm, Vector3(side * 0.22, -0.15, 0), Vector3(0.86, 0.92, 0.98))
++		block(arm, Vector3(side * 0.3, -1.0, 0.1), Vector3(0.62, 0.78, 0.65))
++		Geo.box(arm, Vector3(side * 0.3, -1.1, 0.46), Vector3(0.2, 0.22, 0.07), energy)
++		if side < 0: axe_arm = arm
++		else: emitter_arm = arm
++	Geo.box(axe_arm, Vector3(-0.45, -0.55, 0.5), Vector3(0.11, 3.9, 0.11), brass)
++	var blade: MeshInstance3D = Geo.box(axe_arm, Vector3(-0.82, 1.08, 0.5), Vector3(0.85, 1.2, 0.2), brass)
++	blade.rotation.z = -0.2
++	Geo.box(axe_arm, Vector3(-1.22, 1.1, 0.5), Vector3(0.06, 1.2, 0.22), Geo.material(Color("ffde86"), true))
++	rotation_degrees.y = -70
++
++func set_pose(value: String) -> void:
++	pose = value
++	pose_time = 0
++
++func _process(delta: float) -> void:
++	age += delta
++	pose_time += delta
++	core.rotation += Vector3(0.5, 0.7, 0.2) * delta
++	core.position.y = 1.0 + sin(age * 2.3) * 0.06
++	var open_angle: float = 1.3 if exposed else 0.22
++	left_door.rotation.y = lerpf(left_door.rotation.y, -open_angle, delta * 8)
++	right_door.rotation.y = lerpf(right_door.rotation.y, open_angle, delta * 8)
++	var knee: float = 0.0
++	var tilt: float = 0.0
++	var swing: float = -0.12
++	var palm: float = 0.0
++	match pose:
++		"sweep": swing = -1.8 if pose_time < 0.9 else sin(minf((pose_time - 0.9) * 5, PI)) * 1.6
++		"beam", "bolts", "lane": palm = -1.15
++		"hit": tilt = sin(minf(pose_time * 5, PI)) * -0.3
++		"fallen", "dead": knee = -1.05; tilt = 0.6
++		"revive": knee = lerpf(-1.05, 0, minf(pose_time, 1.0))
++	torso.position.y = lerpf(torso.position.y, 1.85 + knee + sin(age * 1.5) * 0.025, delta * 8)
++	torso.rotation.x = lerpf(torso.rotation.x, tilt, delta * 9)
++	axe_arm.rotation.z = lerpf(axe_arm.rotation.z, swing, delta * 10)
++	emitter_arm.rotation.x = lerpf(emitter_arm.rotation.x, palm, delta * 7)
++	core_light.light_energy = 0.0 if pose == "dead" else (1.7 if exposed else 0.8)
++	if pose == "dead":
++		core.visible = false
++		halo.rotation.z = lerpf(halo.rotation.z, 0.7, delta * 4)
+diff --git a/chambers/broken_circuit/scripts/demo.gd b/chambers/broken_circuit/scripts/demo.gd
+index d13de73..1682a4f 100644
+--- a/chambers/broken_circuit/scripts/demo.gd
++++ b/chambers/broken_circuit/scripts/demo.gd
+@@ -105,6 +105,9 @@ func _ready() -> void:
+ 		var g = get_node_or_null("/root/Global")
+ 		if g and "exit_open" in g:
+ 			g.exit_open = true
++		# Headless fixtures add Demo under root; only the live scene advances.
++		if get_tree().current_scene == self:
++			get_tree().create_timer(1.6).timeout.connect(_enter_axiom_sanctum)
+ 	)
+ 	chamber.plate_activated.connect(_plate_activated)
+ 	
+@@ -401,3 +404,9 @@ func _tone(frequency: float, duration: float) -> void:
+ 	add_child(audio)
+ 	audio.finished.connect(audio.queue_free)
+ 	audio.play()
++
++
++func _enter_axiom_sanctum() -> void:
++	if not is_inside_tree() or get_tree().current_scene != self:
++		return
++	get_tree().call_deferred("change_scene_to_file", "res://chambers/axiom_warden/AxiomWarden.tscn")
+diff --git a/docs/AXIOM_WARDEN.md b/docs/AXIOM_WARDEN.md
+new file mode 100644
+index 0000000..ac74242
+--- /dev/null
++++ b/docs/AXIOM_WARDEN.md
+@@ -0,0 +1,128 @@
++# Chamber 02 — The Axiom Sanctum
++
++A playable Godot source prototype for Degrees of Escape. Short platforming leads into a six-strike encounter with the Axiom Warden, a genuinely volumetric, articulated stone-and-brass sentinel. John remains the faceless chrome wire figure. The room uses warm umber stone, antique gold trims and cyan dimensional energy.
++
++**Validation status:** all new GDScript files passed `gdparse` syntax parsing. Resource references and packaging were checked locally. Godot runtime, graphics, physics and the automated encounter tests have NOT been executed. The local environment has no Godot binary; automatic approval review blocked uploading private source/assets to an external test service. Treat this as a source prototype awaiting an engine playtest, not a verified release.
++
++## Play
++
++Import `Standalone_Demo/project.godot` in Godot 4.4 or newer, then F6 the chamber or F5 the project. No plugins or external assets are required. Compatibility rendering is selected. The source is written for Godot 4.x; engine compatibility remains unverified.
++
++| Input | Action |
++|---|---|
++| WASD / arrows | Move; in 3D, movement follows the angled camera's ground axes |
++| Space | Jump in 2D or 3D |
++| 1 / 2 / 3 | Select dimension |
++| Q / E | Cycle dimensions |
++| F | Swing the rod; a nearby exposed core accepts a 1D or 2D strike |
++| Z / Space / Enter / click | Reveal dialogue, then advance |
++| Esc | Skip dialogue; otherwise pause/resume |
++| Enter after defeat | Retry at the arena checkpoint |
++
++1D requires a grounded position within 0.48 world units of a cyan rail. It has horizontal movement but no jump. Expand into 2D to jump a low beam, or 3D to leave a locked depth lane. 2D freezes the depth at which you entered it. Switching between 2D and 3D in the air preserves jump velocity. There is no blanket dimension-change invulnerability.
++
++## Layout and camera
++
++Coordinates use X for progression, Y for height and Z for depth. A world unit is a gameplay scale, not a pixel.
++
++| Area | X center | Width × depth | Top Y | Purpose |
++|---|---:|---:|---:|---|
++| Arrival | -33 | 8 × 5.5 | -2.4 | Safe start, camera-relative movement |
++| Terrace 1 | -26 | 4 × 5.5 | -1.8 | First short jump |
++| Terrace 2 | -21 | 4 × 5.5 | -1.2 | Repeat rising jump |
++| Terrace 3 | -16 | 4 × 5.5 | -0.6 | Final approach |
++| Arena | 1 | 28 × 14 | 0 | Spacious fight floor |
++| Warden | 9 | Approximately 4 × 3 | 0 | Stationary attack origin |
++| Exit arch | 14.5 | Across Z ±2.1 | 0 | Opens after the sixth strike |
++
++Four gaps are approximately one unit wide with 0.6-unit rises. John moves at 5.4 units/sec and jumps with initial velocity 6.5 under gravity 18: ideal apex 1.17 units, enough for each rise. These analytic dimensions still need physics playtesting.
++
++The approach camera follows John. The arena uses a fixed orthographic angled view, smoothly flattening into a side view for 2D. It frames the large floor rather than showing the entire approach as a distant diorama. Three rails cross the arena at Z = -4, 0 and 4. Rear pillars frame the arena; no foreground pillars hide the combat floor. The boss bar sits at the bottom. Dialogue temporarily occupies the lower screen.
++
++## Encounter sequence
++
++1. Cross the four terrace gaps. Falling returns John to his most recent landed terrace.
++2. Enter the arena. A checkpoint restores health; John and the Warden exchange six pages of dialogue.
++3. John draws a glowing rod from the Chrono-Lens over 1.4 seconds.
++4. Survive the current pattern. The chest doors open and the HUD says `CORE OPEN — F`.
++5. Approach within 2.8 units and press F in 1D or 2D. One successful strike closes the opening and advances the phase. A missed seven-second opening repeats that phase.
++6. Strike five produces a false defeat. The Warden kneels, goes silent, then declares its last law.
++7. Survive the last surge. Its final opening stays available until John lands strike six.
++8. The Warden collapses, the exit seal disappears and `chamber_completed` emits. The prototype stops on a completion overlay. Rewind remains locked; there is no 4D reward sequence yet.
++
++A core-opening window is intentional: standing beside the boss and repeatedly pressing F cannot skip its phases. F still swings whenever the weapon cooldown allows, with feedback explaining range, armor or the sealed core.
++
++## Attack language
++
++Amber means warning. Cyan means active energy. Every attack has at least 0.85 seconds of warning. Body contact alone only hurts 3D John; every explicit attack tests its world-space geometry against John's current shape.
++
++| Attack | Warning | Threat | Counters |
++|---|---:|---|---|
++| Prism volley | 0.85 s | Three, later five, straight projectiles at torso height | Slide under in 1D, jump, or sidestep in 3D |
++| High axe sweep | 1.05 s | Expanding ring at Y = 0.85 | Become 1D on a rail or time a jump |
++| Low laser | 1.30 s | Horizontal beam locked to John's depth when warned | Expand and jump, or leave that depth in 3D; 1D is vulnerable |
++| Depth lock | 1.45 s | Full-height strip at John's marked depth | Change to 3D and sidestep; jumping/1D alone cannot avoid it |
++
++| Strike to earn | Phase | Pattern |
++|---|---|---|
++| 1 | The Measure | Volley → high sweep |
++| 2 | The Edge | High sweep → low laser → volley |
++| 3 | The Plane | Low laser → depth lock → high sweep |
++| 4 | The Volume | Depth lock → volley → low laser → high sweep |
++| 5 | The Fracture | High sweep → low laser → depth lock → volley → high sweep |
++| 6 | Last Decree | High sweep → low laser → volley → depth lock → high sweep → low laser |
++
++Pattern timings live in `events_for_phase()` in `encounter.gd`. Warning positions lock when the attack starts. Projectiles do not home. No random unavoidable combinations are generated. Final balance and dodge timing require playtesting.
++
++## Story dialogue
++
++**Warden:** That watch held this sanctuary together. You pulled it free.
++
++**John:** I didn't know. I'm trying to find a way out.
++
++**Warden:** Then return the Chrono-Lens. No stolen freedom passes this gate.
++
++**John:** You want me to become a point again? ...No. I'm leaving on my own two feet.
++
++**Warden:** Hide in a line. Flatten into a plane. My blade and my light will still find you.
++
++**John:** The watch is shaping something... A rod of light. All right. Let's see what it can do.
++
++After strike five:
++
++**Warden:** Five seals broken... but my final law remains.
++
++**John:** Of course it does.
++
++**Warden:** LET EVERY DIMENSION BURN.
++
++## Integration
++
++Copy `Standalone_Demo/chambers/axiom_warden/` into your existing project's `chambers/` directory. Copy `Standalone_Demo/tools/verify_axiom_warden.gd` into your project's `tools/`. Keep your existing project settings and SoundManager.
++
++From the existing repository root, apply `Project_Update/chamber_exit.patch` with `git apply`. It adds a 1.6-second transition from Chamber 1 completion to `res://chambers/axiom_warden/AxiomWarden.tscn`. The patch was based on repository revision `3f6710114b7bf800be7452bb51fde9c8d5b38d73`; if your local file has changed, use the small patch as a manual merge reference. Do not replace your whole project with this demo.
++
++Append the two supplied documentation entries to the corresponding existing logs. The integration checks for optional `Global` and `SoundManager` autoloads. It synchronizes dimensions and health but avoids legacy `Global.take_damage()`, whose death handler reloads the entire scene. Arena retry is handled locally. Standalone audio uses six small synthesized cues.
++
++The chamber's scene constructs its meshes at runtime; it is editable through its GDScript dimensions/materials. It is not a baked mesh scene or a rigged GLB asset. The Warden is procedural 3D geometry, with John rendered as a Sprite3D over a real collision body.
++
++## Verification commands
++
++In the standalone demo:
++
++```sh
++godot --headless --editor --import --quit
++godot --headless --fixed-fps 60 --script tools/verify_axiom_warden.gd
++```
++
++After integrating into the full game, also run the repository's required checks:
++
++```sh
++godot --headless --script tools/verify_route.gd
++godot --headless --script tools/verify_new_features.gd
++godot --headless --script tools/verify_full_flow.gd
++```
++
++The new test exercises a real terrace jump, dimensional constraints, hazard collision, strike gating, all six hit transitions, actual final-surge spawning, retry and pause. Some earlier attack windows are set directly by the test to isolate hit transitions; it does not replace a complete human dodge playthrough. None of these engine tests were run in the authoring environment.
++
++Before release, confirm: full-screen arena framing in both camera modes; visible John at all depths; jump/switch timing for overlapping attacks; near/far audio levels; correct transition from the live first chamber; no regressions in the three existing tests.
+diff --git a/tools/verify_axiom_warden.gd b/tools/verify_axiom_warden.gd
+new file mode 100644
+index 0000000..f223167
+--- /dev/null
++++ b/tools/verify_axiom_warden.gd
+@@ -0,0 +1,153 @@
++extends SceneTree
++## Run: godot --headless --path . --script tools/verify_axiom_warden.gd
++const Encounter = preload("res://chambers/axiom_warden/scripts/encounter.gd")
++const Hazard = preload("res://chambers/axiom_warden/scripts/hazard.gd")
++var failures: int = 0
++var checks: int = 0
++var encounter: Encounter
++
++func _initialize() -> void:
++	call_deferred("run")
++
++func check(condition: bool, message: String) -> void:
++	checks += 1
++	if condition: print("PASS: ", message)
++	else:
++		failures += 1
++		push_error("FAIL: " + message)
++
++func frames(count: int) -> void:
++	for i: int in count: await physics_frame
++
++func run() -> void:
++	encounter = Encounter.new()
++	root.add_child(encounter)
++	await frames(10)
++	var p = encounter.player
++	p.input_override = true
++	check(p.is_on_floor(), "John starts on a collidable platform")
++	check(not p.armed, "Weapon stays hidden during the approach")
++	check(p.request_mode(2), "Side view is available on the approach")
++	check(not p.request_mode(1), "No rail teleport during the approach")
++	# Actual physics crossing of the first gap, with a rising destination.
++	p.position = Vector3(-29.6, -2.35, 0)
++	p.velocity = Vector3.ZERO
++	await frames(8)
++	p.move_input = Vector2.RIGHT
++	p.override_jump = true
++	await frames(38)
++	p.move_input = Vector2.ZERO
++	await frames(15)
++	check(p.position.x > -28.0 and p.is_on_floor(), "A normal jump reaches the next terrace")
++	encounter.begin_intro()
++	check(encounter.state == "dialogue" and p.locked, "Arena entry locks movement for dialogue")
++	check(encounter.dialogue_pages.size() == 6, "Six opening dialogue pages")
++	encounter.skip_dialogue()
++	check(encounter.state == "draw_weapon" and p.armed, "Dialogue leads into drawing the rod")
++	await frames(90)
++	check(encounter.state == "combat" and not p.locked, "Combat begins after drawing the rod")
++	p.invulnerable = 999.0
++	p.position = Vector3(-6, 0.06, 1.5)
++	await frames(8)
++	check(not p.request_mode(1), "1D requires alignment with a visible rail")
++	p.position.z = 0
++	await frames(8)
++	check(p.request_mode(1), "Grounded rail alignment enters 1D")
++	p.override_jump = true
++	await frames(3)
++	check(is_equal_approx(p.position.y, 0.2), "1D stays on its rail and cannot jump")
++	p.override_jump = false
++	check(p.request_mode(2), "1D can expand into 2D")
++	await frames(8)
++	p.override_jump = true
++	await frames(5)
++	var old_y: float = p.velocity.y
++	var old_z: float = p.position.z
++	check(p.request_mode(3), "Can change dimension during a jump")
++	check(is_equal_approx(p.velocity.y, old_y), "Midair dimension change preserves vertical momentum")
++	check(p.request_mode(2) and is_equal_approx(p.plane_z, old_z), "2D freezes the current depth")
++	encounter.clear_hazards()
++	# Test warning and active collision geometry independently of camera projection.
++	var h: Hazard = Hazard.new()
++	h.kind = "beam"
++	h.position = Vector3(0, 0.2, 0)
++	root.add_child(h)
++	h.set_physics_process(false)
++	check(not h.intersects(Vector3(0, 0.2, 0), 1.14, 0.19, 1), "Amber warning is harmless")
++	h.age = h.warning + 0.1
++	check(h.intersects(Vector3(0, 0.2, 0), 1.14, 0.19, 1), "Low laser hits 1D")
++	check(not h.intersects(Vector3(0, 1, 0), 1.14, 0.19, 2), "Jump clears the low laser")
++	check(not h.intersects(Vector3(0, 0, 2), 1.14, 0.19, 3), "Depth movement dodges the laser")
++	h.kind = "sweep"
++	h.position.y = 0.85
++	h.previous_radius = 1
++	h.radius = 2
++	check(not h.intersects(Vector3(1.5, 0.2, 0), 1.14, 0.19, 1), "1D slips under the high swing")
++	check(h.intersects(Vector3(1.5, 0, 0), 1.14, 0.19, 2), "Standing 2D is vulnerable to the swing")
++	check(not h.intersects(Vector3(1.5, 1.05, 0), 1.14, 0.19, 2), "A sufficiently high jump clears the swing")
++	h.kind = "lane"
++	check(h.intersects(Vector3(0, 0.2, 0), 1.14, 0.19, 1), "Depth lock hits an occupied rail")
++	h.kind = "bolt"
++	h.previous_position = Vector3(-3, 0.95, 0)
++	h.position = Vector3(3, 0.95, 0)
++	check(h.intersects(Vector3.ZERO, 1.14, 0.19, 3), "Fast projectile segment cannot tunnel through John")
++	h.queue_free()
++	encounter.clear_hazards()
++	p.position = Vector3(7, 0.06, 0)
++	p.move_input = Vector2.ZERO
++	await frames(8)
++	p.request_mode(3)
++	encounter.core_open = true
++	check(not encounter.try_strike(), "3D armor deflects an otherwise valid strike")
++	p.request_mode(2)
++	encounter.core_open = false
++	check(not encounter.try_strike(), "Cannot skip a pattern by striking a sealed core")
++	encounter.core_open = true
++	p.position.x = -7
++	check(not encounter.try_strike(), "A distant F strike cannot damage the boss")
++	p.position.x = 7
++	for hit_index: int in 5:
++		encounter.clear_hazards()
++		encounter.core_open = true
++		encounter.state = "opening"
++		check(encounter.try_strike(), "Successful core strike %d" % (hit_index + 1))
++		check(not encounter.try_strike(), "One opening accepts only one hit")
++		if hit_index < 4:
++			await frames(80)
++			check(encounter.hits == hit_index + 1 and encounter.state == "combat", "Hit advances to the next attack phase")
++	check(encounter.hits == 5 and encounter.state == "false_defeat", "Fifth hit is a false defeat")
++	await frames(160)
++	check(encounter.state == "revival_dialogue", "False defeat leads to the final dialogue")
++	encounter.skip_dialogue()
++	check(encounter.state == "surge", "Revival starts the last surge")
++	check(not encounter.try_strike(), "Final strike is locked until the surge has passed")
++	var seen: Dictionary = {}
++	for i: int in 1100:
++		await physics_frame
++		for hazard: Node in encounter.hazards.get_children(): seen[hazard.kind] = true
++		if encounter.state == "opening": break
++	check(seen.has("sweep") and seen.has("beam") and seen.has("bolt") and seen.has("lane"), "Final surge actually spawns all four attack types")
++	check(encounter.state == "opening" and encounter.core_open, "Surviving the surge exposes the final core")
++	p.position = Vector3(7, 0.06, 0)
++	check(encounter.try_strike() and encounter.hits == 6, "Sixth hit collapses the Warden")
++	await frames(130)
++	check(encounter.state == "victory" and not encounter.exit_seal.visible, "Collapse completes the chamber")
++	var g: Node = root.get_node_or_null("Global")
++	if g: check(not bool(g.get("rewind_unlocked")), "Rewind remains locked")
++	# Retry restores this arena rather than replaying the parkour or dialogue.
++	encounter.state = "combat"
++	encounter.health = 1
++	p.invulnerable = 0
++	encounter.hurt_player()
++	check(encounter.state == "defeated", "Lethal damage opens the retry screen")
++	encounter.retry()
++	check(encounter.hits == 0 and encounter.health == 3 and encounter.state == "combat", "Retry restores all boss phases and John health")
++	check(p.position.is_equal_approx(encounter.CHECKPOINT), "Retry starts at the arena checkpoint")
++	encounter.toggle_pause()
++	check(paused, "Escape pauses the encounter")
++	encounter.toggle_pause()
++	check(not paused, "Escape resumes the encounter")
++	print("AXIOM WARDEN: %d/%d checks passed" % [checks - failures, checks])
++	encounter.queue_free()
++	await process_frame
++	quit(1 if failures else 0)
+-- 
+2.51.1
+

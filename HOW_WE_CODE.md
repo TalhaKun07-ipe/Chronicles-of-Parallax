@@ -75,6 +75,16 @@ Degrees_of_Escape/
 │           ├── flat_guardian.gd   # Dimensional sentinel AI (3D pursuit vs 2D ethereal)
 │           ├── integration.gd     # Test flow coordinator
 │           └── player.gd          # Chamber player controller with dual-input mapping
+│   └── axiom_warden/              # Chamber 02: Axiom Warden Sanctum
+│       ├── AxiomWarden.tscn       # Master boss encounter scene
+│       ├── assets/                # Boss pack portraits, textures, and sprites
+│       └── scripts/               # Sanctum logic & encounter systems
+│           ├── encounter.gd       # World builder, state machine, 6 phases, camera rig
+│           ├── geometry.gd        # Architectural blocks, columns, and torch sconces
+│           ├── hazard.gd          # Sweeps, beams, bolts, lanes, slams & nova hazards
+│           ├── hud.gd             # Pixel hearts, dialogue portraits, health bars
+│           ├── player.gd          # Dimension-switching combat controller
+│           └── warden.gd          # Visual rig, articulated limbs, and core exposure
 │
 ├── scenes/                        # Shared scene templates
 │   ├── levels/                    # Master scene compositions (Main.tscn)
@@ -357,12 +367,20 @@ Our testing suite runs completely headless via Godot CLI, allowing instant verif
 ### 10.1 Running Test Scripts
 ```powershell
 # In PowerShell from the Degrees_of_Escape directory:
+godot --headless -s tools/verify_axiom_warden.gd
 godot --headless -s tools/verify_route.gd
 godot --headless -s tools/verify_new_features.gd
 godot --headless -s tools/verify_full_flow.gd
 ```
 
 ### 10.2 Verification Coverage
+* **`tools/verify_axiom_warden.gd` (56 automated checks):**
+  * Spawns player, validates stepped platforming ascent (Terraces 0-3 to high walkway).
+  * Validates Undertale dialogue intro with authentic portraits, weapon draw, and combat start.
+  * Validates 1D/2D/3D dimension switching during combat and jump momentum preservation.
+  * Validates hazard collision geometry: sweeps, low beams, bolts, lanes, and slams.
+  * Validates 5 core strikes, phase transitions, false defeat, revival dialogue, final surge, and collapse.
+  * Validates retry from checkpoint, pause toggle, and health restoration.
 * **`tools/verify_route.gd` (61 automated checks):**
   * Spawns player, validates 1D conduit slide & speed boost.
   * Verifies pit crossing and dimensional expansion rejection in narrow gaps.

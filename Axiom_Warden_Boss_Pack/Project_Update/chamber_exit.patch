@@ -1,0 +1,22 @@
+--- a/chambers/broken_circuit/scripts/demo.gd
++++ b/chambers/broken_circuit/scripts/demo.gd
+@@ -105,6 +105,9 @@
+ 		var g = get_node_or_null("/root/Global")
+ 		if g and "exit_open" in g:
+ 			g.exit_open = true
++		# Headless fixtures add Demo under root; only the live scene advances.
++		if get_tree().current_scene == self:
++			get_tree().create_timer(1.6).timeout.connect(_enter_axiom_sanctum)
+ 	)
+ 	chamber.plate_activated.connect(_plate_activated)
+ 	
+@@ -401,3 +404,9 @@
+ 	add_child(audio)
+ 	audio.finished.connect(audio.queue_free)
+ 	audio.play()
++
++
++func _enter_axiom_sanctum() -> void:
++	if not is_inside_tree() or get_tree().current_scene != self:
++		return
++	get_tree().call_deferred("change_scene_to_file", "res://chambers/axiom_warden/AxiomWarden.tscn")
