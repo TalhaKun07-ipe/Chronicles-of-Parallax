@@ -18,8 +18,10 @@ var damaged: bool = false
 var damage_enabled: bool = true
 var target: CharacterBody3D
 var visual: Node3D
-var warning_mat: StandardMaterial3D
-var active_mat: StandardMaterial3D
+var warning_mat: Material
+var active_mat: Material
+var shockwave: bool = false
+var burst_played: bool = false
 var sound_played: bool = false
 
 # Dimension-aware collision flags
@@ -28,21 +30,35 @@ var collision_mask: int = 1
 var wall_body: StaticBody3D
 
 func _ready() -> void:
-	warning_mat = Geo.material(Color("d9973e"), true)
-	active_mat = Geo.material(Color("60f8ed"), true)
 	previous_position = global_position
 	match kind:
 		"beam":
+			warning_mat = Geo.conduit_material(Color("ffe6b0"), Color("d9973e"))
+			active_mat = Geo.conduit_material(Color("d6fffb"), Color("60f8ed"))
+			if active_mat is ShaderMaterial:
+				(active_mat as ShaderMaterial).set_shader_parameter("crackle_intensity", 0.8)
 			visual = Geo.box(self, Vector3.ZERO, Vector3(25, 0.07, 0.12), warning_mat)
 		"lane":
+			warning_mat = Geo.hologram_material(Color("d9973e"), Color("ffe6b0"))
+			active_mat = Geo.hologram_material(Color("60f8ed"), Color("d6fffb"))
 			visual = Geo.box(self, Vector3(0, -position.y + 0.035, 0), Vector3(25, 0.04, 1.35), warning_mat)
 		"sweep":
+			shockwave = true
+			warning_mat = Geo.shockwave_material(Color("ffe9b8"), Color("e07a1e"))
+			active_mat = warning_mat
 			visual = Geo.ring(self, Vector3.ZERO, 1.0, 0.05, warning_mat)
 		"slam":
+			shockwave = true
+			warning_mat = Geo.shockwave_material(Color("ffb066"), Color("d2350c"))
+			active_mat = warning_mat
 			visual = Geo.ring(self, Vector3(0, 0.04, 0), 0.8, 0.08, warning_mat)
 		"bolt":
+			warning_mat = Geo.conduit_material(Color("d6fffb"), Color("60f8ed"))
+			active_mat = warning_mat
 			visual = Geo.box(self, Vector3.ZERO, Vector3(0.34, 0.34, 0.34), active_mat)
 		"body":
+			warning_mat = Geo.material(Color("d9973e"), true)
+			active_mat = Geo.material(Color("60f8ed"), true)
 			visual = Geo.ring(self, Vector3.ZERO, 1.8, 0.07, warning_mat)
 		"guardian":
 			# Dedicated Flat Guardian projectile: travels toward player, becomes ethereal in 2D
@@ -67,9 +83,13 @@ func _ready() -> void:
 			duration = 4.5
 		"rising_wall":
 			# 3D Lateral Hazard: Physical stone wall rising in player's path
+			warning_mat = Geo.material(Color("d9973e"), true)
+			active_mat = Geo.material(Color("60f8ed"), true)
 			visual = Geo.box(self, Vector3(0, 0.04, 0), Vector3(1.2, 0.08, 2.8), warning_mat)
 			warning = 1.20
 			duration = 3.8
+	if visual is GeometryInstance3D:
+		(visual as GeometryInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	_play_sfx("boss_warning" if kind not in ["bolt", "guardian"] else "boss_bolts")
 
 func _play_sfx(cue: String) -> void:
@@ -126,6 +146,10 @@ func _physics_process(delta: float) -> void:
 	previous_position = global_position
 	previous_radius = radius
 
+	if shockwave and visual is MeshInstance3D and (visual as MeshInstance3D).material_override is ShaderMaterial:
+		var life: float = warning + duration
+		((visual as MeshInstance3D).material_override as ShaderMaterial).set_shader_parameter("progress", clampf(age / life, 0.0, 1.0))
+
 	# Dynamic dimension-reactivity for Flat Guardian projectile
 	if kind == "guardian":
 		var eye: OmniLight3D = get_node_or_null("GuardianEye")
@@ -176,8 +200,11 @@ func _physics_process(delta: float) -> void:
 				"slam": _play_sfx("boss_slam")
 				"rising_wall": _play_sfx("stone_grind")
 				"guardian": _play_sfx("transform")
-		if visual is MeshInstance3D:
-			visual.material_override = active_mat
+		if not shockwave and visual is MeshInstance3D:
+			(visual as MeshInstance3D).material_override = active_mat
+		if not burst_played and kind in ["slam", "sweep"]:
+			burst_played = true
+			Geo.impact_burst(get_parent(), global_position, Color("ffb15c") if kind == "slam" else Color("ffe6a0"))
 		if kind == "bolt":
 			global_position += direction * speed * delta
 			visual.rotation += Vector3(1, 2, 1) * delta
@@ -224,8 +251,25 @@ func _physics_process(delta: float) -> void:
 			visual.scale.y = 75
 		elif kind == "beam":
 			visual.scale = Vector3(1, 3.0, 2.5)
-	elif kind in ["sweep", "slam"]:
-		visual.scale = Vector3(1.4, 1, 1.4)
+	else:
+		# Telegraph: pulse brightness and (for rings) size while the attack winds up,
+		# building visible tension toward the strike instead of a static warning shape.
+		if age < warning:
+			var progress: float = age / warning
+			var pulse: float = 0.8 + 0.2 * sin(age * lerpf(5.0, 16.0, progress))
+			if visual is MeshInstance3D and (visual as MeshInstance3D).material_override is ShaderMaterial:
+				var sm: ShaderMaterial = (visual as MeshInstance3D).material_override
+				if sm.shader == Geo.SHOCKWAVE_SHADER:
+					sm.set_shader_parameter("progress", 0.0)
+					sm.set_shader_parameter("emission_energy", lerpf(1.5, 5.0, progress) * pulse)
+				else:
+					sm.set_shader_parameter("emission_energy", lerpf(1.2, 3.2, progress) * pulse)
+			elif visual is MeshInstance3D and (visual as MeshInstance3D).material_override is StandardMaterial3D:
+				((visual as MeshInstance3D).material_override as StandardMaterial3D).emission_energy_multiplier = lerpf(1.0, 2.6, progress) * pulse
+			if kind in ["sweep", "slam"]:
+				visual.scale = Vector3(1.4, 1, 1.4) * pulse
+		elif kind in ["sweep", "slam"]:
+			visual.scale = Vector3(1.4, 1, 1.4)
 
 	if is_instance_valid(target) and not damaged and intersects(target.global_position, 1.14, 0.19, int(target.get("mode"))):
 		damaged = true

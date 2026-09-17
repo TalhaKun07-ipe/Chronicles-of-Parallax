@@ -25,6 +25,7 @@ var coyote: float = 0.0
 var age: float = 0.0
 var facing: float = 1.0
 var sprite: Sprite3D
+var shadow_mesh: MeshInstance3D
 var shape_node: CollisionShape3D
 var humanoid: CapsuleShape3D
 var rod: BoxShape3D
@@ -49,6 +50,20 @@ func _ready() -> void:
 	sprite.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 	sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
 	add_child(sprite)
+	
+	# Grounding Dynamic Drop Shadow
+	shadow_mesh = MeshInstance3D.new()
+	var quad := QuadMesh.new()
+	quad.size = Vector2(0.65, 0.45)
+	shadow_mesh.mesh = quad
+	var shadow_shader = load("res://shaders/character_shadow.gdshader")
+	if shadow_shader:
+		var sm := ShaderMaterial.new()
+		sm.shader = shadow_shader
+		shadow_mesh.material_override = sm
+	shadow_mesh.rotation_degrees.x = -90.0
+	shadow_mesh.position.y = 0.02
+	add_child(shadow_mesh)
 	weapon = Node3D.new()
 	weapon.position = Vector3(0.25, 0.64, 0)
 	add_child(weapon)
@@ -127,6 +142,8 @@ func request_mode(target: int) -> bool:
 	else:
 		velocity.y = preserved_vy
 	mode = target
+	if shadow_mesh:
+		shadow_mesh.visible = (mode != 1)
 	mode_changed.emit(mode)
 	_update_sprite()
 	return true

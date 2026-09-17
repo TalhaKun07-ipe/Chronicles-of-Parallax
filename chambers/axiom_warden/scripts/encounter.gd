@@ -27,6 +27,8 @@ var next_event: int = 0
 var pattern: Array[Dictionary] = []
 var pattern_end: float = 0
 var core_open: bool = false
+var pp_material: ShaderMaterial
+var shake_trauma: float = 0.0
 var arena_checkpoint: bool = false
 var platform_checkpoint: Vector3 = START
 var dialogue_pages: Array[Dictionary] = []
@@ -63,6 +65,7 @@ func _ready() -> void:
 	add_child(hazards)
 	var canvas: CanvasLayer = CanvasLayer.new()
 	canvas.name = "EncounterHUD"
+	canvas.layer = 100 # Above the post-process overlay (layer 50) so vignette/grain/CA never dims or distorts UI
 	add_child(canvas)
 	hud = Hud.new()
 	canvas.add_child(hud)
@@ -98,28 +101,69 @@ func _build_world() -> void:
 	var gold: Material = Geo.material(Color("D4AF67"))
 	var ochre: Material = Geo.material(Color("C29F5C"))
 	var dark: Material = Geo.material(Color("261708"))
-	var cyan: Material = Geo.material(Color("70B9AF"), true)
-	var amber: Material = Geo.material(Color("D9B779"), true)
+	var cyan: Material = Geo.conduit_material()
+	var amber: Material = Geo.material(Color("d9973e"), true)
 
 	var environment_node: WorldEnvironment = WorldEnvironment.new()
 	var env: Environment = Environment.new()
 	env.background_mode = Environment.BG_COLOR
-	env.background_color = Color("1a1510")
+	env.background_color = Color("100b07")
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color("e0cb9e")
-	env.ambient_light_energy = 0.45
-	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	env.ambient_light_color = Color("dfcaa0")
+	env.ambient_light_energy = 0.38
+	
+	# SSAO
+	env.ssao_enabled = true
+	env.ssao_radius = 1.4
+	env.ssao_intensity = 2.8
+	env.ssao_power = 1.4
+	env.ssao_detail = 0.5
+	
+	# Volumetric Fog & Atmospheric God Rays
+	env.volumetric_fog_enabled = true
+	env.volumetric_fog_density = 0.016
+	env.volumetric_fog_albedo = Color("eedbb2")
+	env.volumetric_fog_emission = Color("1a120b")
+	env.volumetric_fog_emission_energy = 0.15
+	env.volumetric_fog_anisotropy = 0.3
+	
+	# High-Dynamic-Range Glow
 	env.glow_enabled = true
-	env.glow_intensity = 0.35
-	env.glow_bloom = 0.15
+	env.glow_intensity = 0.65
+	env.glow_bloom = 0.18
+	env.glow_blend_mode = Environment.GLOW_BLEND_MODE_SOFTLIGHT
+	env.glow_hdr_threshold = 1.0
+	
+	# Filmic Tonemapping & Color Grading
+	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	env.tonemap_exposure = 1.12
+	env.adjustment_enabled = true
+	env.adjustment_contrast = 1.08
+	env.adjustment_saturation = 1.12
+
 	environment_node.environment = env
+
+	# Far Depth of Field - softens distant architecture for atmospheric depth
+	# (Ori-style foreground/background separation). Kept subtle and far-only so
+	# the boss, footholds, and hazards stay perfectly readable in combat. DOF
+	# moved off Environment and onto CameraAttributes as of Godot 4.3.
+	# Camera sits ~20-22 units from its focus point (see _update_camera's offset lerp),
+	# so the blur threshold must start noticeably past that or the whole frame blurs.
+	var cam_attrs := CameraAttributesPractical.new()
+	cam_attrs.dof_blur_far_enabled = true
+	cam_attrs.dof_blur_far_distance = 30.0
+	cam_attrs.dof_blur_far_transition = 14.0
+	cam_attrs.dof_blur_amount = 0.05
+	environment_node.camera_attributes = cam_attrs
 	add_child(environment_node)
 
 	var sun: DirectionalLight3D = DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-55, -25, 0)
+	sun.rotation_degrees = Vector3(-50, -30, 0)
 	sun.light_color = Color("fff3dd")
-	sun.light_energy = 0.75
+	sun.light_energy = 1.25
+	sun.light_volumetric_fog_energy = 1.8
 	sun.shadow_enabled = true
+	sun.shadow_blur = 1.2
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
 	sun.directional_shadow_max_distance = 80
 	sun.shadow_bias = 0.02
@@ -127,10 +171,75 @@ func _build_world() -> void:
 	add_child(sun)
 
 	var fill: DirectionalLight3D = DirectionalLight3D.new()
-	fill.rotation_degrees = Vector3(-25, 155, 0)
-	fill.light_color = Color("bca068")
-	fill.light_energy = 0.28
+	fill.rotation_degrees = Vector3(45, 150, 0)
+	fill.light_color = Color("8c7b64")
+	fill.light_energy = 0.35
 	add_child(fill)
+	
+	# Screen-space post-processing overlay
+	var pp_canvas: CanvasLayer = CanvasLayer.new()
+	pp_canvas.layer = 50
+	var pp_rect: ColorRect = ColorRect.new()
+	pp_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	pp_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pp_material = ShaderMaterial.new()
+	var pp_shader = load("res://shaders/post_process.gdshader")
+	if pp_shader:
+		pp_material.shader = pp_shader
+		pp_rect.material = pp_material
+	pp_canvas.add_child(pp_rect)
+	add_child(pp_canvas)
+
+	# Stylized Volumetric God Rays
+	var ray_shader = load("res://shaders/god_ray.gdshader")
+	if ray_shader:
+		var ray_mat: ShaderMaterial = ShaderMaterial.new()
+		ray_mat.shader = ray_shader
+		var ray_positions: Array[Vector3] = [
+			Vector3(-25.0, 8.5, 0.0),
+			Vector3(-5.0, 8.0, -2.0),
+			Vector3(15.0, 8.5, 2.0)
+		]
+		for rpos in ray_positions:
+			var ray_mesh: MeshInstance3D = MeshInstance3D.new()
+			var quad: QuadMesh = QuadMesh.new()
+			quad.size = Vector2(5.5, 13.0)
+			ray_mesh.mesh = quad
+			ray_mesh.material_override = ray_mat
+			ray_mesh.position = rpos
+			ray_mesh.rotation_degrees = Vector3(12.0, 18.0, -32.0)
+			add_child(ray_mesh)
+
+	# Floating Light Dust & Ember Motes (GPUParticles3D)
+	var particles: GPUParticles3D = GPUParticles3D.new()
+	particles.amount = 70
+	particles.lifetime = 6.0
+	particles.preprocess = 3.0
+	var p_mat: ParticleProcessMaterial = ParticleProcessMaterial.new()
+	p_mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_BOX
+	p_mat.emission_box_extents = Vector3(50.0, 5.0, 12.0)
+	p_mat.direction = Vector3(0.2, 1.0, 0.1)
+	p_mat.spread = 25.0
+	p_mat.initial_velocity_min = 0.25
+	p_mat.initial_velocity_max = 0.65
+	p_mat.gravity = Vector3(0.0, 0.05, 0.0)
+	p_mat.scale_min = 0.03
+	p_mat.scale_max = 0.08
+	p_mat.color = Color("ffebba")
+	particles.process_material = p_mat
+	
+	var quad_mesh: QuadMesh = QuadMesh.new()
+	quad_mesh.size = Vector2(0.08, 0.08)
+	var quad_mat: StandardMaterial3D = StandardMaterial3D.new()
+	quad_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	quad_mat.albedo_color = Color("ffe099")
+	quad_mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+	quad_mat.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	quad_mesh.material = quad_mat
+	particles.draw_pass_1 = quad_mesh
+	
+	particles.position = Vector3(-15.0, 4.0, 0.0)
+	add_child(particles)
 
 	# 1. SCREEN-FILLING ARCHITECTURAL FOUNDATION (Zero Black Space, True Void Below)
 	# Non-solid abyss floor visual far below at Y=-22.0 (NO COLLISION - falling is a true void drop!)
@@ -205,8 +314,14 @@ func _build_world() -> void:
 
 	# 3 Continuous Rails across Arena floor (Z = -4.0, 0.0, +4.0)
 	for z: float in [-4.0, 0.0, 4.0]:
-		Geo.box(self, Vector3(6.0, 0.04, z), Vector3(26.0, 0.06, 0.30), dark)
-		Geo.box(self, Vector3(6.0, 0.08, z), Vector3(26.0, 0.035, 0.065), cyan)
+		var rail_base: MeshInstance3D = Geo.box(self, Vector3(6.0, 0.04, z), Vector3(26.0, 0.06, 0.30), dark)
+		# Raised clear of rail_base (was overlapping by ~0.0075 units) and shadow-casting
+		# disabled on both -- these are self-illuminated energy strips, not physical
+		# objects, and the near-zero gap was causing shadow-acne banding along the whole
+		# rail under Forward+'s real shadow maps (invisible under Compatibility before).
+		var rail_glow: MeshInstance3D = Geo.box(self, Vector3(6.0, 0.10, z), Vector3(26.0, 0.035, 0.065), cyan)
+		rail_base.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		rail_glow.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		for x_end: float in [-6.8, 18.8]:
 			Geo.box(self, Vector3(x_end, 0.08, z), Vector3(0.45, 0.08, 0.5), gold)
 
@@ -328,6 +443,22 @@ func _update_camera(delta: float) -> void:
 	camera.position = focus + cam_offset
 	camera.look_at(focus, Vector3.UP)
 	camera.size = lerpf(camera.size, target_size, blend)
+
+	# Hit-impact screen shake (offsets the projection only, never rotation/position,
+	# so it can't fight the tracking/look_at logic above).
+	shake_trauma = maxf(shake_trauma - delta * 2.5, 0.0)
+	var shake: float = shake_trauma * shake_trauma
+	camera.h_offset = randf_range(-1.0, 1.0) * shake * 0.18
+	camera.v_offset = randf_range(-1.0, 1.0) * shake * 0.18
+
+func _impact_feedback(strength: float) -> void:
+	shake_trauma = clampf(shake_trauma + strength, 0.0, 1.0)
+	if not pp_material: return
+	var tween: Tween = create_tween()
+	var base_ab: float = 0.0018
+	var peak_ab: float = base_ab + strength * 0.012
+	tween.tween_method(func(v: float): pp_material.set_shader_parameter("aberration_amount", v), base_ab, peak_ab, 0.03)
+	tween.tween_method(func(v: float): pp_material.set_shader_parameter("aberration_amount", v), peak_ab, base_ab, 0.4)
 
 func _set_state(value: String) -> void:
 	state = value
@@ -518,6 +649,7 @@ func try_strike() -> bool:
 	clear_hazards()
 	boss_hit.emit(hits)
 	sfx("hurt")
+	_impact_feedback(0.45)
 	if hits == 5:
 		boss.set_pose("fallen")
 		player.locked = true
@@ -562,6 +694,7 @@ func hurt_player() -> void:
 	health = maxi(0, health - 1)
 	player.invulnerable = 1.2
 	_sync_health()
+	_impact_feedback(0.75)
 	sfx("hurt")
 	if health == 0:
 		clear_hazards()

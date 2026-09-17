@@ -10,6 +10,7 @@ class_name FlatGuardian
 @export var attack_radius: float = 1.35
 
 var sprite: Sprite3D
+var shadow_mesh: MeshInstance3D
 var eye_light: OmniLight3D
 var collision_shape: CollisionShape3D
 var home_pos: Vector3
@@ -46,6 +47,20 @@ func _ready() -> void:
 	eye_light.omni_range = 3.5
 	eye_light.position.y = 0.95
 	add_child(eye_light)
+	
+	# Grounding Drop Shadow
+	shadow_mesh = MeshInstance3D.new()
+	var quad := QuadMesh.new()
+	quad.size = Vector2(0.85, 0.55)
+	shadow_mesh.mesh = quad
+	var shadow_shader = load("res://shaders/character_shadow.gdshader")
+	if shadow_shader:
+		var sm := ShaderMaterial.new()
+		sm.shader = shadow_shader
+		shadow_mesh.material_override = sm
+	shadow_mesh.rotation_degrees.x = -90.0
+	shadow_mesh.position.y = 0.02
+	add_child(shadow_mesh)
 
 func _physics_process(delta: float) -> void:
 	float_clock += delta * 4.0
@@ -68,11 +83,13 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector3.ZERO
 		# Gentle ethereal hover
 		sprite.position.y = 0.8 + sin(float_clock) * 0.06
+		if shadow_mesh: shadow_mesh.visible = false
 	else:
 		# 3D MODE: Active chasing guardian sentinel!
 		collision_layer = 1
 		collision_mask = 1
 		sprite.modulate = Color(1.0, 1.0, 1.0, 1.0)
+		if shadow_mesh: shadow_mesh.visible = true
 		eye_light.light_energy = 1.35
 		sprite.position.y = 0.8 + sin(float_clock * 1.5) * 0.04
 		

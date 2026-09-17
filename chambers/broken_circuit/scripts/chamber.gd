@@ -15,13 +15,20 @@ var spatial_mode: int = 3
 var relay_active: bool = false
 var bridge_reconstructed: bool = false
 var charge_mesh: MeshInstance3D
-var lit_material: StandardMaterial3D
+var lit_material: Material
 var clock: float = 0.0
 
 func _ready() -> void:
-	lit_material = StandardMaterial3D.new()
-	lit_material.albedo_color = Color("ebd8b0")
-	lit_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	var holo_shader = load("res://shaders/hologram_bridge.gdshader")
+	if holo_shader:
+		var sm := ShaderMaterial.new()
+		sm.shader = holo_shader
+		lit_material = sm
+	else:
+		var std := StandardMaterial3D.new()
+		std.albedo_color = Color("ebd8b0")
+		std.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		lit_material = std
 	
 	charge_mesh = MeshInstance3D.new()
 	var crystal := PrismMesh.new()
@@ -76,12 +83,58 @@ func update_occlusion(player_z: float) -> void:
 	for node in get_tree().get_nodes_in_group("fg_walls"):
 		if not is_ancestor_of(node):
 			continue
+		var should_hide: bool = hide_foreground and node.global_position.z > player_z + 0.6
 		# Only hide visual mesh, physics collision stays 100% solid
 		for mesh in node.find_children("*", "MeshInstance3D", true, false):
-			if hide_foreground and node.global_position.z > player_z + 0.6:
-				mesh.visible = false
-			else:
-				mesh.visible = true
+			mesh.visible = not should_hide
+		_update_cutaway_outline(node, should_hide)
+
+func _update_cutaway_outline(node: Node3D, show_outline: bool) -> void:
+	# Blueprint-style glowing edge marking the wall's cross-section where a foreground
+	# wall gets hidden in 2D, instead of the geometry just vanishing outright.
+	var outline: Node3D = node.get_node_or_null("CutawayOutline")
+	if not show_outline:
+		if outline:
+			outline.visible = false
+		return
+	if outline:
+		outline.visible = true
+		return
+	var meshes: Array = node.find_children("*", "MeshInstance3D", true, false)
+	if meshes.is_empty():
+		return
+	var mesh_inst: MeshInstance3D = meshes[0]
+	var aabb: AABB = mesh_inst.get_aabb()
+	if aabb.size.length() < 0.01:
+		return
+	var w: float = aabb.size.x
+	var h: float = aabb.size.y
+	var center: Vector3 = mesh_inst.position + aabb.position + aabb.size * 0.5
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.albedo_color = Color(0.25, 0.9, 1.0)
+	mat.emission_enabled = true
+	mat.emission = Color(0.25, 0.9, 1.0)
+	mat.emission_energy_multiplier = 2.2
+	var root := Node3D.new()
+	root.name = "CutawayOutline"
+	var thick := 0.035
+	var depth := 0.02
+	var edges: Array = [
+		[Vector3(0, h * 0.5, 0), Vector3(w, thick, depth)],
+		[Vector3(0, -h * 0.5, 0), Vector3(w, thick, depth)],
+		[Vector3(-w * 0.5, 0, 0), Vector3(thick, h, depth)],
+		[Vector3(w * 0.5, 0, 0), Vector3(thick, h, depth)],
+	]
+	for edge: Array in edges:
+		var m := MeshInstance3D.new()
+		var box := BoxMesh.new()
+		box.size = edge[1]
+		m.mesh = box
+		m.material_override = mat
+		m.position = center + edge[0]
+		root.add_child(m)
+	node.add_child(root)
 
 func rail_near(at: Vector3) -> Dictionary:
 	# Section D: The Narrow Conduit

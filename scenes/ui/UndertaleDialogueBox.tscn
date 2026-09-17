@@ -22,7 +22,7 @@ border_color = Color(1, 1, 1, 0.7)
 corner_detail = 1
 
 [node name="UndertaleDialogueBox" type="CanvasLayer"]
-layer = 10
+layer = 110
 script = ExtResource("1_script")
 
 [node name="DialogueRoot" type="Control" parent="."]

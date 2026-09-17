@@ -29,37 +29,80 @@ var latest_checkpoint_mode: int = 3
 @onready var chamber: Node3D = $Chamber
 @onready var camera: Camera3D = $Camera3D
 var guardian: Node3D = null
+var pp_rect: ColorRect = null
 
 func _ready() -> void:
 	var world := WorldEnvironment.new()
 	var env := Environment.new()
 	env.background_mode = Environment.BG_COLOR
-	env.background_color = Color("1a1510")
+	env.background_color = Color("0e0b08")
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color("e0cb9e")
-	env.ambient_light_energy = 0.45
-	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	env.ambient_light_color = Color("dfcaa0")
+	env.ambient_light_energy = 0.35
+	
+	# SSAO for deep crevices and contact shadows
+	env.ssao_enabled = true
+	env.ssao_radius = 1.4
+	env.ssao_intensity = 2.8
+	env.ssao_power = 1.4
+	env.ssao_detail = 0.5
+	
+	# Volumetric Fog & Atmospheric God Rays
+	env.volumetric_fog_enabled = true
+	env.volumetric_fog_density = 0.014
+	env.volumetric_fog_albedo = Color("eedbb2")
+	env.volumetric_fog_emission = Color("1a120b")
+	env.volumetric_fog_emission_energy = 0.15
+	env.volumetric_fog_anisotropy = 0.3
+	
+	# High-Dynamic-Range Glow
 	env.glow_enabled = true
-	env.glow_intensity = 0.35
-	env.glow_bloom = 0.15
+	env.glow_intensity = 0.65
+	env.glow_bloom = 0.18
+	env.glow_blend_mode = Environment.GLOW_BLEND_MODE_SOFTLIGHT
+	env.glow_hdr_threshold = 1.0
+	
+	# Filmic Tonemapping & Color Grading
+	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	env.tonemap_exposure = 1.12
+	env.adjustment_enabled = true
+	env.adjustment_contrast = 1.08
+	env.adjustment_saturation = 1.12
+
 	world.environment = env
+
+	# Far Depth of Field - softens distant architecture for atmospheric depth
+	# (Ori-style foreground/background separation). Kept subtle and far-only so
+	# nearby platforms, hazards and rails stay perfectly readable. DOF moved off
+	# Environment and onto CameraAttributes as of Godot 4.3.
+	# Camera sits a fixed 28 units from its focus point (see _update_camera's `dist`),
+	# so the blur threshold must start noticeably past that or the whole frame blurs.
+	var cam_attrs := CameraAttributesPractical.new()
+	cam_attrs.dof_blur_far_enabled = true
+	cam_attrs.dof_blur_far_distance = 34.0
+	cam_attrs.dof_blur_far_transition = 14.0
+	cam_attrs.dof_blur_amount = 0.05
+	world.camera_attributes = cam_attrs
+
 	add_child(world)
 	
 	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-55, -25, 0)
+	sun.rotation_degrees = Vector3(-50, -30, 0)
 	sun.light_color = Color("fff3dd")
-	sun.light_energy = 0.75
+	sun.light_energy = 1.2
+	sun.light_volumetric_fog_energy = 1.8
 	sun.shadow_enabled = true
-	sun.directional_shadow_max_distance = 60
+	sun.shadow_blur = 1.2
+	sun.directional_shadow_max_distance = 80
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
 	sun.shadow_bias = 0.015
 	sun.shadow_normal_bias = 1.0
 	add_child(sun)
 	
 	var fill := DirectionalLight3D.new()
-	fill.rotation_degrees = Vector3(-25, 155, 0)
-	fill.light_color = Color("bca068")
-	fill.light_energy = 0.28
+	fill.rotation_degrees = Vector3(45, 150, 0)
+	fill.light_color = Color("8c7b64")
+	fill.light_energy = 0.35
 	add_child(fill)
 	
 	# Atmospheric architectural lamps spaced along the 8 sections
@@ -75,13 +118,92 @@ func _ready() -> void:
 		Vector3(95.0, 7.5, 0.0),
 		Vector3(102.5, 8.0, 0.0)
 	]
+	var flicker_rng := RandomNumberGenerator.new()
+	flicker_rng.randomize()
 	for pos in lamp_positions:
 		var lamp := OmniLight3D.new()
 		lamp.position = pos
-		lamp.light_color = Color("ffc97a")
-		lamp.light_energy = 0.85
-		lamp.omni_range = 7.0
+		lamp.light_color = Color("ffa142") # Warm ancient lantern amber
+		lamp.light_energy = 1.45
+		lamp.light_volumetric_fog_energy = 1.35
+		lamp.omni_range = 8.5
+		lamp.omni_attenuation = 1.4
 		add_child(lamp)
+		# Living flame flicker instead of a static glow, randomized per-lamp so they don't
+		# pulse in obvious unison.
+		var lamp_tween := lamp.create_tween()
+		lamp_tween.set_loops()
+		for i in 8:
+			lamp_tween.tween_property(lamp, "light_energy", 1.45 * flicker_rng.randf_range(0.72, 1.25), flicker_rng.randf_range(0.06, 0.16))
+
+	# Stylized Volumetric God Rays streaming through ancient ceiling fissures
+	var ray_shader = load("res://shaders/god_ray.gdshader")
+	if ray_shader:
+		var ray_mat := ShaderMaterial.new()
+		ray_mat.shader = ray_shader
+		var ray_positions: Array[Vector3] = [
+			Vector3(-12.0, 5.5, 0.0),
+			Vector3(0.0, 6.2, 0.0),
+			Vector3(18.0, 7.0, -3.5),
+			Vector3(34.0, 7.5, -4.0),
+			Vector3(56.0, 7.8, 0.0),
+			Vector3(74.0, 8.5, 1.5),
+			Vector3(96.0, 9.5, 0.0)
+		]
+		for rpos in ray_positions:
+			var ray_mesh := MeshInstance3D.new()
+			var quad := QuadMesh.new()
+			quad.size = Vector2(4.2, 10.5)
+			ray_mesh.mesh = quad
+			ray_mesh.material_override = ray_mat
+			ray_mesh.position = rpos
+			ray_mesh.rotation_degrees = Vector3(12.0, 18.0, -32.0)
+			add_child(ray_mesh)
+			
+	# Floating Light Dust & Amber Ember Motes (GPUParticles3D)
+	var particles := GPUParticles3D.new()
+	particles.amount = 80
+	particles.lifetime = 6.0
+	particles.preprocess = 3.0
+	var p_mat := ParticleProcessMaterial.new()
+	p_mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_BOX
+	p_mat.emission_box_extents = Vector3(60.0, 4.5, 8.0)
+	p_mat.direction = Vector3(0.2, 1.0, 0.1)
+	p_mat.spread = 25.0
+	p_mat.initial_velocity_min = 0.25
+	p_mat.initial_velocity_max = 0.65
+	p_mat.gravity = Vector3(0.0, 0.05, 0.0)
+	p_mat.scale_min = 0.03
+	p_mat.scale_max = 0.08
+	p_mat.color = Color("ffebba")
+	particles.process_material = p_mat
+	
+	var quad_mesh := QuadMesh.new()
+	quad_mesh.size = Vector2(0.08, 0.08)
+	var quad_mat := StandardMaterial3D.new()
+	quad_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	quad_mat.albedo_color = Color("ffe099")
+	quad_mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+	quad_mat.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	quad_mesh.material = quad_mat
+	particles.draw_pass_1 = quad_mesh
+	
+	particles.position = Vector3(45.0, 3.5, -1.0)
+	add_child(particles)
+		
+	# Screen-space post-processing overlay (vignette, chromatic aberration, film grain)
+	var pp_canvas := CanvasLayer.new()
+	pp_canvas.layer = 50
+	pp_rect = ColorRect.new()
+	pp_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	pp_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var pp_mat := ShaderMaterial.new()
+	var pp_shader = load("res://shaders/post_process.gdshader")
+	if pp_shader:
+		pp_mat.shader = pp_shader
+		pp_rect.material = pp_mat
+	pp_canvas.add_child(pp_rect)
+	add_child(pp_canvas)
 		
 	# Global & SceneTransition integration
 	var global = get_node_or_null("/root/Global")
@@ -108,6 +230,7 @@ func _ready() -> void:
 	player.mode_changed.connect(func(mode: int):
 		_tone(330, 0.08)
 		_update_controls_label(mode)
+		_trigger_dimensional_shockwave()
 		if chamber:
 			chamber.set_spatial_mode(mode)
 	)
@@ -194,6 +317,7 @@ func _setup_dialogue() -> void:
 func _build_clean_hud() -> void:
 	var layer := CanvasLayer.new()
 	layer.name = "CleanHUD"
+	layer.layer = 100 # Above the post-process overlay (layer 50) so vignette/grain/CA never dims or distorts UI
 	add_child(layer)
 	
 	# 1. Floating Health Hearts (Top-Left, no brown panel)
@@ -273,6 +397,33 @@ func trigger_milestone(id: String, text: String, duration: float = 3.5) -> void:
 		return
 	shown_milestones[id] = true
 	queue_subtitle(text, duration)
+	_ignite_wall_glyph(id)
+
+func _ignite_wall_glyph(id: String) -> void:
+	# Ancient hieroglyph burst that ignites gold as each course milestone is crossed, then fades away.
+	if not player or not player.is_inside_tree():
+		return
+	var glyph_shader = load("res://shaders/wall_glyphs.gdshader")
+	if not glyph_shader:
+		return
+	var glyph := MeshInstance3D.new()
+	var quad := QuadMesh.new()
+	quad.size = Vector2(1.4, 1.4)
+	glyph.mesh = quad
+	var mat := ShaderMaterial.new()
+	mat.shader = glyph_shader
+	mat.set_shader_parameter("lit", 0.0)
+	glyph.material_override = mat
+	glyph.name = "WallGlyph_" + id
+	glyph.position = player.global_position + Vector3(0, 2.2, 0)
+	glyph.rotation_degrees.y = 45.0
+	add_child(glyph)
+	var t := create_tween()
+	t.tween_method(func(v: float): mat.set_shader_parameter("lit", v), 0.0, 1.0, 0.8).set_trans(Tween.TRANS_QUAD)
+	t.tween_interval(2.0)
+	t.tween_method(func(v: float): mat.set_shader_parameter("lit", v), 1.0, 0.0, 1.0)
+	t.tween_callback(glyph.queue_free)
+
 
 func _process(delta: float) -> void:
 	_handle_subtitles(delta)
@@ -404,3 +555,13 @@ func _enter_axiom_sanctum() -> void:
 		transition.change_chamber("res://chambers/axiom_warden/AxiomWarden.tscn")
 	else:
 		get_tree().change_scene_to_file("res://chambers/axiom_warden/AxiomWarden.tscn")
+
+func _trigger_dimensional_shockwave() -> void:
+	if pp_rect and is_instance_valid(pp_rect) and pp_rect.material is ShaderMaterial:
+		var sm: ShaderMaterial = pp_rect.material
+		var t := create_tween()
+		t.tween_method(func(val: float):
+			if is_instance_valid(pp_rect) and sm:
+				sm.set_shader_parameter("shockwave_progress", val),
+			0.0, 1.0, 0.28
+		).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)

@@ -65,6 +65,17 @@ func _ready() -> void:
 	arrow_indicator.visible = false
 	if stat_box:
 		stat_box.visible = false
+	_apply_glass_shimmer()
+
+func _apply_glass_shimmer() -> void:
+	var shader = load("res://shaders/dialogue_glass.gdshader")
+	if not shader:
+		return
+	for panel in [box_panel, stat_box]:
+		if panel:
+			var mat := ShaderMaterial.new()
+			mat.shader = shader
+			panel.material = mat
 
 func start_dialogue(custom_script: Array = []) -> void:
 	if custom_script.is_empty():

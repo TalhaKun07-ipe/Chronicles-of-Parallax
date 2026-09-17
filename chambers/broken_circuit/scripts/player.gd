@@ -16,6 +16,7 @@ var shape_node: CollisionShape3D
 var humanoid: CapsuleShape3D
 var rod: BoxShape3D
 var sprite: Sprite3D
+var shadow_mesh: MeshInstance3D
 var charge_orb: MeshInstance3D
 var animation_time: float = 0.0
 var move_input: Vector2 = Vector2.ZERO
@@ -47,6 +48,20 @@ func _ready() -> void:
 	sprite.no_depth_test = false
 	sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
 	add_child(sprite)
+	
+	# Grounding Dynamic Drop Shadow
+	shadow_mesh = MeshInstance3D.new()
+	var quad := QuadMesh.new()
+	quad.size = Vector2(0.65, 0.45)
+	shadow_mesh.mesh = quad
+	var shadow_shader = load("res://shaders/character_shadow.gdshader")
+	if shadow_shader:
+		var sm := ShaderMaterial.new()
+		sm.shader = shadow_shader
+		shadow_mesh.material_override = sm
+	shadow_mesh.rotation_degrees.x = -90.0
+	shadow_mesh.position.y = 0.02
+	add_child(shadow_mesh)
 	charge_orb = MeshInstance3D.new()
 	var orb := SphereMesh.new()
 	orb.radius = 0.1
@@ -152,6 +167,8 @@ func request_mode(target: int) -> bool:
 		if target != 2:
 			coyote = 0.0
 	mode = target
+	if shadow_mesh:
+		shadow_mesh.visible = (mode != 1)
 	chamber.set_spatial_mode(mode)
 	mode_changed.emit(mode)
 	_update_sprite()

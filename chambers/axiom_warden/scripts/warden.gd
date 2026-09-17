@@ -17,6 +17,7 @@ var stone: Material
 var brass: Material
 var dark: Material
 var energy: Material
+var shield: MeshInstance3D
 
 func block(parent: Node3D, at: Vector3, size: Vector3) -> MeshInstance3D:
 	Geo.box(parent, at - Vector3(0, size.y / 2, 0), Vector3(size.x + 0.06, 0.08, size.z + 0.06), dark)
@@ -25,10 +26,10 @@ func block(parent: Node3D, at: Vector3, size: Vector3) -> MeshInstance3D:
 	return part
 
 func _ready() -> void:
-	stone = Geo.material(Color("896033"))
+	stone = Geo.stone_material(Color("896033"))
 	brass = Geo.material(Color("d1a24f"))
 	dark = Geo.material(Color("332416"))
-	energy = Geo.material(Color("4df9e8"), true)
+	energy = Geo.conduit_material(Color("d6fffb"), Color("4df9e8"))
 	for x: float in [-0.65, 0.65]:
 		block(self, Vector3(x, 0.25, 0.15), Vector3(0.95, 0.5, 1.3))
 		block(self, Vector3(x, 0.95, 0), Vector3(0.65, 0.9, 0.7))
@@ -80,6 +81,23 @@ func _ready() -> void:
 	Geo.box(axe_arm, Vector3(-1.22, 1.1, 0.5), Vector3(0.06, 1.2, 0.22), Geo.material(Color("ffde86"), true))
 	rotation_degrees.y = -70
 
+	# Hexagonal forcefield: wraps the whole body while the core is sealed (immune or
+	# mid-attack), drops away the instant the core is exposed.
+	var shield_shader = load("res://shaders/hex_shield.gdshader")
+	if shield_shader:
+		shield = MeshInstance3D.new()
+		var shield_mesh := SphereMesh.new()
+		shield_mesh.radius = 1.3
+		shield_mesh.height = 2.6
+		shield_mesh.radial_segments = 24
+		shield_mesh.rings = 16
+		shield.mesh = shield_mesh
+		var shield_mat := ShaderMaterial.new()
+		shield_mat.shader = shield_shader
+		shield.material_override = shield_mat
+		shield.position = Vector3(0, 1.3, 0)
+		add_child(shield)
+
 func set_pose(value: String) -> void:
 	pose = value
 	pose_time = 0
@@ -92,6 +110,8 @@ func _process(delta: float) -> void:
 	var open_angle: float = 1.3 if exposed else 0.22
 	left_door.rotation.y = lerpf(left_door.rotation.y, -open_angle, delta * 8)
 	right_door.rotation.y = lerpf(right_door.rotation.y, open_angle, delta * 8)
+	if shield:
+		shield.visible = not exposed and pose not in ["fallen", "dead", "revive"]
 	var knee: float = 0.0
 	var tilt: float = 0.0
 	var swing: float = -0.12
