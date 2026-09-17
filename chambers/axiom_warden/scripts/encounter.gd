@@ -88,6 +88,7 @@ func _ready() -> void:
 	if transition and transition.has_method("fade_in_from_black"):
 		transition.call("fade_in_from_black", 0.4)
 	_update_camera(1.0)
+	show_message("Ascend the sanctum piers. Press [2] to jump in 2D, or [3] to navigate depth.", 5.0)
 
 func _build_world() -> void:
 	var stone: Material = Geo.stone_material(Color("685039"))
@@ -257,9 +258,11 @@ func _physics_process(delta: float) -> void:
 			boss.exposed = true
 			boss.set_pose("idle")
 			_set_state("opening")
-			show_message("CORE EXPOSED — get close in 1D or 2D and press F.")
+			show_message("CHAMBER CORE OPEN! Switch to 2D with [2], get close, and press [F] to strike!", 6.0)
 			sfx("boss_core_open")
 	elif state == "opening":
+		if player.mode == 3 and state_time > 2.0 and message_timer <= 0.0:
+			show_message("Core is exposed! Press [2] to enter 2D mode, run up, and press [F]!", 3.0)
 		# Concrete difficulty adjustment: recovery window increased by 20% (7.0s -> 8.4s)
 		if hits < 5 and state_time > 8.4: begin_phase()
 	elif state == "stagger":
@@ -368,7 +371,7 @@ func finish_dialogue() -> void:
 		player.armed = true
 		player.weapon.scale.x = 0.05
 		sfx("unlock")
-		show_message("John draws a rod of light from the Chrono-Lens.")
+		show_message("TUTORIAL: Dodge attacks! When the Warden's core chamber opens, switch to 2D with [2] and press [F] to strike!", 6.0)
 	else:
 		boss.set_pose("revive")
 		begin_phase()
@@ -404,7 +407,12 @@ func begin_phase() -> void:
 	pattern_end = float(pattern[-1].time) + (2.4 if str(pattern[-1].kind) in ["bolts", "nova", "guardian", "rising_wall"] else 2.2)
 	_set_state("surge" if hits == 5 else "combat")
 	hud.fight_visible = true
-	show_message("FINAL SURGE — survive the last decree." if hits == 5 else TITLES[hits])
+	if hits == 0:
+		show_message("TUTORIAL: Dodge attacks! When the Warden's core opens, switch to 2D with [2] and strike with [F]!", 5.5)
+	elif hits == 5:
+		show_message("FINAL SURGE: Dodge all dimensional hazards until the ultimate chamber core opens!", 5.0)
+	else:
+		show_message("Boss shielded in 3D! Dodge its attacks until the chamber core opens!", 4.0)
 
 func spawn_attack(kind: String) -> void:
 	boss.set_pose(kind if kind in ["sweep", "slam", "nova"] else "beam")
@@ -412,24 +420,24 @@ func spawn_attack(kind: String) -> void:
 		"sweep":
 			# Concrete balance adjustment: 0.70s -> 0.85s warning (+21.4%)
 			spawn_hazard("sweep", Vector3(9, 0.85, 0), 0.85, 2.4)
-			show_message("HIGH SWEEP — jump in 2D, or flatten onto a cyan rail with 1.")
+			show_message("HIGH SWEEP — Switch to 2D with [2] and jump with [SPACE], or flatten to 1D with [1]!")
 		"beam":
 			# Concrete balance adjustment: 0.75s -> 0.90s warning (+20%)
 			spawn_hazard("beam", Vector3(1, 0.20, player.position.z), 0.90, 0.60)
-			show_message("LOW LASER — 1D is exposed. Press 2 + SPACE, or sidestep in 3D.")
+			show_message("LOW LASER — Switch to 2D with [2] and jump, or sidestep across depth in 3D!")
 		"dual_beam":
 			# Concrete balance adjustment: 0.75s/0.85s -> 0.90s/1.02s warning (+20%)
 			spawn_hazard("beam", Vector3(1, 0.20, player.position.z - 1.6), 0.90, 0.60)
 			spawn_hazard("beam", Vector3(1, 0.20, player.position.z + 1.6), 1.02, 0.60)
-			show_message("DUAL LASER GRID — find the safe gap or time your jump in 2D.")
+			show_message("DUAL LASERS — Find the safe depth lane or time your jump in 2D!")
 		"lane":
 			# Concrete balance adjustment: 0.80s -> 0.96s warning (+20%)
 			spawn_hazard("lane", Vector3(1, 1.55, player.position.z), 0.96, 0.75)
-			show_message("DEPTH LOCK — press 3 and leave the amber floor lane.")
+			show_message("DEPTH LOCK — Switch to 3D with [3] and step off the amber floor lane!")
 		"slam":
 			# Concrete balance adjustment: 0.65s -> 0.80s warning (+23%)
 			spawn_hazard("slam", Vector3(9, 0.05, 0), 0.80, 2.4)
-			show_message("SEISMIC SLAM — flatten into 2D and press SPACE to jump the shockwave!")
+			show_message("SEISMIC SLAM — Switch to 2D with [2] and press [SPACE] to jump the shockwave!")
 		"bolts":
 			# Concrete balance adjustment: 0.60s -> 0.72s warning (+20%), speed -15%
 			var count: int = 3 if hits < 3 else 5
@@ -439,7 +447,7 @@ func spawn_attack(kind: String) -> void:
 				aim.y = 0
 				h.direction = aim.normalized().rotated(Vector3.UP, (i - (count - 1) * 0.5) * 0.14)
 				h.speed = 8.0 + hits * 0.30
-			show_message("PRISM VOLLEY — jump in 2D, sidestep in 3D, or slide under in 1D.")
+			show_message("PRISM VOLLEY — Jump in 2D, sidestep in 3D, or slide under in 1D!")
 		"nova":
 			# Concrete balance adjustment: 0.65s -> 0.78s warning (+20%), speed -15%
 			for i: int in 8:
@@ -447,18 +455,18 @@ func spawn_attack(kind: String) -> void:
 				var angle: float = i * (TAU / 8.0)
 				h.direction = Vector3(cos(angle), 0, sin(angle))
 				h.speed = 7.2 + hits * 0.25
-			show_message("DIMENSIONAL NOVA — weave through the expanding prism burst!")
+			show_message("DIMENSIONAL NOVA — Weave between bursts in 3D across depth lanes!")
 		"guardian":
 			# Dedicated Flat Guardian projectile: becomes ethereal in 2D, solid in 3D
 			var h: Hazard = spawn_hazard("guardian", Vector3(9.0, 0.0, player.position.z), 0.90, 4.5)
 			h.direction = Vector3.LEFT
 			h.speed = 6.2
-			show_message("FLAT GUARDIAN — flatten into 2D with [2] to slip right through!")
+			show_message("FLAT GUARDIAN — Flatten into 2D with [2] to pass right through it harmlessly!")
 		"rising_wall":
 			# 3D Lateral Hazard: rising stone barrier player must navigate around
 			var wall_z: float = clampf(roundf(player.position.z / 2.0) * 2.0, -4.0, 4.0)
 			spawn_hazard("rising_wall", Vector3(clampf(player.position.x + 3.0, -2.0, 6.0), 0.0, wall_z), 1.20, 3.8)
-			show_message("RISING WALL — navigate around in 3D across depth!")
+			show_message("RISING WALL — Navigate around the barrier in 3D across depth!")
 	sfx("boss_warning")
 
 func spawn_hazard(kind: String, at: Vector3, delay: float, lifetime: float) -> Hazard:
@@ -475,14 +483,14 @@ func spawn_hazard(kind: String, at: Vector3, delay: float, lifetime: float) -> H
 func try_strike() -> bool:
 	if not player.armed or player.locked or state not in ["combat", "opening", "surge"]: return false
 	if player.position.distance_to(Vector3(boss.position.x, player.position.y, boss.position.z)) > 2.8 or absf(player.position.y) > 1.4:
-		show_message("Get closer to the Warden, then press F.")
+		show_message("Get closer to the Warden in 2D, then press [F] to strike!", 3.5)
 		return false
 	if player.mode == 3:
-		show_message("3D armor deflects the rod. Strike in 1D or 2D.")
+		show_message("3D Armor deflects your strike! You can ONLY damage the boss in 2D with [2]!", 4.0)
 		sfx("error")
 		return false
 	if not core_open:
-		show_message("Its core is sealed. Survive this pattern to expose it.")
+		show_message("Chamber core is sealed! Survive attacks until the core chamber opens!", 4.0)
 		return false
 	hits += 1
 	core_open = false
@@ -494,19 +502,20 @@ func try_strike() -> bool:
 		boss.set_pose("fallen")
 		player.locked = true
 		_set_state("false_defeat")
-		show_message("The Warden falls silent...")
+		show_message("The Warden collapses... but time begins to warp!", 4.0)
 	elif hits == 6:
 		boss.set_pose("dead")
 		player.locked = true
 		_set_state("collapse")
 		sfx("victory")
+		show_message("THE AXIOM WARDEN HAS FALLEN! The exit portal is unsealed!", 5.0)
 		var global: Node = get_node_or_null("/root/Global")
 		if global:
 			global.set("rewind_unlocked", false)
 	else:
 		boss.set_pose("hit")
 		_set_state("stagger")
-		show_message(TAUNTS[hits - 1])
+		show_message("DIRECT HIT! Dodge the next attack pattern until the core reopens!", 3.5)
 	return true
 
 func begin_revival() -> void:
@@ -598,9 +607,12 @@ func update_occlusion(player_z: float) -> void:
 			else:
 				mesh.visible = true
 
-func show_message(message: String) -> void:
-	if is_instance_valid(hud): hud.objective = message
-	message_timer = 3.0
+func show_message(message: String, duration: float = 4.5) -> void:
+	if is_instance_valid(hud):
+		hud.objective = message
+		if hud.has_method("show_subtitle"):
+			hud.show_subtitle(message, duration)
+	message_timer = duration
 
 func _update_hud() -> void:
 	hud.health = health

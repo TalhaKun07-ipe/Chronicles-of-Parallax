@@ -933,6 +933,38 @@ Degrees_of_Escape/
   * `tools/verify_new_features.gd`: **27/27 checks passed 100%**.
   * `tools/verify_integration_flow.gd`: **100% passed**.
 
+### Session 20: Boss Title Typography Overhaul & Prominent Gameplay Tutorial Subtitles
+* **Grand, Bold, Majestic Boss Title (`hud.gd`):**
+  * Removed all secondary text, chapter phase titles (`" / V / THE FRACTURE"`), Roman numerals, and extra suffixes above the boss health bar.
+  * The title is strictly **`"AXIOM WARDEN"`**, rendered with commanding 30px bold typography, heavy drop shadows, and radiant gold fill (`Color("fae4b5")`).
+* **Gameplay Tutorial Subtitle Engine (`hud.gd` & `encounter.gd`):**
+  * Created dedicated `SubtitleLabel` in `hud.gd` with 24px legible typography, outline size 6, shadow offset, and dynamic smooth fade-in/fade-out animations.
+  * Centered horizontally in the safe reading zone above the boss health bar (`size.y - 145`), safely clearing the player, the boss, and the UI.
+  * **Chamber Core Vulnerability & 2D Strike Tutorials:**
+    * Combat Start: *"TUTORIAL: Dodge attacks! When the Warden's core opens, switch to 2D with [2] and strike with [F]!"*
+    * Core Exposed: *"CHAMBER CORE OPEN! Switch to 2D with [2], get close, and press [F] to strike!"*
+    * 3D Strike Attempt: *"3D Armor deflects your strike! You can ONLY damage the boss in 2D with [2]!"*
+    * Sealed Core Strike Attempt: *"Chamber core is sealed! Survive attacks until the core chamber opens!"*
+    * Strike Distance Hint: *"Get closer to the Warden in 2D, then press [F] to strike!"*
+    * Direct Hit Feedback: *"DIRECT HIT! Dodge the next attack pattern until the core reopens!"*
+  * **Attack-Specific Evasion Guidance:**
+    * High Sweep: *"HIGH SWEEP — Switch to 2D with [2] and jump with [SPACE], or flatten to 1D with [1]!"*
+    * Low Laser: *"LOW LASER — Switch to 2D with [2] and jump, or sidestep across depth in 3D!"*
+    * Dual Lasers: *"DUAL LASERS — Find the safe depth lane or time your jump in 2D!"*
+    * Depth Lock: *"DEPTH LOCK — Switch to 3D with [3] and step off the amber floor lane!"*
+    * Seismic Slam: *"SEISMIC SLAM — Switch to 2D with [2] and press [SPACE] to jump the shockwave!"*
+    * Flat Guardian: *"FLAT GUARDIAN — Flatten into 2D with [2] to pass right through it harmlessly!"*
+    * Rising Wall: *"RISING WALL — Navigate around the barrier in 3D across depth!"*
+  * **Approach Course Guidance:**
+    * Spawn: *"Ascend the sanctum piers. Press [2] to jump in 2D, or [3] to navigate depth."*
+* **Automated Verification Pipeline (100% Pass):**
+  * `tools/verify_axiom_warden.gd`: **81/81 checks passed 100%** (validated `SubtitleLabel` existence, font size $\ge 24\text{px}$, message forwarding, duration timers, bold boss title, plus all 77 prior mechanics).
+  * `tools/verify_chamber_transition.gd`: **100% passed**.
+  * `tools/verify_jump_rules.gd`: **21/21 checks passed 100%**.
+  * `tools/verify_new_features.gd`: **27/27 checks passed 100%**.
+  * `tools/verify_integration_flow.gd`: **100% passed**.
+
+
 
 
 

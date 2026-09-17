@@ -10,7 +10,12 @@ var dimension: int = 3
 var hits: int = 0
 var fight_visible: bool = false
 var final_round: bool = false
-var objective: String = "Reach the upper sanctum."
+var objective: String = "Reach the upper sanctum.":
+	set(val):
+		objective = val
+		if is_instance_valid(subtitle_label) and val != "":
+			subtitle_label.text = val
+			subtitle_timer = 4.5
 var phase_name: String = "THE ASCENT"
 var hint: String = "A/D move   W/S depth   SPACE jump   1/2/3 form   F strike   ESC pause"
 var dialogue_visible: bool = false
@@ -21,6 +26,8 @@ var paused: bool = false
 var defeated: bool = false
 var victory: bool = false
 var line_label: Label
+var subtitle_label: Label
+var subtitle_timer: float = 0.0
 var age: float = 0
 var font: Font
 
@@ -36,11 +43,33 @@ func _ready() -> void:
 	line_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(line_label)
 
+	subtitle_label = Label.new()
+	subtitle_label.name = "SubtitleLabel"
+	subtitle_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	subtitle_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	subtitle_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	subtitle_label.add_theme_font_size_override("font_size", 24)
+	subtitle_label.add_theme_color_override("font_color", Color(1.0, 0.96, 0.88, 1.0))
+	subtitle_label.add_theme_constant_override("outline_size", 6)
+	subtitle_label.add_theme_color_override("font_outline_color", Color(0.04, 0.03, 0.02, 0.98))
+	subtitle_label.add_theme_constant_override("shadow_offset_x", 2)
+	subtitle_label.add_theme_constant_override("shadow_offset_y", 2)
+	subtitle_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
+	subtitle_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(subtitle_label)
+	if objective != "":
+		subtitle_label.text = objective
+		subtitle_timer = 4.5
+
 func say(who: String, words: String) -> void:
 	speaker = who
 	text_body = words
 	revealed = 0
 	dialogue_visible = true
+
+func show_subtitle(text: String, duration: float = 4.5) -> void:
+	objective = text
+	subtitle_timer = duration
 
 func _process(delta: float) -> void:
 	age += delta
@@ -57,6 +86,16 @@ func _process(delta: float) -> void:
 	line_label.position = Vector2(200, size.y - 175)
 	line_label.size = Vector2(maxf(200, size.x - 280), 115)
 	line_label.text = "* " + text_body.substr(0, int(revealed))
+
+	if subtitle_timer > 0.0:
+		subtitle_timer -= delta
+		subtitle_label.visible = not dialogue_visible and not paused and not defeated and not victory and subtitle_timer > 0.0
+		subtitle_label.modulate.a = clampf(subtitle_timer / 0.35, 0.0, 1.0)
+	else:
+		subtitle_label.visible = false
+	subtitle_label.size = Vector2(minf(1040, size.x - 80), 55)
+	subtitle_label.position = Vector2((size.x - subtitle_label.size.x) * 0.5, size.y - 145)
+
 	queue_redraw()
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -112,7 +151,20 @@ func _draw() -> void:
 	if fight_visible and not dialogue_visible:
 		var x: float = w * 0.18
 		var bw: float = w * 0.64
-		label(Vector2(x, h - 84), "AXIOM WARDEN  /  " + phase_name, Color("f1d8a2"), 18)
+		# Grand, bold, majestic boss title — strictly "AXIOM WARDEN"
+		var boss_title: String = "AXIOM WARDEN"
+		var title_size: int = 30
+		var title_pos: Vector2 = Vector2(x, h - 88)
+		# Deep drop shadow & outline
+		for ox: float in [-2.0, 0.0, 2.0]:
+			for oy: float in [-2.0, 0.0, 2.0]:
+				if ox != 0.0 or oy != 0.0:
+					draw_string(font, title_pos + Vector2(ox + 2.0, oy + 2.0), boss_title, HORIZONTAL_ALIGNMENT_LEFT, -1, title_size, Color(0, 0, 0, 0.95))
+		# Multi-pass bold fill in radiant gold
+		for bx: float in [-1.0, 0.0, 1.0]:
+			for by: float in [-0.5, 0.0, 0.5]:
+				draw_string(font, title_pos + Vector2(bx, by), boss_title, HORIZONTAL_ALIGNMENT_LEFT, -1, title_size, Color("fae4b5"))
+
 		draw_rect(Rect2(x - 3, h - 73, bw + 6, 25), Color("d6b572"))
 		draw_rect(Rect2(x, h - 70, bw, 19), Color("30211c"))
 		var count: int = 1 if final_round else 5

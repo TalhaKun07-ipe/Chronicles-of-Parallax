@@ -28,6 +28,13 @@ func run() -> void:
 	var p = encounter.player
 	p.input_override = true
 
+	# --- 0. SUBTITLE & TUTORIAL SYSTEM VERIFICATION ---
+	check(encounter.hud.subtitle_label != null, "HUD has dedicated SubtitleLabel")
+	check(encounter.hud.subtitle_label.get_theme_font_size("font_size") >= 24, "Subtitle font size is large (>= 24px)")
+	encounter.show_message("TUTORIAL: Dodge attacks! Switch to 2D to strike!", 4.5)
+	check(encounter.hud.subtitle_label.text == "TUTORIAL: Dodge attacks! Switch to 2D to strike!", "show_message forwards tutorial text to subtitle label")
+	check(encounter.hud.subtitle_timer > 0.0, "Subtitle timer is active")
+
 	# --- 1. MOVEMENT & DIMENSIONAL RULES ---
 	check(p.is_on_floor(), "John starts on a collidable platform")
 	check(not p.armed, "Weapon stays hidden during the approach")
