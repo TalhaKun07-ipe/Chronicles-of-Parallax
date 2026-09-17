@@ -273,12 +273,11 @@ func _physics_process(delta: float) -> void:
 	elif state == "collapse":
 		if state_time > 2.0:
 			_set_state("victory")
-			hud.victory = true
 			exit_seal.visible = false
 			chamber_completed.emit()
-	elif state == "victory":
-		if player.position.x >= 14.0:
 			transition_to_ending()
+	elif state == "victory":
+		pass
 	if state in ["combat", "surge", "opening"] and player.mode == 3 and player.position.distance_to(boss.position) < 1.8:
 		hurt_player()
 	_update_hud()
@@ -638,5 +637,5 @@ func transition_to_ending() -> void:
 	var transition: Node = get_node_or_null("/root/SceneTransition")
 	if transition and transition.has_method("change_chamber"):
 		transition.call("change_chamber", "res://scenes/ui/EndingCutscene.tscn")
-	else:
+	elif get_tree() and get_tree().current_scene:
 		get_tree().change_scene_to_file("res://scenes/ui/EndingCutscene.tscn")

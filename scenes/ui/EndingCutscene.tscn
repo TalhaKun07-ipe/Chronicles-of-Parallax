@@ -120,7 +120,7 @@ theme_override_colors/font_shadow_color = Color(0.66, 0.47, 0.16, 0.8)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 48
-text = "DEGREES OF ESCAPE"
+text = "CHRONICLES OF PARALLAX"
 horizontal_alignment = 1
 
 [node name="SubtitleLabel" type="Label" parent="VictoryContainer"]

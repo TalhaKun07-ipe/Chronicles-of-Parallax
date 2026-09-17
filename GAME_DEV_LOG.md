@@ -1,6 +1,6 @@
-# 📖 Degrees of Escape — Master Game Design & Technical Development Log
+# 📖 Chronicles of Parallax — Master Game Design & Technical Development Log
 
-> **Project:** *Degrees of Escape*  
+> **Project:** *Chronicles of Parallax* (formerly *Degrees of Escape*)  
 > **Event:** Intra BUET Robo Challenge 2026 GameJam  
 > **Theme:** *Degree of Freedom* (0D → 1D → 2D → 2.5D → 3D → 4D)  
 > **Engine:** Godot Engine 4.3+ (GL Compatibility / Forward+)  
@@ -992,7 +992,19 @@ Degrees_of_Escape/
   * In `chambers/axiom_warden/scripts/encounter.gd` and `hud.gd`:
     * Added `victory_advance_requested` signal.
     * Pressing `[SPACE]` or `[ENTER]` during victory screen or walking into the exit portal (`X >= 14.0`) smoothly transitions to `res://scenes/ui/EndingCutscene.tscn` via `SceneTransition.change_chamber()`.
-  * Verified with `tools/verify_ending_cutscene.gd` (**100% Passed**).
+* **Title Rebrand to "Chronicles of Parallax" & Seamless Outro Transition:**
+  * **Title Rebrand:**
+    * Renamed game title from *"Degrees of Escape"* to **"Chronicles of Parallax"** across `project.godot` (`config/name="Chronicles of Parallax"`), `scenes/ui/IntroCutscene.tscn`, `scenes/ui/EndingCutscene.tscn`, `README.md`, and `GAME_DEV_LOG.md`.
+    * Intro Title Screen and Outro Grand Victory Screen now prominently display **CHRONICLES OF PARALLAX** in luminous gold typography.
+  * **Boss Victory Screen Removal & Direct Outro Autoplay:**
+    * Removed the intermediate "THE WARDEN HAS FALLEN / SPACE or ENTER to proceed to Outro" overlay from `chambers/axiom_warden/scripts/hud.gd`.
+    * Updated `chambers/axiom_warden/scripts/encounter.gd` so that when the Axiom Warden collapses, after the 2.0s collapse animation finishes, `transition_to_ending()` is called automatically without requiring intermediate keypresses or showing an overlay.
+  * **Comprehensive Verification:**
+    * `tools/verify_axiom_warden.gd`: 81/81 checks passed.
+    * `tools/verify_ending_cutscene.gd`: All checks passed.
+    * `tools/verify_integration_flow.gd`: Intro to Chamber 1 transition passed.
+    * `tools/verify_route.gd`: All 100 route checks passed 100%.
+
 
 
 

@@ -1,4 +1,6 @@
-# Degrees of Escape
+# Chronicles of Parallax
+
+*(Formerly Degrees of Escape)*  
 
 **GameJam Submission for Intra BUET Robo Challenge 2026**  
 **Theme:** *Degree of Freedom*  

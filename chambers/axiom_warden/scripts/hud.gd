@@ -90,7 +90,7 @@ func _process(delta: float) -> void:
 
 	if subtitle_timer > 0.0:
 		subtitle_timer -= delta
-		subtitle_label.visible = not dialogue_visible and not paused and not defeated and not victory and subtitle_timer > 0.0
+		subtitle_label.visible = not dialogue_visible and not paused and not defeated and subtitle_timer > 0.0
 		subtitle_label.modulate.a = clampf(subtitle_timer / 0.35, 0.0, 1.0)
 	else:
 		subtitle_label.visible = false
@@ -116,10 +116,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif pressed and key == KEY_ENTER and defeated:
 		retry_requested.emit()
 		get_viewport().set_input_as_handled()
-	elif pressed and key in [KEY_SPACE, KEY_ENTER, KEY_Z] and victory:
-		victory_advance_requested.emit()
-		get_viewport().set_input_as_handled()
-	elif pressed and key == KEY_ESCAPE and not defeated and not victory:
+	elif pressed and key == KEY_ESCAPE and not defeated:
 		pause_requested.emit()
 		get_viewport().set_input_as_handled()
 
@@ -193,9 +190,9 @@ func _draw() -> void:
 			if warden_portrait:
 				draw_texture_rect(warden_portrait, portrait_box, false)
 		label(Vector2(w - 265, h - 57), "Z / SPACE / ENTER    ▾", Color("b8b4ac"), 14)
-	if paused or defeated or victory:
+	if paused or defeated:
 		draw_rect(Rect2(Vector2.ZERO, size), Color(0.02, 0.015, 0.01, 0.72))
-		var title: String = "PAUSED" if paused else ("THE WARDEN HAS FALLEN" if victory else "THE WATCH STILL TICKS")
+		var title: String = "PAUSED" if paused else "THE WATCH STILL TICKS"
 		label(Vector2(w * 0.27, h * 0.44), title, Color("f4d69d"), 34)
-		var detail: String = "ESC to return" if paused else ("SPACE or ENTER to proceed to Outro" if victory else "ENTER to retry at the arena checkpoint")
+		var detail: String = "ESC to return" if paused else "ENTER to retry at the arena checkpoint"
 		label(Vector2(w * 0.27, h * 0.51), detail, Color("e3dbca"), 20)

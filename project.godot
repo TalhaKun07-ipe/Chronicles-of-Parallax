@@ -14,7 +14,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="Degrees of Escape"
+config/name="Chronicles of Parallax"
 config/tags=PackedStringArray("game_jam", "puzzle", "pixel_art", "degrees_of_freedom")
 run/main_scene="res://scenes/ui/IntroCutscene.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
