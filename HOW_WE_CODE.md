@@ -392,15 +392,21 @@ godot --headless -s tools/verify_full_flow.gd
   * Validates hazard collision geometry: sweeps, low beams, bolts, lanes, and slams.
   * Validates 5 core strikes, phase transitions, false defeat, revival dialogue, final surge, and collapse.
   * Validates retry from checkpoint, pause toggle, and health restoration.
-* **`tools/verify_route.gd` (61 automated checks):**
+* **`tools/verify_route.gd` (101 automated checks):**
   * Spawns player, validates 1D conduit slide & speed boost.
   * Verifies pit crossing and dimensional expansion rejection in narrow gaps.
-  * Validates energy charge pickup and pedestal powering.
+  * Validates airtight 1D containment alcove preventing 3D/2D bypass.
+  * Validates 0D Point pulse awakening of Ancient Relay Terminal.
+  * Validates Energy Charge pickup and delivery to Receiver.
+  * Validates submerged bridge chasm, dynamic reconstruction sequence, trauma shake, SFX, and solid collision enablement.
   * Validates runic terrace 2D jumps, 3D walkway forward transit, high rail crossing.
-  * Validates Flat Guardian 3D pursuit, melee strike, damage & knockback, 2D ethereal pass-through, and exit archway completion.
-* **`tools/verify_new_features.gd` (20 automated checks):**
+  * Validates Flat Guardian 3D pursuit, melee strike, damage & knockback, 2D ethereal pass-through, and sealed exit vestibule.
+* **`tools/verify_new_features.gd` (27 automated checks):**
   * Validates Undertale dialogue queue, portraits, skip handling, and kinematic lock/unlock.
-  * Validates Full Map camera zoom toggle and movement auto-reset.
+  * Validates clean HUD floating hearts, large gameplay subtitles, and contextual controls.
+  * Validates continuous camera look-ahead tracking and screen shake.
+* **`tools/verify_chamber_transition.gd`:**
+  * Validates seamless progression from Chamber 01 exit into Chamber 02 (Axiom Warden Sanctum).
 * **`tools/verify_full_flow.gd`:**
   * Validates seamless handoff from Intro Cutscene into Chamber 01.
 
@@ -411,7 +417,7 @@ godot --headless -s tools/verify_full_flow.gd
 All retro pixel art and chamber layouts are generated using Python scripts:
 * **`generate_all_assets.py`:** Generates John Rod 64px and 128px dimensional sprites, HUD icons, and prop textures.
 * **`generate_undertale_intro_master.py`:** Produces the 6 high-contrast sepia narrative panels with Bayer matrix dithering and antique gold borders.
-* **`tools/build_layout.py`:** Assembles the 253-piece 3D chamber geometry into `BrokenCircuit.tscn` from geometric specifications.
+* **`tools/build_layout.py`:** Assembles the 306-piece 3D chamber geometry into `BrokenCircuit.tscn` from geometric specifications.
 
 ---
 

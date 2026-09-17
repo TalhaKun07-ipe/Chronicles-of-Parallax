@@ -5,12 +5,15 @@ signal circuit_completed
 signal chamber_completed
 signal echo_found
 signal plate_activated(upper: bool)
+signal relay_activated
 
 var carrying_charge: bool = false
 var powered: bool = false
 var completed: bool = false
 var found_echo: bool = false
 var spatial_mode: int = 3
+var relay_active: bool = false
+var bridge_reconstructed: bool = false
 var charge_mesh: MeshInstance3D
 var lit_material: StandardMaterial3D
 var clock: float = 0.0
@@ -31,12 +34,20 @@ func _ready() -> void:
 	else:
 		charge_mesh.position = Vector3(56.0, 3.65, 3.5)
 	
-	# All 3 conduit rails are visible and active
-	for rail_name in ["FirstConduit", "RelayConduit", "HighConduit"]:
-		var node = get_node_or_null("Mechanisms/" + rail_name)
-		if node:
-			node.show()
-			
+	# Initially submerge runic bridge pieces into chasm and disable collision
+	for bridge_name in ["RunicBridge1", "RunicBridge2"]:
+		var b = get_node_or_null("Mechanisms/" + bridge_name)
+		if b:
+			b.position.y = -4.5
+			var col = b.get_node_or_null("Collision")
+			if col:
+				col.disabled = true
+				
+	for r_name in ["RuneF64.2", "RuneF65.6", "RuneF67.0"]:
+		var r = get_node_or_null("Mechanisms/" + r_name)
+		if r:
+			r.position.y = -4.5
+	
 	set_spatial_mode(3)
 
 func _physics_process(delta: float) -> void:
@@ -100,12 +111,14 @@ func rail_near(at: Vector3) -> Dictionary:
 				"gap_max": 24.5
 			}
 
-	# Section F: Relay Court Conduit
+	# Section F: Relay Court Conduit (Requires Relay Activation!)
 	if has_node("Markers/Rail2Start") and has_node("Markers/Rail2End"):
 		var r2_start: Vector3 = $Markers/Rail2Start.position
 		var r2_end: Vector3 = $Markers/Rail2End.position
 		if at.x >= r2_start.x - 0.7 and at.x <= r2_end.x + 0.7 \
 				and absf(at.z - r2_start.z) < 0.6 and absf(at.y - r2_start.y) < 0.8:
+			if not relay_active:
+				return {}
 			return {
 				"start": r2_start,
 				"end": r2_end,
@@ -146,12 +159,37 @@ func try_collect(at: Vector3) -> bool:
 	charge_collected.emit()
 	return true
 
+func activate_relay() -> String:
+	if relay_active:
+		return "The relay terminal is already humming with power."
+	relay_active = true
+	var socket = get_node_or_null("Mechanisms/RelayTerminalSocket/Mesh")
+	if socket:
+		socket.material_override = lit_material
+	var rail = get_node_or_null("Mechanisms/RelayConduit/Mesh")
+	if rail:
+		rail.material_override = lit_material
+	var sm = get_node_or_null("/root/SoundManager")
+	if sm and sm.has_method("play_sfx"):
+		sm.play_sfx("unlock")
+		sm.play_sfx("energy_pulse")
+	relay_activated.emit()
+	return "Ancient Relay awakened! The conduit rail is energized for 1D transit."
+
+func try_pulse(at: Vector3) -> String:
+	if has_node("Markers/Relay") and at.distance_to($Markers/Relay.position) < 3.2:
+		return activate_relay()
+	return ""
+
 func try_interact(at: Vector3) -> String:
+	if has_node("Markers/Relay") and at.distance_to($Markers/Relay.position) < 2.0:
+		return activate_relay()
+		
 	if has_node("Markers/Receiver") and at.distance_to($Markers/Receiver.position) < 1.6:
 		if powered:
-			return "The circuit hums with power. Proceed up the runic terrace."
+			return "The circuit hums with power. Proceed across the reconstructed bridge."
 		if not carrying_charge:
-			return "An empty circuit socket. Retrieve the spark through the conduit."
+			return "An empty circuit socket. Retrieve the energy charge through the 1D conduit."
 		powered = true
 		carrying_charge = false
 		var socket_mesh = get_node_or_null("Mechanisms/ReceiverSocket/Mesh")
@@ -160,14 +198,62 @@ func try_interact(at: Vector3) -> String:
 		var seal_mesh = get_node_or_null("Mechanisms/ExitSeal/Mesh")
 		if seal_mesh:
 			seal_mesh.material_override = lit_material
-		# Ignite runic bridge glyphs
-		for r_name in ["RuneF64.8", "RuneF66.2", "RuneF67.4"]:
-			var node = get_node_or_null("Mechanisms/" + r_name + "/Mesh")
-			if node:
-				node.material_override = lit_material
+		reconstruct_bridge()
 		circuit_completed.emit()
-		return "Circuit restored! The runic bridge ignites. The ascent is open!"
+		return "Circuit restored! Ancient mechanisms awaken — the Runic Bridge rises!"
 	return ""
+
+func reconstruct_bridge() -> void:
+	if bridge_reconstructed:
+		return
+	bridge_reconstructed = true
+	
+	# 1. Light up receiver and bridge feed traces
+	for trace_name in ["ReceiverTrace54.0", "ReceiverTrace56.0", "ReceiverTrace57.5", "BridgeFeedTrace60.5", "BridgeFeedTrace61.8"]:
+		var trace = get_node_or_null("Details/" + trace_name + "/Mesh")
+		if trace:
+			trace.material_override = lit_material
+			
+	# 2. Audio feedback
+	var sm = get_node_or_null("/root/SoundManager")
+	if sm and sm.has_method("play_sfx"):
+		sm.play_sfx("stone_grind")
+		
+	# 3. Animate Bridge Segments rising from Y = -4.5 to Y = 3.325
+	var b1 = get_node_or_null("Mechanisms/RunicBridge1")
+	var b2 = get_node_or_null("Mechanisms/RunicBridge2")
+	var r1 = get_node_or_null("Mechanisms/RuneF64.2")
+	var r2 = get_node_or_null("Mechanisms/RuneF65.6")
+	var r3 = get_node_or_null("Mechanisms/RuneF67.0")
+	
+	var tween = create_tween()
+	tween.set_parallel(true)
+	if b1:
+		tween.tween_property(b1, "position:y", 3.325, 1.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	if r1:
+		tween.tween_property(r1, "position:y", 3.62, 1.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	if b2:
+		tween.tween_property(b2, "position:y", 3.325, 1.5).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	if r2:
+		tween.tween_property(r2, "position:y", 3.62, 1.4).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	if r3:
+		tween.tween_property(r3, "position:y", 3.62, 1.5).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		
+	tween.chain().tween_callback(func():
+		# Enable solid collisions when segments are seated
+		if b1:
+			var col1 = b1.get_node_or_null("Collision")
+			if col1: col1.disabled = false
+		if b2:
+			var col2 = b2.get_node_or_null("Collision")
+			if col2: col2.disabled = false
+		for r_name in ["RuneF64.2", "RuneF65.6", "RuneF67.0"]:
+			var r_node = get_node_or_null("Mechanisms/" + r_name + "/Mesh")
+			if r_node:
+				r_node.material_override = lit_material
+		if sm and sm.has_method("play_sfx"):
+			sm.play_sfx("stone_lock")
+	)
 
 func try_exit(at: Vector3) -> bool:
 	if completed or not powered:

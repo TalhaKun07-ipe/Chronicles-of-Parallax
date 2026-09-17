@@ -24,6 +24,7 @@ var override_jump: bool = false
 var texture_cache: Dictionary = {}
 var coyote: float = 0.0
 var jump_buffer: float = 0.0
+var pulse_cooldown: float = 0.0
 var invulnerable_timer: float = 0.0
 @onready var chamber: Node3D = get_parent().get_node("Chamber")
 
@@ -63,17 +64,19 @@ func action_pressed(action: String) -> bool:
 	return InputMap.has_action(action) and Input.is_action_pressed(action)
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	for pair in [["dimension_1",1],["dimension_2",2],["dimension_3",3]]:
+	for pair in [["dimension_0",0],["dimension_1",1],["dimension_2",2],["dimension_3",3]]:
 		if InputMap.has_action(pair[0]) and event.is_action_pressed(pair[0]):
 			request_mode(pair[1])
 			return
 	for pair in [["cycle_prev",-1],["cycle_next",1]]:
 		if InputMap.has_action(pair[0]) and event.is_action_pressed(pair[0]):
-			request_mode(clampi(mode + pair[1],1,3))
+			request_mode(clampi(mode + pair[1],0,3))
 			return
 	if InputMap.has_action("jump") and event.is_action_pressed("jump"):
 		if mode == 2:
 			jump_buffer = 0.12
+		elif mode == 0:
+			pulse()
 		return
 	if InputMap.has_action("interact_strike") and event.is_action_pressed("interact_strike"):
 		var mapped_message: String = chamber.try_interact(global_position)
@@ -82,14 +85,17 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return
 	match event.physical_keycode:
+		KEY_0: request_mode(0)
 		KEY_1: request_mode(1)
 		KEY_2: request_mode(2)
 		KEY_3: request_mode(3)
-		KEY_Q, KEY_Z: request_mode(maxi(1, mode - 1))
+		KEY_Q, KEY_Z: request_mode(maxi(0, mode - 1))
 		KEY_E, KEY_X: request_mode(mini(3, mode + 1))
 		KEY_SPACE:
 			if mode == 2:
 				jump_buffer = 0.12
+			elif mode == 0:
+				pulse()
 		KEY_F:
 			var message: String = chamber.try_interact(global_position)
 			if not message.is_empty():
@@ -109,16 +115,32 @@ func request_mode(target: int) -> bool:
 		return true
 	jump_buffer = 0.0 # Clear incompatible jump buffers during dimension changes
 	var preserved_vy: float = velocity.y
-	if target == 1:
+	
+	if target == 0:
+		var destination := position
+		if mode == 1:
+			destination.y = float(active_rail.floor_y) + 0.04
+		position = destination
+		shape_node.shape = humanoid
+		shape_node.position.y = 0.2
+		sprite.position.y = 0.2
+		sprite.scale = Vector3(0.35, 0.35, 0.35)
+		velocity = Vector3.ZERO
+		coyote = 0.0
+	elif target == 1:
 		var found: Dictionary = chamber.rail_near(position)
 		if found.is_empty():
-			notice.emit("Stand on a powered conduit to enter 1D.")
+			if not chamber.relay_active:
+				notice.emit("The conduit rail is dormant. Awaken the Relay Terminal first.")
+			else:
+				notice.emit("Stand on a powered conduit to enter 1D.")
 			return false
 		active_rail = found
 		position = Vector3(clampf(position.x, found.start.x, found.end.x), found.start.y, found.start.z)
 		shape_node.shape = rod
 		shape_node.position.y = 0
 		sprite.position.y = 0
+		sprite.scale = Vector3.ONE
 		velocity = Vector3.ZERO
 		coyote = 0.0
 	else:
@@ -136,6 +158,7 @@ func request_mode(target: int) -> bool:
 		shape_node.shape = humanoid
 		shape_node.position.y = 0.575
 		sprite.position.y = 0.576
+		sprite.scale = Vector3.ONE
 		plane_z = position.z
 		# Preserve existing vertical velocity across 2D <-> 3D transitions without extra impulse or jump reset
 		velocity.y = preserved_vy
@@ -148,13 +171,58 @@ func request_mode(target: int) -> bool:
 	_update_sprite()
 	return true
 
+func pulse() -> void:
+	if pulse_cooldown > 0.0:
+		return
+	pulse_cooldown = 0.4
+	var sm = get_node_or_null("/root/SoundManager")
+	if sm and sm.has_method("play_sfx"):
+		sm.play_sfx("pulse")
+	_create_pulse_ring()
+	var msg: String = chamber.try_pulse(global_position)
+	if not msg.is_empty():
+		notice.emit(msg)
+
+func _create_pulse_ring() -> void:
+	var ring = MeshInstance3D.new()
+	var torus = TorusMesh.new()
+	torus.inner_radius = 0.4
+	torus.outer_radius = 0.6
+	ring.mesh = torus
+	var mat = StandardMaterial3D.new()
+	mat.albedo_color = Color("ebd8b0")
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	ring.material_override = mat
+	add_child(ring)
+	ring.position = Vector3(0, 0.2, 0)
+	ring.scale = Vector3(0.2, 0.2, 0.2)
+	var t = create_tween()
+	t.set_parallel(true)
+	t.tween_property(ring, "scale", Vector3(3.5, 0.2, 3.5), 0.45).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	t.tween_property(mat, "albedo_color:a", 0.0, 0.45)
+	t.chain().tween_callback(ring.queue_free)
+
 func _physics_process(delta: float) -> void:
 	animation_time += delta
+	if pulse_cooldown > 0.0:
+		pulse_cooldown = maxf(0.0, pulse_cooldown - delta)
 	if not input_override:
 		move_input = Vector2(
 			float(action_pressed("move_right") or Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT)) - float(action_pressed("move_left") or Input.is_physical_key_pressed(KEY_A) or Input.is_physical_key_pressed(KEY_LEFT)),
 			float(action_pressed("move_down") or Input.is_physical_key_pressed(KEY_S) or Input.is_physical_key_pressed(KEY_DOWN)) - float(action_pressed("move_up") or Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP)))
-	if mode == 1:
+	if mode == 0:
+		if override_jump or (action_pressed("jump") or Input.is_physical_key_pressed(KEY_SPACE)):
+			pulse()
+			override_jump = false
+		if not is_on_floor():
+			velocity.y -= GRAVITY * delta
+		else:
+			velocity.y = 0.0
+		velocity.x = 0.0
+		velocity.z = 0.0
+		move_and_slide()
+	elif mode == 1:
 		velocity = Vector3(move_input.x * 3.5, 0, 0)
 		move_and_slide()
 		position.x = clampf(position.x, active_rail.start.x, active_rail.end.x)
@@ -219,7 +287,7 @@ func _physics_process(delta: float) -> void:
 	chamber.try_collect(global_position)
 	chamber.try_exit(global_position)
 	charge_orb.visible = chamber.carrying_charge
-	charge_orb.position.y = (0.5 if mode == 1 else 1.45) + sin(animation_time * 3) * 0.05
+	charge_orb.position.y = (0.35 if mode == 0 else (0.5 if mode == 1 else 1.45)) + sin(animation_time * 3) * 0.05
 	
 	# Invulnerability blink
 	if invulnerable_timer > 0.0:
@@ -266,6 +334,7 @@ func respawn() -> void:
 	shape_node.shape = humanoid
 	shape_node.position.y = 0.575
 	sprite.position.y = 0.576
+	sprite.scale = Vector3.ONE
 	invulnerable_timer = 0.0
 	sprite.visible = true
 	chamber.set_spatial_mode(mode)
@@ -285,7 +354,9 @@ func respawn() -> void:
 func _update_sprite() -> void:
 	var moving: bool = move_input.length() > 0.1
 	var file: String
-	if mode == 1:
+	if mode == 0:
+		file = "john_rod_2d_idle.png"
+	elif mode == 1:
 		file = "john_rod_1d_rod_active.png" if moving else "john_rod_1d_rod.png"
 	elif mode == 2:
 		if not is_on_floor():

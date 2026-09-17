@@ -102,6 +102,37 @@ func generate_sound(type: String) -> AudioStreamWAV:
 				var s16 = int(clamp(val * 18000.0, -32767, 32767))
 				data.append(s16 & 0xFF)
 				data.append((s16 >> 8) & 0xFF)
+		"stone_grind":
+			num_samples = int(22050 * 1.4)
+			for i in range(num_samples):
+				var t = float(i) / 22050.0
+				var rumble = sin(2.0 * PI * (65.0 + sin(t * 8.0) * 15.0) * t)
+				var grit = (randf() * 2.0 - 1.0) * 0.35
+				var env = minf(1.0, t / 0.2) * (1.0 - t / 1.4)
+				var val = (rumble * 0.7 + grit) * env
+				var s16 = int(clamp(val * 22000.0, -32767, 32767))
+				data.append(s16 & 0xFF)
+				data.append((s16 >> 8) & 0xFF)
+		"stone_lock":
+			num_samples = int(22050 * 0.4)
+			for i in range(num_samples):
+				var t = float(i) / 22050.0
+				var thud = sin(2.0 * PI * 75.0 * t) * exp(-t * 14.0)
+				var clink = sin(2.0 * PI * 520.0 * t) * exp(-t * 22.0)
+				var crunch = (randf() * 2.0 - 1.0) * exp(-t * 18.0) * 0.4
+				var val = thud * 0.8 + clink * 0.4 + crunch
+				var s16 = int(clamp(val * 26000.0, -32767, 32767))
+				data.append(s16 & 0xFF)
+				data.append((s16 >> 8) & 0xFF)
+		"energy_pulse":
+			num_samples = int(22050 * 0.45)
+			for i in range(num_samples):
+				var t = float(i) / 22050.0
+				var freq = 220.0 + (t / 0.45) * 440.0
+				var val = (sin(2.0 * PI * freq * t) + 0.3 * sin(4.0 * PI * freq * 2.0 * t)) * (1.0 - t / 0.45)
+				var s16 = int(clamp(val * 20000.0, -32767, 32767))
+				data.append(s16 & 0xFF)
+				data.append((s16 >> 8) & 0xFF)
 		"rewind_loop":
 			num_samples = int(22050 * 0.5)
 			wav.loop_mode = AudioStreamWAV.LOOP_FORWARD

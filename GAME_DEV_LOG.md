@@ -789,6 +789,51 @@ Degrees_of_Escape/
   * `tools/verify_full_flow.gd`: **100% passed** (Intro cutscene skips directly into Chamber 1 with dialogue).
   * `tools/verify_axiom_warden.gd`: **56/56 checks passed 100%** (full boss regression suite).
 
+### Session 17: Chamber 01 Dimensional Puzzle Hardening & Bridge Reconstruction Dynamics
+* **Dimensional Intent & Core Philosophy:**
+  * Fixed the Chamber 01 Section F puzzle so that obtaining the Energy Charge strictly mandates dimensional understanding rather than 3D detours.
+  * Progression philosophy: *"Each dimension exists because some problems can only be solved by changing how you exist."*
+* **1D-Only Airtight Containment Alcove (`tools/build_layout.py`):**
+  * Built a four-sided, 7.5m high masonry enclosure around the Energy Charge (`SparkOrb`) at $(56.0, 3.65, 3.5)$.
+  * Walls: `AlcoveNorthWallF` ($Z=1.65$), `AlcoveSouthWallF` ($Z=5.35$), `AlcoveWestWallF` ($X=52.85$), and `AlcoveEastWallF` ($X=59.15$) prevent any 3D/2D walking, jumping, or reaching.
+  * The only entrance is a narrow $0.55\text{m}$ conduit slit on the western face traversed by `RelayConduit` rail.
+* **0D Point Singularity Mode & Ancient Relay Awakening (`player.gd`, `chamber.gd`, `demo.gd`):**
+  * Added 0D mode (`KEY_0` or cycling). In 0D, John Rod collapses into a stationary point singularity (`scale = 0.35`). Translational velocity is locked (`velocity = Vector3.ZERO`).
+  * Pressing `[SPACE]` in 0D triggers `pulse()`: emits concentric glowing wave rings, plays resonant pulse SFX, and calls `chamber.try_pulse(position)`.
+  * Ancient Relay Terminal (`RelayTerminalBase` & `RelayTerminalSocket` at $X=51.5, Z=1.2$) starts dormant.
+  * Emitting a 0D pulse within range awakens the relay: plays resonant chime, turns runes from dim stone to emissive cyan, and sets `relay_active = true`.
+  * `RelayConduit` rail rejects 1D entry until the relay is energized, enforcing the 0D → 1D progression chain.
+* **Energy Charge Required for Progression & Submerged Chasm (`tools/build_layout.py`, `chamber.gd`):**
+  * Truncated `RelayCourtFloor` to $X=62.5$, creating a true 6.0m abyss between Section F and Terrace G1 ($X=68.5$).
+  * Segmented `RunicBridge` into two movable sections: `RunicBridge1` ($X \in [62.8, 65.65]$) and `RunicBridge2` ($X \in [65.65, 68.5]$).
+  * Both bridge slabs start submerged at $Y = -4.50\text{m}$ with `collision_layer = 0` and `collision_mask = 0`.
+  * The gap is physically impossible to jump or cross in 2D or 3D prior to powering the circuit.
+* **Multi-Stage Dynamic Bridge Reconstruction Sequence (`chamber.gd`, `SoundManager.gd`, `demo.gd`):**
+  * Player brings Energy Charge to `ReceiverBase` ($X=59.0, Z=-3.5$) and deposits it.
+  * Triggers dynamic sequence:
+    1. Energy flows along floor traces (`ReceiverTrace`, `BridgeFeedTrace`) toward the abyss edge.
+    2. Camera trauma shake (`add_trauma(0.85)`) with directional noise jitter.
+    3. `SoundManager` procedural mechanical rumble (`stone_grind`) plays as heavy ancient mechanisms activate.
+    4. `RunicBridge1` and `RunicBridge2` ascend smoothly from $Y = -4.50$ to $Y = 3.325$ (coping $Y = 3.60$) with staggered cubic easing over 1.6 seconds.
+    5. As the slabs lock into alignment, `SoundManager.play_sfx("stone_lock")` triggers a heavy impact clunk.
+    6. Solid static colliders (`collision_layer = 1`, `collision_mask = 1`) are enabled, making the bridge solid and walkable.
+    7. Golden runes on the bridge surface ignite with glowing emissive light.
+* **Chamber 1 Exit Sealed Vestibule (`tools/build_layout.py`):**
+  * Extended `GuardianHallFloor` from $X=103.5$ all the way to $X=112.0$.
+  * Added solid stone enclosing walls (`ExitVestibuleBack` at $X=112.0$, `ExitVestibuleSouth` at $Z=-5.0$) and moved `EastLimitWall` to $X=118.0$.
+  * Guarantees players stepping through the exit portal archway onto solid stone floor, eliminating any void fall-through behind the portal.
+* **Sound Architecture Expansion (`SoundManager.gd`):**
+  * Synthesized 3 new procedural audio streams:
+    * `"stone_grind"`: Deep 1.4s mechanical rumble with white-noise stone grit and pitched low-frequency grind.
+    * `"stone_lock"`: 0.4s resonant stone impact transient with square wave chime and decaying body.
+    * `"energy_pulse"`: 0.45s rising sweep for 0D point activations.
+* **Comprehensive Automated Verification:**
+  * `tools/verify_route.gd`: **101/101 checks passed 100%** (validated 3D blocker on alcove, dormant rail rejection, 0D pulse awakening, 1D slide to charge, submerged bridge gap, receiver deposit, rising animation, solid collision lock, and sealed exit vestibule).
+  * `tools/verify_chamber_transition.gd`: **100% passed** (clean transition to Axiom Warden).
+  * `tools/verify_axiom_warden.gd`: **56/56 checks passed 100%** (boss battle regression).
+  * `tools/verify_new_features.gd`: **27/27 checks passed 100%** (HUD, subtitles, camera).
+
+
 
 
 

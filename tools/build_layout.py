@@ -76,7 +76,7 @@ def masonry(name, x1, x2, z1, z2, top, bottom=-6.5, group='', material='stone'):
 box('CavernBackdrop', (42, 6, -15), (150, 24, 1.2), 'cavern')
 box('CavernAbyssFloor', (42, -7.5, 0), (150, 2.0, 40), 'deep', True)
 box('WestLimitWall', (-32, 3.5, 0), (1.5, 9.0, 20), 'deep', True)
-box('EastLimitWall', (105, 6.5, 0), (1.5, 12.0, 20), 'deep', True)
+box('EastLimitWall', (118, 6.5, 0), (1.5, 12.0, 20), 'deep', True)
 
 # Ruined colonnade along the rear cavern perimeter
 for i, x in enumerate(range(-16, 102, 6)):
@@ -161,32 +161,50 @@ masonry('RelayCourtLanding', 47.5, 52.0, -5.5, 5.0, 3.00, -6.5, material='paver'
 # =========================================================================
 # SECTION F: The Relay Court - Interactive Dimension Puzzle (X in [50, 68])
 # =========================================================================
-masonry('RelayCourtFloor', 50.0, 66.0, -5.5, 5.5, 3.00, -6.5, material='paver')
-masonry('RelayBackWall', 50.0, 68.0, -6.2, -5.5, 7.5, 3.0, material='stone')
-masonry('RelayFrontWall', 50.0, 68.0, 5.5, 6.2, 3.45, -6.5, group='fg_walls', material='stone')
+# Floor ends at X=62.5 creating a true 6m chasm before Terrace G1 at X=68.5
+masonry('RelayCourtFloor', 50.0, 62.5, -5.5, 5.5, 3.00, -6.5, material='paver')
+masonry('RelayBackWall', 50.0, 68.5, -6.2, -5.5, 7.5, 3.0, material='stone')
+masonry('RelayFrontWall', 50.0, 68.5, 5.5, 6.2, 3.45, -6.5, group='fg_walls', material='stone')
 
-# 1. Security Grille Wall separating Spark at Z=+3.5
-masonry('GrillePierLeftF', 53.0, 54.0, 1.0, 2.8, 7.0, 3.0, material='deep')
-masonry('GrillePierRightF', 53.0, 54.0, 4.2, 6.0, 7.0, 3.0, group='fg_walls', material='deep')
-# Grille lintel creating narrow conduit slit at Z=+3.5
-masonry('GrilleLintelF', 52.8, 54.2, 2.8, 4.2, 7.0, 3.55, group='fg_walls', material='stone')
+# 1. Airtight Security Grille & Sealed Energy Charge Containment Alcove (Z=+3.5, X in [53.0, 58.8])
+# West Wall with narrow 0.55m conduit slit
+masonry('GrillePierLeftF', 53.0, 54.0, 1.8, 3.0, 7.5, 3.0, material='deep')
+masonry('GrillePierRightF', 53.0, 54.0, 4.0, 5.5, 7.5, 3.0, group='fg_walls', material='deep')
+masonry('GrilleLintelF', 52.8, 54.2, 3.0, 4.0, 7.5, 3.55, group='fg_walls', material='stone')
+
+# North, East, and South Enclosure Walls (Ceiling-high 7.5m, impossible to bypass in 3D or 2D)
+masonry('AlcoveNorthWallF', 53.0, 58.8, 1.8, 2.5, 7.5, 3.0, material='deep')
+masonry('AlcoveEastWallF', 58.0, 58.8, 1.8, 5.5, 7.5, 3.0, material='deep')
+masonry('AlcoveSouthWallF', 53.0, 58.8, 4.8, 5.5, 7.5, 3.0, group='fg_walls', material='stone')
+
+# Conduit Rail & Docking Nodes
 box('RelayConduit', (54.5, 3.18, 3.5), (6.0, 0.06, 0.12), 'rail', parent='Mechanisms')
 box('RelayDockStart', (51.5, 3.02, 3.5), (1.4, 0.05, 1.4), 'shadow', parent='Details')
 box('RelayDockEnd', (57.5, 3.02, 3.5), (1.4, 0.05, 1.4), 'shadow', parent='Details')
 
-# 2. Central Dividing Wall (X in [57.5, 60.5], Z in [-1.0, 2.0])
-masonry('RelayCentralWall', 57.5, 60.5, -1.0, 2.0, 7.0, 3.0, material='deep')
+# Ancient Relay Terminal (Awakened by 0D Point Pulse or F-Interact to power the conduit)
+box('RelayTerminalBase', (51.5, 3.30, 1.2), (0.7, 0.6, 0.7), 'shadow', True, parent='Mechanisms')
+box('RelayTerminalSocket', (51.5, 3.625, 1.2), (0.45, 0.05, 0.45), 'rune_off', parent='Mechanisms')
+box('RelayTerminalTrace', (51.5, 3.02, 2.35), (0.08, 0.02, 1.6), 'gold', parent='Details')
 
-# 3. Receiver Pedestal at X=62.0, Z=-3.5
-box('ReceiverBase', (62.0, 3.30, -3.5), (0.8, 0.6, 0.8), 'shadow', True, parent='Mechanisms')
-box('ReceiverSocket', (62.0, 3.625, -3.5), (0.52, 0.05, 0.52), 'rune_off', parent='Mechanisms')
-for x in [56.0, 58.0, 60.0]:
+# 2. Central Dividing Wall (routes 3D path across depth)
+masonry('RelayCentralWall', 59.0, 61.2, -1.0, 1.8, 7.5, 3.0, material='deep')
+
+# 3. Receiver Pedestal at X=59.0, Z=-3.5
+box('ReceiverBase', (59.0, 3.30, -3.5), (0.8, 0.6, 0.8), 'shadow', True, parent='Mechanisms')
+box('ReceiverSocket', (59.0, 3.625, -3.5), (0.52, 0.05, 0.52), 'rune_off', parent='Mechanisms')
+for x in [54.0, 56.0, 57.5]:
     box(f'ReceiverTrace{x}', (x, 3.02, -3.5), (1.2, 0.02, 0.08), 'gold', parent='Details')
+for x in [60.5, 61.8]:
+    box(f'BridgeFeedTrace{x}', (x, 3.02, -3.5), (1.0, 0.02, 0.08), 'gold', parent='Details')
 
-# 4. Runic Ascent Bridge (unsealed when circuit completed)
-masonry('RunicBridge', 64.0, 68.0, -5.2, -1.8, 3.60, -6.5, group='bc_steps', material='stone')
-for x in [64.8, 66.2, 67.4]:
-    box(f'RuneF{x}', (x, 3.62, -3.5), (0.8, 0.025, 0.4), 'gold', parent='Mechanisms')
+# 4. Runic Ascent Bridge Segments (Submerged initially, raised on circuit completion)
+# Segment 1 (X in [62.8, 65.65])
+masonry('RunicBridge1', 62.8, 65.65, -4.8, -2.2, 3.60, 3.05, group='runic_bridge', material='stone')
+# Segment 2 (X in [65.65, 68.5])
+masonry('RunicBridge2', 65.65, 68.5, -4.8, -2.2, 3.60, 3.05, group='runic_bridge', material='stone')
+for x in [64.2, 65.6, 67.0]:
+    box(f'RuneF{x}', (x, 3.62, -3.5), (0.8, 0.025, 0.4), 'rune_off', group='bridge_runes', parent='Mechanisms')
 
 # =========================================================================
 # SECTION G: The Interwoven Ascent - Multi-Dimensional Finale (X in [68, 88])
@@ -223,11 +241,15 @@ masonry('SteppingStoneG4', 86.5, 88.5, 1.2, 3.8, 5.50, -6.5, group='fg_walls', m
 masonry('GuardianThreshold', 89.5, 93.0, -5.5, 5.5, 5.80, -6.5, material='paver')
 
 # =========================================================================
-# SECTION H: Guardian Hall & Exit (X in [90, 104], Y=5.80)
+# SECTION H: Guardian Hall & Exit (X in [90, 112], Y=5.80)
 # =========================================================================
-masonry('GuardianHallFloor', 92.5, 103.5, -5.5, 5.5, 5.80, -6.5, material='paver')
-masonry('GuardianHallBackWall', 89.5, 104.0, -6.2, -5.5, 9.8, 5.8, material='stone')
+masonry('GuardianHallFloor', 92.5, 112.0, -5.5, 5.5, 5.80, -6.5, material='paver')
+masonry('GuardianHallBackWall', 89.5, 112.0, -6.2, -5.5, 9.8, 5.8, material='stone')
 masonry('GuardianHallFrontWall', 89.5, 104.0, 5.5, 6.2, 6.25, -6.5, group='fg_walls', material='stone')
+
+# Enclosed exit vestibule behind archway to prevent falling through
+masonry('ExitVestibuleBack', 111.5, 112.2, -5.5, 5.5, 9.8, 5.8, material='stone')
+masonry('ExitVestibuleSouth', 103.5, 112.0, 5.5, 6.2, 9.8, 5.8, group='fg_walls', material='stone')
 
 # Decorative arena ruin pillars
 for x, z in [(94.0, -3.5), (94.0, 3.5), (99.0, -3.5), (99.0, 3.5)]:
@@ -251,10 +273,11 @@ markers = {
     'GalleryCheckpoint': (26.5, 2.48, -4.0),
     'MovingPlatformPoint': (40.0, 3.28, -4.0),
     'RelayCheckpoint': (49.0, 3.08, 0.0),
+    'Relay': (51.5, 3.65, 1.2),
     'Charge': (56.0, 3.65, 3.5),
     'Rail2Start': (51.5, 3.18, 3.5),
     'Rail2End': (57.5, 3.18, 3.5),
-    'Receiver': (62.0, 3.625, -3.5),
+    'Receiver': (59.0, 3.625, -3.5),
     'AscentCheckpoint': (69.5, 4.28, -3.5),
     'HighRailStart': (79.5, 5.35, 2.5),
     'HighRailEnd': (85.5, 5.35, 2.5),

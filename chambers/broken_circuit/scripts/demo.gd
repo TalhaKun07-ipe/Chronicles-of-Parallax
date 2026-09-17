@@ -118,8 +118,15 @@ func _ready() -> void:
 				g.emit_signal("charge_state_changed", true)
 	)
 	
+	chamber.relay_activated.connect(func():
+		queue_subtitle("Ancient relay awakened! The 1D conduit rail is energized.", 3.5)
+		add_trauma(0.3)
+		_tone(550, 0.2)
+	)
+	
 	chamber.circuit_completed.connect(func():
-		queue_subtitle("The circuit answers. A new path opens.")
+		queue_subtitle("Ancient mechanisms awaken! The Runic Bridge reconstructs across the chasm!", 4.5)
+		add_trauma(0.85)
 		_tone(880, 0.32)
 		var g = get_node_or_null("/root/Global")
 		if g and "carried_charge" in g:
@@ -238,16 +245,23 @@ func _build_clean_hud() -> void:
 	controls_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.6))
 	layer.add_child(controls_label)
 
+var trauma: float = 0.0
+
+func add_trauma(amount: float) -> void:
+	trauma = clampf(trauma + amount, 0.0, 1.0)
+
 func _update_controls_label(mode: int) -> void:
 	if not controls_label:
 		return
 	match mode:
+		0:
+			controls_label.text = "SPACE Pulse Energy   •   0/1/2/3 Dimension   •   F Interact"
 		2:
-			controls_label.text = "WASD Move   •   SPACE Jump   •   1/2/3 Dimension   •   F Interact"
+			controls_label.text = "WASD Move   •   SPACE Jump   •   0/1/2/3 Dimension   •   F Interact"
 		3:
-			controls_label.text = "WASD Move Across Depth   •   1/2/3 Dimension   •   F Interact"
+			controls_label.text = "WASD Move Across Depth   •   0/1/2/3 Dimension   •   F Interact"
 		1:
-			controls_label.text = "A/D Slide Along Conduit   •   1/2/3 Dimension   •   F Interact"
+			controls_label.text = "A/D Slide Along Conduit   •   0/1/2/3 Dimension   •   F Interact"
 
 func queue_subtitle(text: String, duration: float = 3.5) -> void:
 	subtitle_queue.append({"text": text, "duration": duration})
@@ -294,7 +308,7 @@ func _update_checkpoints_and_milestones() -> void:
 	elif px >= 26.5 and px <= 32.0:
 		trigger_milestone("gallery_e", "Time your jumps across the moving terrace.")
 	elif px >= 48.0 and px <= 53.0:
-		trigger_milestone("relay_f", "Enter the conduit to fetch the spark, then route it through 3D.")
+		trigger_milestone("relay_f", "Awaken the ancient relay to power the conduit [0 / F], then slide in 1D to fetch the charge.")
 	elif px >= 68.0 and px <= 73.0:
 		trigger_milestone("ascent_g", "Combine all three dimensions to ascend.")
 	elif px >= 90.0 and px <= 96.0:
@@ -345,6 +359,11 @@ func _update_camera(delta: float) -> void:
 	var lookahead_x: float = 1.2 if player.mode == 2 else 0.8
 	var target: Vector3 = player.position + Vector3(lookahead_x, 0.9, 0)
 	focus = focus.lerp(target, blend)
+	
+	if trauma > 0.0:
+		trauma = maxf(0.0, trauma - delta * 0.7)
+		var shake = trauma * trauma * 0.45
+		focus += Vector3(randf_range(-shake, shake), randf_range(-shake, shake), randf_range(-shake, shake))
 	
 	# Maintain close, large scale view on screen (size ~ 5.2)
 	var target_size: float = 5.4 if player.mode == 3 else 4.8

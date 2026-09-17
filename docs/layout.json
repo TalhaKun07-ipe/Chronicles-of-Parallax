@@ -72,6 +72,11 @@
       3.08,
       0.0
     ],
+    "Relay": [
+      51.5,
+      3.65,
+      1.2
+    ],
     "Charge": [
       56.0,
       3.65,
@@ -88,7 +93,7 @@
       3.5
     ],
     "Receiver": [
-      62.0,
+      59.0,
       3.625,
       -3.5
     ],
@@ -300,7 +305,7 @@
     {
       "name": "EastLimitWall",
       "position": [
-        105,
+        118,
         6.5,
         0
       ],
@@ -3292,12 +3297,12 @@
     {
       "name": "RelayCourtFloor",
       "position": [
-        58.0,
+        56.25,
         -1.75,
         0.0
       ],
       "size": [
-        16.0,
+        12.5,
         9.5,
         11.0
       ],
@@ -3314,7 +3319,7 @@
         0
       ],
       "size": [
-        16.08,
+        12.58,
         0.1,
         11.08
       ],
@@ -3331,7 +3336,7 @@
         5.512
       ],
       "size": [
-        16.0,
+        12.5,
         0.055,
         0.035
       ],
@@ -3343,12 +3348,12 @@
     {
       "name": "RelayBackWall",
       "position": [
-        59.0,
+        59.25,
         5.25,
         -5.85
       ],
       "size": [
-        18.0,
+        18.5,
         4.5,
         0.7000000000000002
       ],
@@ -3365,7 +3370,7 @@
         0
       ],
       "size": [
-        18.08,
+        18.58,
         0.1,
         0.7800000000000001
       ],
@@ -3382,7 +3387,7 @@
         0.3620000000000001
       ],
       "size": [
-        18.0,
+        18.5,
         0.055,
         0.035
       ],
@@ -3394,12 +3399,12 @@
     {
       "name": "RelayFrontWall",
       "position": [
-        59.0,
+        59.25,
         -1.5250000000000004,
         5.85
       ],
       "size": [
-        18.0,
+        18.5,
         9.95,
         0.7000000000000002
       ],
@@ -3416,7 +3421,7 @@
         0
       ],
       "size": [
-        18.08,
+        18.58,
         0.1,
         0.7800000000000001
       ],
@@ -3433,7 +3438,7 @@
         0.3620000000000001
       ],
       "size": [
-        18.0,
+        18.5,
         0.055,
         0.035
       ],
@@ -3446,13 +3451,13 @@
       "name": "GrillePierLeftF",
       "position": [
         53.5,
-        5.0,
-        1.9
+        5.25,
+        2.4
       ],
       "size": [
         1.0,
-        4.0,
-        1.7999999999999998
+        4.5,
+        1.2
       ],
       "material": "deep",
       "solid": true,
@@ -3463,13 +3468,13 @@
       "name": "Coping",
       "position": [
         0,
-        1.95,
+        2.2,
         0
       ],
       "size": [
         1.08,
         0.1,
-        1.88
+        1.28
       ],
       "material": "paver",
       "solid": false,
@@ -3480,8 +3485,8 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.8,
-        0.9119999999999999
+        2.05,
+        0.612
       ],
       "size": [
         1.0,
@@ -3497,13 +3502,13 @@
       "name": "GrillePierRightF",
       "position": [
         53.5,
-        5.0,
-        5.1
+        5.25,
+        4.75
       ],
       "size": [
         1.0,
-        4.0,
-        1.7999999999999998
+        4.5,
+        1.5
       ],
       "material": "deep",
       "solid": true,
@@ -3514,13 +3519,13 @@
       "name": "Coping",
       "position": [
         0,
-        1.95,
+        2.2,
         0
       ],
       "size": [
         1.08,
         0.1,
-        1.88
+        1.58
       ],
       "material": "paver",
       "solid": false,
@@ -3531,8 +3536,8 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.8,
-        0.9119999999999999
+        2.05,
+        0.762
       ],
       "size": [
         1.0,
@@ -3548,13 +3553,13 @@
       "name": "GrilleLintelF",
       "position": [
         53.5,
-        5.275,
+        5.525,
         3.5
       ],
       "size": [
         1.4000000000000057,
-        3.45,
-        1.4000000000000004
+        3.95,
+        1.0
       ],
       "material": "stone",
       "solid": true,
@@ -3565,13 +3570,13 @@
       "name": "Coping",
       "position": [
         0,
-        1.675,
+        1.925,
         0
       ],
       "size": [
         1.4800000000000058,
         0.1,
-        1.4800000000000004
+        1.08
       ],
       "material": "paver",
       "solid": false,
@@ -3582,11 +3587,164 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.5250000000000001,
-        0.7120000000000002
+        1.7750000000000001,
+        0.512
       ],
       "size": [
         1.4000000000000057,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "AlcoveNorthWallF",
+      "position": [
+        55.9,
+        5.25,
+        2.15
+      ],
+      "size": [
+        5.799999999999997,
+        4.5,
+        0.7
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.2,
+        0
+      ],
+      "size": [
+        5.879999999999997,
+        0.1,
+        0.7799999999999999
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.05,
+        0.362
+      ],
+      "size": [
+        5.799999999999997,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "AlcoveEastWallF",
+      "position": [
+        58.4,
+        5.25,
+        3.65
+      ],
+      "size": [
+        0.7999999999999972,
+        4.5,
+        3.7
+      ],
+      "material": "deep",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.2,
+        0
+      ],
+      "size": [
+        0.8799999999999971,
+        0.1,
+        3.7800000000000002
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.05,
+        1.862
+      ],
+      "size": [
+        0.7999999999999972,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "AlcoveSouthWallF",
+      "position": [
+        55.9,
+        5.25,
+        5.15
+      ],
+      "size": [
+        5.799999999999997,
+        4.5,
+        0.7000000000000002
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": "fg_walls"
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        2.2,
+        0
+      ],
+      "size": [
+        5.879999999999997,
+        0.1,
+        0.7800000000000001
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        2.05,
+        0.3620000000000001
+      ],
+      "size": [
+        5.799999999999997,
         0.055,
         0.035
       ],
@@ -3647,16 +3805,67 @@
       "group": ""
     },
     {
-      "name": "RelayCentralWall",
+      "name": "RelayTerminalBase",
       "position": [
-        59.0,
-        5.0,
-        0.5
+        51.5,
+        3.3,
+        1.2
       ],
       "size": [
-        3.0,
-        4.0,
-        3.0
+        0.7,
+        0.6,
+        0.7
+      ],
+      "material": "shadow",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RelayTerminalSocket",
+      "position": [
+        51.5,
+        3.625,
+        1.2
+      ],
+      "size": [
+        0.45,
+        0.05,
+        0.45
+      ],
+      "material": "rune_off",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RelayTerminalTrace",
+      "position": [
+        51.5,
+        3.02,
+        2.35
+      ],
+      "size": [
+        0.08,
+        0.02,
+        1.6
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RelayCentralWall",
+      "position": [
+        60.1,
+        5.25,
+        0.4
+      ],
+      "size": [
+        2.200000000000003,
+        4.5,
+        2.8
       ],
       "material": "deep",
       "solid": true,
@@ -3667,13 +3876,13 @@
       "name": "Coping",
       "position": [
         0,
-        1.95,
+        2.2,
         0
       ],
       "size": [
-        3.08,
+        2.280000000000003,
         0.1,
-        3.08
+        2.88
       ],
       "material": "paver",
       "solid": false,
@@ -3684,11 +3893,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        1.8,
-        1.512
+        2.05,
+        1.412
       ],
       "size": [
-        3.0,
+        2.200000000000003,
         0.055,
         0.035
       ],
@@ -3700,7 +3909,7 @@
     {
       "name": "ReceiverBase",
       "position": [
-        62.0,
+        59.0,
         3.3,
         -3.5
       ],
@@ -3717,7 +3926,7 @@
     {
       "name": "ReceiverSocket",
       "position": [
-        62.0,
+        59.0,
         3.625,
         -3.5
       ],
@@ -3727,6 +3936,23 @@
         0.52
       ],
       "material": "rune_off",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ReceiverTrace54.0",
+      "position": [
+        54.0,
+        3.02,
+        -3.5
+      ],
+      "size": [
+        1.2,
+        0.02,
+        0.08
+      ],
+      "material": "gold",
       "solid": false,
       "visible": true,
       "group": ""
@@ -3749,9 +3975,9 @@
       "group": ""
     },
     {
-      "name": "ReceiverTrace58.0",
+      "name": "ReceiverTrace57.5",
       "position": [
-        58.0,
+        57.5,
         3.02,
         -3.5
       ],
@@ -3766,14 +3992,14 @@
       "group": ""
     },
     {
-      "name": "ReceiverTrace60.0",
+      "name": "BridgeFeedTrace60.5",
       "position": [
-        60.0,
+        60.5,
         3.02,
         -3.5
       ],
       "size": [
-        1.2,
+        1.0,
         0.02,
         0.08
       ],
@@ -3783,33 +4009,50 @@
       "group": ""
     },
     {
-      "name": "RunicBridge",
+      "name": "BridgeFeedTrace61.8",
       "position": [
-        66.0,
-        -1.4500000000000002,
+        61.8,
+        3.02,
         -3.5
       ],
       "size": [
-        4.0,
-        10.1,
-        3.4000000000000004
+        1.0,
+        0.02,
+        0.08
+      ],
+      "material": "gold",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "RunicBridge1",
+      "position": [
+        64.225,
+        3.325,
+        -3.5
+      ],
+      "size": [
+        2.8500000000000085,
+        0.5500000000000003,
+        2.5999999999999996
       ],
       "material": "stone",
       "solid": true,
       "visible": true,
-      "group": "bc_steps"
+      "group": "runic_bridge"
     },
     {
       "name": "Coping",
       "position": [
         0,
-        5.0,
+        0.22500000000000014,
         0
       ],
       "size": [
-        4.08,
+        2.9300000000000086,
         0.1,
-        3.4800000000000004
+        2.6799999999999997
       ],
       "material": "paver",
       "solid": false,
@@ -3820,11 +4063,11 @@
       "name": "FrontBand",
       "position": [
         0,
-        4.85,
-        1.7120000000000002
+        0.07500000000000012,
+        1.3119999999999998
       ],
       "size": [
-        4.0,
+        2.8500000000000085,
         0.055,
         0.035
       ],
@@ -3834,43 +4077,60 @@
       "group": ""
     },
     {
-      "name": "RuneF64.8",
+      "name": "RunicBridge2",
       "position": [
-        64.8,
-        3.62,
+        67.075,
+        3.325,
         -3.5
       ],
       "size": [
-        0.8,
-        0.025,
-        0.4
+        2.8499999999999943,
+        0.5500000000000003,
+        2.5999999999999996
       ],
-      "material": "gold",
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": "runic_bridge"
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        0.22500000000000014,
+        0
+      ],
+      "size": [
+        2.9299999999999944,
+        0.1,
+        2.6799999999999997
+      ],
+      "material": "paver",
       "solid": false,
       "visible": true,
       "group": ""
     },
     {
-      "name": "RuneF66.2",
+      "name": "FrontBand",
       "position": [
-        66.2,
-        3.62,
-        -3.5
+        0,
+        0.07500000000000012,
+        1.3119999999999998
       ],
       "size": [
-        0.8,
-        0.025,
-        0.4
+        2.8499999999999943,
+        0.055,
+        0.035
       ],
-      "material": "gold",
+      "material": "ochre",
       "solid": false,
       "visible": true,
       "group": ""
     },
     {
-      "name": "RuneF67.4",
+      "name": "RuneF64.2",
       "position": [
-        67.4,
+        64.2,
         3.62,
         -3.5
       ],
@@ -3879,10 +4139,44 @@
         0.025,
         0.4
       ],
-      "material": "gold",
+      "material": "rune_off",
       "solid": false,
       "visible": true,
-      "group": ""
+      "group": "bridge_runes"
+    },
+    {
+      "name": "RuneF65.6",
+      "position": [
+        65.6,
+        3.62,
+        -3.5
+      ],
+      "size": [
+        0.8,
+        0.025,
+        0.4
+      ],
+      "material": "rune_off",
+      "solid": false,
+      "visible": true,
+      "group": "bridge_runes"
+    },
+    {
+      "name": "RuneF67.0",
+      "position": [
+        67.0,
+        3.62,
+        -3.5
+      ],
+      "size": [
+        0.8,
+        0.025,
+        0.4
+      ],
+      "material": "rune_off",
+      "solid": false,
+      "visible": true,
+      "group": "bridge_runes"
     },
     {
       "name": "TerraceG1",
@@ -4550,12 +4844,12 @@
     {
       "name": "GuardianHallFloor",
       "position": [
-        98.0,
+        102.25,
         -0.34999999999999964,
         0.0
       ],
       "size": [
-        11.0,
+        19.5,
         12.3,
         11.0
       ],
@@ -4572,7 +4866,7 @@
         0
       ],
       "size": [
-        11.08,
+        19.58,
         0.1,
         11.08
       ],
@@ -4589,7 +4883,7 @@
         5.512
       ],
       "size": [
-        11.0,
+        19.5,
         0.055,
         0.035
       ],
@@ -4601,12 +4895,12 @@
     {
       "name": "GuardianHallBackWall",
       "position": [
-        96.75,
+        100.75,
         7.800000000000001,
         -5.85
       ],
       "size": [
-        14.5,
+        22.5,
         4.000000000000001,
         0.7000000000000002
       ],
@@ -4623,7 +4917,7 @@
         0
       ],
       "size": [
-        14.58,
+        22.58,
         0.1,
         0.7800000000000001
       ],
@@ -4640,7 +4934,7 @@
         0.3620000000000001
       ],
       "size": [
-        14.5,
+        22.5,
         0.055,
         0.035
       ],
@@ -4692,6 +4986,108 @@
       ],
       "size": [
         14.5,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ExitVestibuleBack",
+      "position": [
+        111.85,
+        7.800000000000001,
+        0.0
+      ],
+      "size": [
+        0.7000000000000028,
+        4.000000000000001,
+        11.0
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        1.9500000000000004,
+        0
+      ],
+      "size": [
+        0.7800000000000028,
+        0.1,
+        11.08
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        1.8000000000000005,
+        5.512
+      ],
+      "size": [
+        0.7000000000000028,
+        0.055,
+        0.035
+      ],
+      "material": "ochre",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "ExitVestibuleSouth",
+      "position": [
+        107.75,
+        7.800000000000001,
+        5.85
+      ],
+      "size": [
+        8.5,
+        4.000000000000001,
+        0.7000000000000002
+      ],
+      "material": "stone",
+      "solid": true,
+      "visible": true,
+      "group": "fg_walls"
+    },
+    {
+      "name": "Coping",
+      "position": [
+        0,
+        1.9500000000000004,
+        0
+      ],
+      "size": [
+        8.58,
+        0.1,
+        0.7800000000000001
+      ],
+      "material": "paver",
+      "solid": false,
+      "visible": true,
+      "group": ""
+    },
+    {
+      "name": "FrontBand",
+      "position": [
+        0,
+        1.8000000000000005,
+        0.3620000000000001
+      ],
+      "size": [
+        8.5,
         0.055,
         0.035
       ],

@@ -144,31 +144,74 @@ func run() -> void:
 	# SECTION F: The Relay Court (Interactive Dimension Puzzle)
 	# =========================================================================
 	check(player.request_mode(3), "Switches to 3D to explore Relay Court")
-	check(await walk(Vector2(51.5, 3.5)), "Walks to security grille conduit dock at Z=+3.5")
-	check(player.request_mode(1), "Flattens to 1D to enter security grille conduit")
-	check(await walk(Vector2(56.0, 3.5)), "Slides in 1D through grille slit into spark chamber")
-	check(chamber.carrying_charge, "Collected and carrying circuit spark behind security grille")
-	check(await walk(Vector2(51.5, 3.5)), "Returns in 1D with spark back through grille")
-	check(player.request_mode(3), "Expands into 3D volume at Relay Court")
 	
-	# Route around central wall across depth to receiver
+	# Verify Energy Charge alcove is physically airtight and impassable in 3D
+	check(await walk(Vector2(55.0, 1.0)), "Walks to north perimeter of sealed alcove")
+	player.move_input = Vector2(0, 1) # try moving towards Z=+3.5 in 3D
+	await frames(25)
+	player.move_input = Vector2.ZERO
+	check(player.position.z < 2.0, "AlcoveNorthWallF genuinely blocks 3D access into Energy Charge alcove")
+	
+	# Verify conduit rail is initially dormant and rejects 1D entry
+	check(await walk(Vector2(51.5, 3.5)), "Walks to conduit dock at Z=+3.5")
+	check(not player.request_mode(1), "Dormant conduit rail strictly rejects 1D entry before relay is awakened")
+	
+	# Walk to Ancient Relay Terminal at X=51.5, Z=1.8 (in front of terminal pedestal)
+	check(await walk(Vector2(51.5, 1.8)), "Steps over to Ancient Relay Terminal")
+	
+	# Awaken relay via 0D Point Pulse
+	check(player.request_mode(0), "Collapses to 0D Point Singularity")
+	player.override_jump = true # Triggers pulse in 0D
+	await frames(5)
+	check(chamber.relay_active, "0D Point Pulse awakens Ancient Relay Terminal!")
+	
+	# Expand back to 3D and step onto now-energized conduit rail
+	check(player.request_mode(3), "Expands from 0D into 3D")
+	check(await walk(Vector2(51.5, 3.5)), "Steps onto energized conduit dock")
+	check(player.request_mode(1), "Flattens to 1D on energized conduit rail")
+	
+	# Slide in 1D through narrow 0.55m slit into sealed containment alcove
+	check(await walk(Vector2(56.0, 3.5)), "Slides in 1D through narrow conduit slit into sealed alcove")
+	check(chamber.carrying_charge, "Collected Energy Charge inside sealed 1D containment alcove")
+	
+	# Return in 1D with charge and expand
+	check(await walk(Vector2(51.5, 3.5)), "Returns in 1D with Energy Charge back through slit")
+	check(player.request_mode(3), "Expands safely into 3D volume at Relay Court")
+	
+	# Verify Runic Bridge starts submerged in chasm
+	var b1 = chamber.get_node("Mechanisms/RunicBridge1")
+	var col1 = b1.get_node("Collision")
+	check(b1.position.y < 0.0, "Runic Bridge starts submerged deep in the 6m chasm (Y=%.2f)" % b1.position.y)
+	check(col1.disabled, "Submerged bridge collision is disabled")
+	
+	# Route through 3D around central dividing wall to receiver
 	check(await walk(Vector2(54.0, 0.0)), "Steps across depth to central court")
-	check(await walk(Vector2(61.2, -2.5)), "Navigates depth around central wall to receiver")
+	check(await walk(Vector2(57.8, -2.5)), "Navigates depth towards receiver")
+	check(await walk(Vector2(57.8, -3.5)), "Stands directly before Energy Receiver")
+	
+	# Insert Energy Charge to trigger reconstruction sequence
 	var interact_msg = chamber.try_interact(player.position)
 	await frames(5)
-	check(chamber.powered, "Deposited spark powers circuit and ignites runic bridge!")
+	check(chamber.powered, "Deposited Energy Charge powers ancient circuit!")
+	check(chamber.bridge_reconstructed, "Bridge reconstruction sequence successfully triggered")
 	
-	# Step around receiver pedestal in 3D to reach base of runic bridge
-	check(await walk(Vector2(63.2, -2.2)), "Advances past pedestal in 3D")
-	check(await walk(Vector2(63.2, -3.5)), "Aligns to runic bridge climb lane (Z=-3.5)")
+	# Wait for bridge segments to rise and lock into place
+	await frames(100)
+	check(b1.position.y >= 3.30, "Runic Bridge segment 1 ascended to walking height (Y=%.2f)" % b1.position.y)
+	check(not col1.disabled, "Runic Bridge collision is enabled and solid")
+	
+	# Step around receiver pedestal in 3D to reach bridge runway
+	check(await walk(Vector2(57.8, -2.2)), "Steps around north side of receiver pedestal in 3D")
+	check(await walk(Vector2(61.0, -2.2)), "Advances east past pedestal to bridge runway in 3D")
+	check(await walk(Vector2(62.2, -3.5)), "Aligns to runway before reconstructed runic bridge (Z=-3.5)")
 	
 	# =========================================================================
 	# SECTION G: The Interwoven Ascent (Multi-Dimensional Climax)
 	# =========================================================================
 	# 2D jump onto runic bridge
 	check(player.request_mode(2), "Switches to 2D for runic ascent")
-	await jump_to(65.5, -3.5, 3.60)
-	check(await walk(Vector2(67.5, -3.5)), "Walks along runic bridge")
+	await jump_to(65.0, -3.5, 3.60)
+	check(await walk(Vector2(67.5, -3.5)), "Walks along reconstructed runic bridge")
 	await jump_to(70.5, -3.5, 4.20)
 	check(player.position.y > 4.10, "Stands on Terrace G1 at Y=4.20")
 	
@@ -225,10 +268,14 @@ func run() -> void:
 	check(await walk(Vector2(99.0, 0.0)), "Walks directly through Flat Guardian in 2D")
 	check(global.current_health == hp_pass, "Passed through Flat Guardian taking ZERO damage in 2D")
 	
-	# Reach Exit Archway
+	# Reach Exit Archway and walk into extended vestibule (no void pit)
 	check(await walk(Vector2(102.5, 0.0)), "Reaches Chamber 1 Exit Portal Archway")
 	await frames(5)
 	check(chamber.completed, "Chamber 1 completed successfully!")
+	
+	# Walk past the portal archway into the extended vestibule
+	check(await walk(Vector2(106.0, 0.0)), "Walks through archway into extended exit vestibule")
+	check(player.is_on_floor() and player.position.y > 5.5, "Floor behind portal is solid stone (no void gap behind exit archway)")
 	
 	# Test Pit Respawn / Checkpoint Recovery
 	player.position = Vector3(95.0, -8.0, 0.0)
