@@ -833,6 +833,70 @@ Degrees_of_Escape/
   * `tools/verify_axiom_warden.gd`: **56/56 checks passed 100%** (boss battle regression).
   * `tools/verify_new_features.gd`: **27/27 checks passed 100%** (HUD, subtitles, camera).
 
+### Session 18: Boss Chamber Overhaul (Axiom Warden) — Strict Dimensional Rules, Difficulty Rebalancing, Flat Guardian Projectiles & Collapsing Parkour Entrance
+* **Preserving Chamber 01 Dimensional Rules (`player.gd`):**
+  * **Strict 2D vs 3D Movement Parity:**
+    * **2D Mode:** X movement, Y movement, Jumping (`[SPACE]` performs jump only).
+    * **3D Mode:** X movement, Z movement, Ground navigation only. Jumping is completely and strictly disabled:
+      ```gdscript
+      velocity.y jump impulse = 0.0
+      Space input = ignored
+      jump_buffer = 0.0
+      coyote = 0.0
+      ```
+    * **Airborne Depth Steering Lock:** In 3D mode, depth movement (`velocity.z`) strictly requires `is_on_floor()`. If airborne in 3D, `velocity.z = 0.0`, preventing midair lane jumping or puzzle bypass.
+    * **Jump Buffer Sanitization:** `request_mode()` unconditionally clears `jump_buffer = 0.0` during any dimension switch, preventing buffered 3D jumps from phantom-triggering in 2D.
+    * **Midair Momentum Preservation:** Vertical velocity (`velocity.y`) is preserved across midair transitions without extra upward boost or double jumping.
+* **Concrete Measurable Boss Difficulty Reduction (`hazard.gd` & `encounter.gd`):**
+  * Replaced arbitrary pacing with exact measurable balance adjustments across telegraph duration, projectile velocity, boss vulnerability window, and collision forgiveness:
+    | Parameter / Metric | Pre-Overhaul Value | Post-Overhaul Value | Measurable Delta | Gameplay Effect |
+    | :--- | :--- | :--- | :--- | :--- |
+    | **Telegraph Warning (Default)** | `1.15s` | `1.38s` | **+20.0% duration** | Increases reaction window to recognize attack type and change dimension |
+    | **Telegraph Warning (Sweep)** | `1.00s` | `1.20s` | **+20.0% duration** | Grants ample time to drop to 1D or jump in 2D |
+    | **Telegraph Warning (Slam)** | `1.20s` | `1.44s` | **+20.0% duration** | Gives time to switch to 2D and prepare jump |
+    | **Telegraph Warning (Guardian)** | N/A (New) | `1.20s` | **Telegraphed tell** | Visual charge tell before projectile release |
+    | **Telegraph Warning (Rising Wall)**| N/A (New) | `1.44s` | **Telegraphed outline**| Floor warning decaling before wall eruption |
+    | **Projectile Speed (Default)** | `7.00 m/s` | `5.95 m/s` | **-15.0% velocity** | Smooth, readable projectile travel across the arena |
+    | **Projectile Speed (Bolts)** | `8.50 m/s` | `7.225 m/s` | **-15.0% velocity** | Provides fair evasion window across depth lanes |
+    | **Boss Exposed Recovery Window** | `7.00s` | `8.40s` | **+20.0% window** | Generous counter-attack window to approach and strike core |
+    | **Hitbox Margin (Beam Half-Width)** | `0.35m` | `0.315m` | **-10.0% hitbox size**| Forgiving clearance when jumping or ducking laser beams |
+    | **Hitbox Margin (Lane Half-Width)** | `0.45m` | `0.405m` | **-10.0% hitbox size**| Forgiving clearance when side-stepping dimensional lanes |
+    | **Hitbox Margin (Sweep Radius Band)**| `1.15m` | `1.035m` | **-10.0% hitbox size**| Forgiving timing when timing 2D jump over blade sweeps |
+    | **Hitbox Margin (Slam Ring Band)** | `1.00m` | `0.900m` | **-10.0% hitbox size**| Forgiving collision when leaping over expanding shockwave |
+    | **Hitbox Margin (Bolt Radius)** | `0.42m` | `0.378m` | **-10.0% hitbox size**| Forgiving radius when dodging projectile salvos |
+* **3D Hazard Design Constraint — Lateral Evasion Only (`hazard.gd` & `encounter.gd`):**
+  * Because 3D mode completely disables jumping, 3D hazards strictly never require jumping over, jumping onto, or crouching under.
+  * Added new `"rising_wall"` hazard:
+    * Telegraphs floor rune outline along player's current lane for 1.44s.
+    * Erupts into a solid stone monolith barrier ($1.8\text{m} \times 2.4\text{m} \times 1.4\text{m}$) with an active `StaticBody3D` collider.
+    * Player evades solely through 3D lateral navigation (moving left/right along X, forward/backward along Z).
+* **Flat Guardian Projectile Attack System (`hazard.gd`):**
+  * Added boss attack `"guardian"`: Axiom Warden launches a Flat Guardian as a linear guided projectile towards John Rod.
+  * **Dimension Interaction Mechanism:**
+    * **In 3D Mode:** Guardian projectile is fully physical and solid (`collision_layer = 1`, `collision_mask = 1`, `damage_enabled = true`). Contact inflicts 1 heart damage, knockback, and 1.2s invulnerability.
+    * **In 2D Mode:** Guardian projectile collapses into a paper-thin cyan ethereal phantom (`modulate = Color(0.4, 0.8, 1.0, 0.28)`), disabling collision (`collision_layer = 0`, `collision_mask = 0`, `damage_enabled = false`).
+    * The projectile continues traveling through the player harmlessly, teaching the player: *"Changing dimension changes how attacks interact with reality."* Reactively switching into 2D as the projectile approaches guarantees safe evasion without advance prediction.
+* **Parkour Entrance & Collapsing Fragile Bridge Arena Entry (`encounter.gd`):**
+  * Replaced artificial direct arena spawn with a Chamber 01-style platforming entrance:
+    * **Approach Monolith Navigation:** Positioned `ApproachMonolith` at $X = -19.0, Z = 0.5$, blocking direct 2D line-of-sight and forcing the player to switch to 3D and navigate the rear aisle.
+    * **2D Pier Jumps:** Required 2D jumping across open chasms to ascend Terraces 0 through 3.
+    * **Collapsing Fragile Bridge:** Built ancient wooden bridge slab at $X \in [-12.5, -8.0]$.
+    * **Cinematic Drop Sequence:** Stepping onto the bridge at $X \ge -12.0$ causes the bridge structure to fracture and collapse downwards. The player drops into the gap ($Y < -4.0$).
+    * **Standardized Respawn Integration:** Drop cleanly triggers `_fall()`, restoring full 3-heart health, placing the player at `CHECKPOINT = (-8.0, 0.06, 0.0)` inside the arena, sealing the entrance gate with stone portcullis, and locking input for the Undertale boss introduction dialogue before releasing control.
+* **2D Foreground Occlusion Elimination (`encounter.gd`):**
+  * Tagged all front boundary walls and front column meshes into group `"fg_walls"`.
+  * In 2D mode, `update_occlusion()` hides all visual meshes in `"fg_walls"` with $Z > \text{player\_z} + 0.6$, ensuring clean line-of-sight with zero camera obstruction while preserving static physics collisions.
+* **Final Boss Phase Multi-Dimensional Synthesis (Phase 6 - Final Surge):**
+  * Final phase combines dimension-specific hazards:
+    * 3D-only challenges (`rising_wall`, `lane`) mandate staying in 3D and navigating laterally around physical obstacles.
+    * 2D-only challenges (`shockwave`, `guardian`) mandate switching to 2D to jump shockwaves and phase through guardians.
+* **Comprehensive Automated Verification Pipeline (100% Pass):**
+  * `tools/verify_axiom_warden.gd`: **72/72 checks passed 100%** (validated 3D jump rejection, 2D jump, 3D depth routing, fragile bridge collapse, checkpoint respawn, 1D rail lock, momentum preservation, 2D occlusion, Guardian projectile 2D/3D interaction, Rising Wall 3D lateral evasion, Shockwave 2D jump evasion, all 6 phases, false defeat, revival, and final surge).
+  * `tools/verify_chamber_transition.gd`: **100% passed** (Chamber 1 exit cleanly loads Axiom Warden Chamber).
+  * `tools/verify_route.gd`: **101/101 checks passed 100%** (Chamber 1 8-section course regression).
+  * `tools/verify_new_features.gd`: **27/27 checks passed 100%** (HUD, subtitles, camera).
+
+
 
 
 

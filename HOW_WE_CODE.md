@@ -350,6 +350,26 @@ An enemy designed to test dimensional understanding:
 * **`EnergyReceiver.gd`:** Detects player with `carried_charge`, latches on, plays sound, emits `receiver_powered`, and illuminates circuit conduit emissives.
 * **`ConduitRail.gd`:** Area3D detecting 1D player, locking axes and boosting speed.
 
+### 8.3 Axiom Warden Boss Mechanics & Attack States (`encounter.gd` & `hazard.gd`)
+The Chamber 02 boss fight serves as the ultimate test of dimensional rules established in Chamber 01:
+* **Dimensional Kinematics Consistency:**
+  * **2D Mode:** X/Y movement + Jumping (`[SPACE]` initiates jump).
+  * **3D Mode:** X/Z ground navigation only. Jumping is strictly prohibited (`velocity.y` impulse = 0, Space ignored, `jump_buffer = 0.0`). Depth movement (`velocity.z`) requires `is_on_floor()`.
+* **Hazard Design Rules & 3D Lateral Navigation:**
+  * Because 3D mode has no jumping, 3D hazards never require jumping over, jumping onto, or crouching under.
+  * **Rising Wall (`"rising_wall"`):** Floor runes telegraph wall position for 1.44s. A solid stone barrier ($1.8\text{m} \times 2.4\text{m} \times 1.4\text{m}$) erupts with active `StaticBody3D` collision. Evaded entirely through lateral 3D navigation (moving around it in X/Z).
+  * **Flat Guardian Projectiles (`"guardian"`):** Warden hurls Flat Guardians as linear projectiles towards the player. In 3D, the projectile is solid and deals 1 heart damage. In 2D, it becomes a non-solid, paper-thin cyan ethereal phantom (`collision_layer = 0`, `collision_mask = 0`, `damage_enabled = false`), allowing the player to reactively switch to 2D and phase through unharmed.
+  * **Ground Shockwave (`"slam"`):** Expanding seismic ground ring telegraphed for 1.44s. Hits grounded players across the arena; player must switch to 2D and jump over it.
+  * **Depth-Locked Beam (`"lane"`):** Telegraphed laser beam locking down a specific Z lane. Player side-steps in 3D to adjacent lanes.
+  * **Sweeps, Beams, Bolts, Nova:** Balanced with +20% telegraph warning durations, -15% projectile speeds, and 10% reduced hitbox tolerances.
+* **Parkour Entrance & Fragile Bridge Arena Entry:**
+  * Chamber 01-style approach platforming with `ApproachMonolith` requiring 3D depth routing and 2D pier jumps across gaps.
+  * `FragileBridge` at $X \in [-12.5, -8.0]$ fractures when stepped on at $X \ge -12.0$. Dropping through into the chasm triggers `_fall()`, restoring full 3-heart health, checkpointing at `(-8.0, 0.06, 0.0)`, sealing the sanctum gate, and locking player input for dialogue.
+* **2D Foreground Occlusion Management:**
+  * Foreground boundary walls and columns are tagged into `"fg_walls"`. In 2D mode, `update_occlusion()` hides visual meshes blocking the active 2D plane ($Z > \text{player\_z} + 0.6$) while keeping static collisions solid.
+* **Final Phase (Phase 6 - Final Surge):**
+  * Synthesizes all hazard mechanics (`rising_wall`, `guardian`, `slam`, `lane`, `nova`), forcing the player to analyze incoming attacks and shift between 3D lateral evasion and 2D vertical jump/phase avoidance.
+
 ---
 
 ## 9. UI, Dialogue & Audiovisual Architecture
@@ -381,16 +401,23 @@ Our testing suite runs completely headless via Godot CLI, allowing instant verif
 godot --headless -s tools/verify_axiom_warden.gd
 godot --headless -s tools/verify_route.gd
 godot --headless -s tools/verify_new_features.gd
+godot --headless -s tools/verify_chamber_transition.gd
 godot --headless -s tools/verify_full_flow.gd
 ```
 
 ### 10.2 Verification Coverage
-* **`tools/verify_axiom_warden.gd` (56 automated checks):**
-  * Spawns player, validates stepped platforming ascent (Terraces 0-3 to high walkway).
-  * Validates Undertale dialogue intro with authentic portraits, weapon draw, and combat start.
-  * Validates 1D/2D/3D dimension switching during combat and jump momentum preservation.
-  * Validates hazard collision geometry: sweeps, low beams, bolts, lanes, and slams.
-  * Validates 5 core strikes, phase transitions, false defeat, revival dialogue, final surge, and collapse.
+* **`tools/verify_axiom_warden.gd` (72 automated checks):**
+  * Spawns player, validates stepped platforming approach, 3D depth routing around `ApproachMonolith`.
+  * Validates 3D jump rejection (`velocity.y = 0`, Space ignored) and 2D jump execution.
+  * Validates fragile bridge collapse on step, gap fall, and checkpoint respawn inside arena with 3 full hearts.
+  * Validates entrance gate sealing and input locking during boss dialogue.
+  * Validates 2D foreground wall occlusion hiding meshes blocking the 2D plane.
+  * Validates 1D/2D/3D dimension switching during combat and midair momentum preservation.
+  * Validates Flat Guardian projectile: non-solid / zero damage in 2D, solid / deals damage in 3D.
+  * Validates Rising Wall floor warning, solid obstacle emergence, and 3D lateral evasion.
+  * Validates Ground Shockwave damage in 3D and 2D jump evasion.
+  * Validates hazard collision geometry: sweeps, low beams, bolts, lanes, slams, and rising walls.
+  * Validates 5 core strikes, phase transitions, false defeat, revival dialogue, final surge synthesis, and sixth finishing hit collapse.
   * Validates retry from checkpoint, pause toggle, and health restoration.
 * **`tools/verify_route.gd` (101 automated checks):**
   * Spawns player, validates 1D conduit slide & speed boost.

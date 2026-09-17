@@ -67,7 +67,11 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_3: request_mode(3)
 		KEY_Q: request_mode(3 if mode == 1 else mode - 1)
 		KEY_E: request_mode(1 if mode == 3 else mode + 1)
-		KEY_SPACE: jump_buffer = 0.14
+		KEY_SPACE:
+			if mode == 2:
+				jump_buffer = 0.14
+			else:
+				jump_buffer = 0.0
 		KEY_F: strike()
 
 func strike() -> bool:
@@ -83,6 +87,8 @@ func request_mode(target: int) -> bool:
 		return false
 	if target == mode:
 		return true
+	jump_buffer = 0.0 # Clear incompatible jump buffer during dimension switch
+	var preserved_vy: float = velocity.y
 	if target == 1:
 		# Three visible parallel rails cross the arena. No mid-air teleport onto a rail.
 		var nearest: float = roundf(position.z / 4.0) * 4.0
@@ -94,6 +100,7 @@ func request_mode(target: int) -> bool:
 		position.y = 0.2
 		shape_node.shape = rod
 		shape_node.position.y = 0
+		coyote = 0.0
 	else:
 		var at: Vector3 = position
 		if mode == 1:
@@ -110,11 +117,15 @@ func request_mode(target: int) -> bool:
 		plane_z = at.z
 		shape_node.shape = humanoid
 		shape_node.position.y = 0.58
-		if mode == 1:
-			coyote = 0.12
-	# Keep upward momentum when switching 2D/3D during a jump.
+		if target == 2:
+			coyote = 0.12 if is_on_floor() else 0.0
+		else:
+			coyote = 0.0
+	# Keep upward momentum when switching 2D/3D during a jump without resetting or extra impulse
 	if target == 1:
 		velocity = Vector3.ZERO
+	else:
+		velocity.y = preserved_vy
 	mode = target
 	mode_changed.emit(mode)
 	_update_sprite()
@@ -143,13 +154,28 @@ func _physics_process(delta: float) -> void:
 		position.x = clampf(position.x, -10.8, 13.4)
 		position.y = 0.2
 		position.z = plane_z
-	else:
-		var direction: Vector3 = Vector3(move_input.x, 0, move_input.y if mode == 3 else 0.0)
-		if mode == 3:
-			direction = direction.rotated(Vector3.UP, deg_to_rad(-35.0))
+	elif mode == 3:
+		# 3D Mode: Ground navigation only. Jumping is strictly disabled.
+		jump_buffer = 0.0
+		coyote = 0.0
+		if override_jump:
+			override_jump = false # Space / jump ignored in 3D
+		var input_z: float = move_input.y if is_on_floor() else 0.0
+		var direction: Vector3 = Vector3(move_input.x, 0, input_z).rotated(Vector3.UP, deg_to_rad(-35.0))
 		direction = direction.limit_length(1.0)
 		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+		velocity.z = direction.z * SPEED if is_on_floor() else 0.0
+		velocity.y -= GRAVITY * delta
+		move_and_slide()
+		if arena_active:
+			position.x = clampf(position.x, -10.8, 13.4)
+			position.z = clampf(position.z, -6.1, 6.1)
+	elif mode == 2:
+		# 2D Mode: Platforming with running and jumping
+		var direction: Vector3 = Vector3(move_input.x, 0, 0.0)
+		direction = direction.limit_length(1.0)
+		velocity.x = direction.x * SPEED
+		velocity.z = 0.0
 		coyote = 0.11 if is_on_floor() else maxf(0, coyote - delta)
 		jump_buffer = maxf(0, jump_buffer - delta)
 		if override_jump:
@@ -157,16 +183,14 @@ func _physics_process(delta: float) -> void:
 			override_jump = false
 		if jump_buffer > 0 and coyote > 0:
 			velocity.y = JUMP
-			jump_buffer = 0
-			coyote = 0
+			jump_buffer = 0.0
+			coyote = 0.0
 		else:
 			velocity.y -= GRAVITY * delta
 		move_and_slide()
-		if mode == 2:
-			position.z = plane_z
+		position.z = plane_z
 		if arena_active:
 			position.x = clampf(position.x, -10.8, 13.4)
-			position.z = clampf(position.z, -6.1, 6.1)
 	if position.y < -6:
 		fell.emit()
 	_update_sprite()
