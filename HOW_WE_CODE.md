@@ -384,10 +384,10 @@ The Chamber 02 boss fight serves as the ultimate test of dimensional rules estab
 * **Text Crawl:** Typewriter crawl at 28 chars/sec with natural delays on punctuation (`.` `,` `!` `?`).
 * **Input Control:** `[Z]`, `[SPACE]`, `[ENTER]`, or Click to fast-forward active line or advance to next. `[ESC]` skips entire cutscene. Locks player kinematics during dialogue, then restores controls cleanly.
 
-### 9.2 Heads-Up Display (`HUD.gd` & `demo.gd`)
-* **Red Pixel Hearts:** 32×32 retro pixel hearts (`heart_full.png` and `heart_empty.png`) in top-left corner, dynamically updating via `Global.health_changed`.
-* **Top Glassmorphic Bar:** Displays chamber title, active dimension badge (`0D`, `1D`, `2D`, `3D`), charge state indicator, and clickable `[ FULL MAP (M) ]` button.
-* **Bottom Docked Footer:** Live context-sensitive control hints that adjust based on active dimension.
+### 9.2 Heads-Up Display (`hud.gd` & `CleanHUD.gd`)
+* **Red Pixel Hearts:** 32×32 retro pixel hearts (`heart_full.png` and `heart_empty.png`) in top-left corner (`Vector2(32 + i * 36, 24)`), dynamically updating via `Global.health_changed` or local encounter health.
+* **Minimalist Non-Intrusive Layout:** Brown background banners and title headers are strictly removed. Hearts float cleanly over the upper-left viewport margin.
+* **Floating Contextual Control Hints:** Crisp, readable keybinding hints rendered at the screen bottom with text drop shadows, dynamically adjusting to active dimension (e.g. WASD in 3D, Space Jump in 2D, Conduit Slide in 1D).
 
 ---
 
@@ -406,8 +406,11 @@ godot --headless -s tools/verify_full_flow.gd
 ```
 
 ### 10.2 Verification Coverage
-* **`tools/verify_axiom_warden.gd` (72 automated checks):**
-  * Spawns player, validates stepped platforming approach, 3D depth routing around `ApproachMonolith`.
+* **`tools/verify_axiom_warden.gd` (77 automated checks):**
+  * Spawns player, validates stepped 5-obstacle platforming approach, 3D depth routing around `ApproachMonolith`.
+  * Validates 2D pure side-view camera angle (`yaw = 0.0, pitch = 0.0`) and 3D isometric angle (`yaw = -45.0, pitch = -30.0`).
+  * Validates bottom abyss has no collision shapes (true void drop).
+  * Validates falling off approach piers revives player at the very beginning (`START = Vector3(-35, -2.35, 0)`).
   * Validates 3D jump rejection (`velocity.y = 0`, Space ignored) and 2D jump execution.
   * Validates fragile bridge collapse on step, gap fall, and checkpoint respawn inside arena with 3 full hearts.
   * Validates entrance gate sealing and input locking during boss dialogue.

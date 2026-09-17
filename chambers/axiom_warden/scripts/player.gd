@@ -191,7 +191,7 @@ func _physics_process(delta: float) -> void:
 		position.z = plane_z
 		if arena_active:
 			position.x = clampf(position.x, -10.8, 13.4)
-	if position.y < -6:
+	if position.y < -3.8:
 		fell.emit()
 	_update_sprite()
 

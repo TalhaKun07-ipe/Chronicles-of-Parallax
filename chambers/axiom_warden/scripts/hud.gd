@@ -91,22 +91,24 @@ func label(at: Vector2, words: String, color: Color = Color("e9d8b2"), font_size
 func _draw() -> void:
 	var w: float = size.x
 	var h: float = size.y
-	# Sleek top glassmorphic status banner
-	draw_rect(Rect2(0, 0, w, 70), Color(0.055, 0.035, 0.02, 0.92))
-	draw_line(Vector2(0, 70), Vector2(w, 70), Color("8c6835"), 2)
-	label(Vector2(24, 29), "02 / THE AXIOM SANCTUM", Color("e4bd73"), 20)
-	label(Vector2(24, 54), objective, Color("c9bea4"), 16)
-	label(Vector2(w - 280, 30), "%dD   /   JOHN ROD" % dimension, Color("6af3e8"), 18)
-	# Draw retro pixel hearts matching Chamber 1
+	# Clean floating retro pixel hearts in top-left margin (matching Chamber 1)
 	for i: int in 3:
 		var tex: Texture2D = heart_full_tex if i < health else heart_empty_tex
 		if tex:
-			var heart_rect: Rect2 = Rect2(w - 140 + i * 36, 40, 28, 28)
+			var heart_rect: Rect2 = Rect2(32 + i * 36, 24, 28, 28)
 			draw_texture_rect(tex, heart_rect, false, Color.WHITE if i < health else Color(0.5, 0.5, 0.5, 0.5))
-	# Bottom docked footer for hints
-	draw_rect(Rect2(0, h - 32, w, 32), Color(0.04, 0.025, 0.015, 0.94))
-	draw_line(Vector2(0, h - 32), Vector2(w, h - 32), Color("8c6835"), 1)
-	label(Vector2(24, h - 10), hint, Color("c9bea4"), 16)
+
+	# Clean contextual control hints (no brown bar, matching Chamber 1)
+	var active_hint: String = hint
+	if dimension == 2:
+		active_hint = "WASD Move   •   SPACE Jump   •   1/2/3 Dimension   •   F Strike"
+	elif dimension == 3:
+		active_hint = "WASD Move Across Depth   •   1/2/3 Dimension   •   F Strike"
+	elif dimension == 1:
+		active_hint = "A/D Slide Along Conduit   •   1/2/3 Dimension   •   F Strike"
+	var hint_pos: Vector2 = Vector2(w * 0.5 - active_hint.length() * 4.5, h - 24)
+	draw_string(font, hint_pos + Vector2(1, 1), active_hint, HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color(0, 0, 0, 0.8))
+	draw_string(font, hint_pos, active_hint, HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color(0.96, 0.94, 0.90, 0.9))
 	if fight_visible and not dialogue_visible:
 		var x: float = w * 0.18
 		var bw: float = w * 0.64

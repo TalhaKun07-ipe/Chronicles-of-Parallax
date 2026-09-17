@@ -73,6 +73,34 @@ func run() -> void:
 	await frames(5)
 	check(p.is_on_floor() and absf(p.position.z - (-3.0)) < 0.1, "Player navigates rear aisle in 3D around approach monolith")
 
+	# Camera angles: 2D pure side view vs 3D isometric
+	p.request_mode(2)
+	encounter.yaw = 10.0
+	encounter.pitch = 10.0
+	encounter._update_camera(1.0)
+	check(encounter.yaw == 0.0 and encounter.pitch == 0.0, "2D camera is pure side view (yaw = 0.0, pitch = 0.0)")
+	p.request_mode(3)
+	encounter.yaw = 0.0
+	encounter.pitch = 0.0
+	encounter._update_camera(1.0)
+	check(encounter.yaw == -45.0 and encounter.pitch == -30.0, "3D camera is isometric (yaw = -45.0, pitch = -30.0)")
+
+	# Check bottom abyss floor has no collision shapes (true void)
+	var abyss_has_collision: bool = false
+	for child in encounter.find_children("*", "CollisionShape3D", true, false):
+		if child.global_position.y < -15.0:
+			abyss_has_collision = true
+			break
+	check(not abyss_has_collision, "Bottom abyss floor has no solid collision (true void)")
+
+	# Void fall during approach revives at the very beginning (START)
+	encounter.state = "approach"
+	encounter.fragile_bridge_broken = false
+	p.position = Vector3(-25.0, -4.0, 0.0)
+	encounter._fall()
+	check(p.position.is_equal_approx(encounter.START), "Falling off approach pier into void revives at very beginning (START)")
+	check(encounter.state == "approach", "Approach state is preserved after void fall")
+
 	# --- 2. PARKOUR FALL & COLLAPSING BRIDGE ARENA ENTRY ---
 	encounter.state = "approach"
 	p.position = Vector3(-11.8, 0.0, 0.0)

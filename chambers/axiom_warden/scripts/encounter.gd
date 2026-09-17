@@ -39,6 +39,8 @@ var fragile_bridge: Node3D
 var fragile_bridge_broken: bool = false
 var focus: Vector3 = START
 var camera_blend: float = 1
+var yaw: float = -45.0
+var pitch: float = -30.0
 var message_timer: float = 0
 var auto_start: bool = false
 
@@ -88,22 +90,22 @@ func _ready() -> void:
 	_update_camera(1.0)
 
 func _build_world() -> void:
-	var stone: Material = Geo.stone_material(Color("6c4b2a"))
-	var paver: Material = Geo.stone_material(Color("89653a"))
-	var shadow: Material = Geo.stone_material(Color("382312"))
-	var gold: Material = Geo.material(Color("d0a156"))
-	var ochre: Material = Geo.material(Color("c29f5c"))
+	var stone: Material = Geo.stone_material(Color("685039"))
+	var paver: Material = Geo.stone_material(Color("635B47"))
+	var shadow: Material = Geo.stone_material(Color("3B220B"))
+	var gold: Material = Geo.material(Color("D4AF67"))
+	var ochre: Material = Geo.material(Color("C29F5C"))
 	var dark: Material = Geo.material(Color("261708"))
-	var cyan: Material = Geo.material(Color("48cbbf"), true)
-	var amber: Material = Geo.material(Color("d9973e"), true)
+	var cyan: Material = Geo.material(Color("70B9AF"), true)
+	var amber: Material = Geo.material(Color("D9B779"), true)
 
 	var environment_node: WorldEnvironment = WorldEnvironment.new()
 	var env: Environment = Environment.new()
 	env.background_mode = Environment.BG_COLOR
-	env.background_color = Color("18120d")
+	env.background_color = Color("1a1510")
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color("e2cca0")
-	env.ambient_light_energy = 0.52
+	env.ambient_light_color = Color("e0cb9e")
+	env.ambient_light_energy = 0.45
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	env.glow_enabled = true
 	env.glow_intensity = 0.35
@@ -112,88 +114,92 @@ func _build_world() -> void:
 	add_child(environment_node)
 
 	var sun: DirectionalLight3D = DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-55, -30, 0)
+	sun.rotation_degrees = Vector3(-55, -25, 0)
 	sun.light_color = Color("fff3dd")
-	sun.light_energy = 0.95
+	sun.light_energy = 0.75
 	sun.shadow_enabled = true
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
 	sun.directional_shadow_max_distance = 80
+	sun.shadow_bias = 0.02
+	sun.shadow_normal_bias = 1.5
 	add_child(sun)
 
 	var fill: DirectionalLight3D = DirectionalLight3D.new()
-	fill.rotation_degrees = Vector3(-25, 150, 0)
+	fill.rotation_degrees = Vector3(-25, 155, 0)
 	fill.light_color = Color("bca068")
 	fill.light_energy = 0.28
 	add_child(fill)
 
-	# 1. SCREEN-FILLING ARCHITECTURAL FOUNDATION (Zero Black Space)
-	# Continuous Lower Abyss Canyon Floor: Spans X=-65 to +35, Z=-25 to +25 at Y=-5.5
-	Geo.box(self, Vector3(-15, -6.5, 0), Vector3(105, 2.0, 50), shadow, true)
+	# 1. SCREEN-FILLING ARCHITECTURAL FOUNDATION (Zero Black Space, True Void Below)
+	# Non-solid abyss floor visual far below at Y=-22.0 (NO COLLISION - falling is a true void drop!)
+	Geo.box(self, Vector3(-15, -22.0, 0), Vector3(120, 2.0, 60), shadow, false)
 
-	# Massive Cavern Backdrop: Spans X=-70 to +40, height Y=-5 to +14 at Z=-13.5
-	Geo.box(self, Vector3(-15, 4.5, -13.5), Vector3(110, 18.0, 1.2), shadow)
+	# Massive Cavern Backdrop: Spans X=-65 to +35, height Y=-5 to +15 at Z=-13.5
+	Geo.box(self, Vector3(-15, 5.0, -13.5), Vector3(110, 18.0, 1.2), shadow)
 
-	# Perimeter Sanctuary Back Wall: Along Z=-8.5 from X=-60 to +30, height Y=0 to 7.0
-	Geo.masonry_block(self, Vector3(-15, 3.5, -8.5), Vector3(100, 7.0, 1.2), stone, paver, gold, true)
+	# Perimeter Sanctuary Back Wall: Along Z=-8.5 from X=-55 to +26, height Y=0 to 7.0
+	Geo.masonry_block(self, Vector3(-15, 3.5, -8.5), Vector3(90, 7.0, 1.2), stone, paver, gold, true)
 
-	# Perimeter Low Retaining Front Wall: Along Z=+8.5 from X=-60 to +30, height Y=0 to 1.5
-	var front_wall: Node3D = Geo.masonry_block(self, Vector3(-15, 0.75, 8.5), Vector3(100, 1.5, 0.8), stone, paver, gold, false)
-	front_wall.add_to_group("fg_walls")
-
-	# Side Limit Walls
-	Geo.box(self, Vector3(-58, 4.0, 0), Vector3(1.2, 9.0, 18.0), stone, true)
-	Geo.box(self, Vector3(28, 4.0, 0), Vector3(1.2, 9.0, 18.0), stone, true)
-
-	# Ruined Architectural Columns along Back Wall
-	for x in range(-50, 26, 5):
+	# Ruined Architectural Columns and Torches along Back Wall
+	for x in range(-45, 25, 5):
 		Geo.column(self, Vector3(x, 0.0, -8.2), 0.5, 7.0, stone, paver, gold)
-		if x in [-45, -35, -25, -15, -5, 5, 15]:
+		if x in [-40, -30, -20, -10, 0, 10, 20]:
 			Geo.torch(self, Vector3(x, 3.2, -7.9))
 
-	# 2. STEPPED MULTI-DIMENSIONAL PLATFORMING APPROACH
-	# Terrace 0 / Arrival Antechamber: X in [-38, -29.25], top Y=-2.4
-	Geo.masonry_block(self, Vector3(-34, -3.9, 0), Vector3(9.5, 3.0, 12.0), stone, paver, gold, true)
+	# Side Limit Walls
+	Geo.box(self, Vector3(-50, 4.0, 0), Vector3(1.2, 9.0, 18.0), stone, true)
+	Geo.box(self, Vector3(28, 4.0, 0), Vector3(1.2, 9.0, 18.0), stone, true)
+
+	# 2. EXPANDED CHAMBER 01-STYLE PARKOUR APPROACH
+	# Platform 0: Arrival Antechamber: X in [-38.0, -29.0], top Y = -2.35, Z in [-3.5, 1.0]
+	Geo.masonry_block(self, Vector3(-33.5, -3.85, -1.25), Vector3(9.0, 3.0, 4.5), stone, paver, gold, true)
 	# Wake Plate at arrival
-	Geo.box(self, Vector3(-35, -2.36, 0), Vector3(1.4, 0.08, 1.4), ochre, false)
-	Geo.box(self, Vector3(-35, -2.32, 0), Vector3(0.9, 0.04, 0.9), amber, false)
+	Geo.box(self, Vector3(-35.0, -2.33, 0.0), Vector3(1.4, 0.04, 1.4), ochre, false)
 	# Lower Conduit Rail Dock
-	Geo.box(self, Vector3(-33, -2.34, 0), Vector3(5.5, 0.05, 0.16), cyan, false)
+	Geo.box(self, Vector3(-33.0, -2.32, 0.0), Vector3(4.0, 0.04, 0.16), cyan, false)
 
-	# Terrace 1: X in [-28, -23], top Y=-1.8
-	Geo.masonry_block(self, Vector3(-25.5, -3.6, 0), Vector3(5.5, 3.6, 12.0), stone, paver, gold, true)
-	# Terrace 2: X in [-21, -17], top Y=-1.2
-	Geo.masonry_block(self, Vector3(-19.0, -3.3, 0), Vector3(4.5, 4.2, 12.0), stone, paver, gold, true)
-	# Approach Monolith: blocks straight 2D walking on Z=0, requiring 3D depth navigation
-	var approach_monolith: Node3D = Geo.box(self, Vector3(-19.0, 0.4, 0.5), Vector3(1.0, 3.2, 3.5), stone, true)
+	# Gap 1: 1.5m open void chasm from X = -29.0 to X = -27.5
+	# Obstacle 1: Broken Pier 1 (2D Parkour Jump)
+	# Pier 1: X in [-27.5, -23.0], top Y = -1.80, Z in [-3.0, 1.0]
+	Geo.masonry_block(self, Vector3(-25.25, -3.6, -1.0), Vector3(4.5, 3.6, 4.0), stone, paver, gold, true)
+
+	# Gap 2: 1.8m open void chasm from X = -23.0 to X = -21.2
+	# Obstacle 2 & 3: Pier 2 & Barrier Monolith Terrace: X in [-21.2, -15.5], top Y = -1.20, Z in [-4.5, 1.0]
+	Geo.masonry_block(self, Vector3(-18.35, -3.3, -1.75), Vector3(5.7, 4.2, 5.5), stone, paver, gold, true)
+	# Solid Barrier Monolith: blocks Z=0 forward path, forcing 3D rear navigation!
+	var approach_monolith: Node3D = Geo.box(self, Vector3(-18.5, 0.5, -0.2), Vector3(0.8, 3.4, 2.2), stone, true)
 	approach_monolith.name = "ApproachMonolith"
+	# Golden floor pavers guiding the rear aisle at Z = -3.0
+	for x_p in [-20.5, -19.5, -18.5, -17.5, -16.5]:
+		Geo.box(self, Vector3(x_p, -1.18, -3.0), Vector3(0.8, 0.04, 0.8), paver)
 
-	# Terrace 3: X in [-15, -12.5], top Y=-0.6
-	Geo.masonry_block(self, Vector3(-13.75, -3.0, 0), Vector3(3.0, 4.8, 12.0), stone, paver, gold, true)
+	# Gap 3: 2.0m open void chasm from X = -15.5 to X = -13.5
+	# Obstacle 4: Ancient Conduit Rail Across Rift (1D Slide)
+	# Bulkhead arch at X = -15.5, Z = -3.0 with horizontal slit opening
+	Geo.box(self, Vector3(-15.5, 0.8, -3.0), Vector3(0.6, 2.0, 1.6), stone, true)
+	# Cyan rail spanning across rift
+	Geo.box(self, Vector3(-14.5, -1.14, -3.0), Vector3(4.0, 0.06, 0.16), cyan, false)
+	# Alternate 2D stepping stone over rift
+	Geo.masonry_block(self, Vector3(-14.5, -2.6, 0.0), Vector3(1.5, 4.0, 2.0), stone, paver, gold, true)
 
-	# Decorative Inset Floor Pavers on terraces
-	for t: Vector3 in [Vector3(-33, -2.4, 8), Vector3(-26, -1.8, 4), Vector3(-21, -1.2, 4), Vector3(-16, -0.6, 4)]:
-		for x_idx: int in int(t.z):
-			for z_idx: int in 5:
-				Geo.box(self, Vector3(t.x - t.z / 2 + x_idx + 0.5, t.y + 0.015, z_idx - 2.0), Vector3(0.96, 0.035, 0.96), paver if (x_idx + z_idx) % 2 == 0 else stone)
+	# Obstacle 5: Bridge Threshold Terrace: X in [-13.5, -12.0], top Y = 0.0, Z in [-3.0, 1.0]
+	Geo.masonry_block(self, Vector3(-12.75, -2.5, -1.0), Vector3(1.5, 5.0, 4.0), stone, paver, gold, true)
 
-	# Fragile Bridge into Sanctum Arena: X in [-12.5, -8.0], top Y=0.0
-	fragile_bridge = Geo.masonry_block(self, Vector3(-10.25, -2.5, 0), Vector3(4.5, 5.0, 7.0), stone, paver, gold, true)
-	fragile_bridge.name = "FragileBridge"
-
-	# Grand Sanctum Entrance Gate Archway
-	for z_side: float in [-2.5, 2.5]:
-		var arch_col: Node3D = Geo.column(self, Vector3(-12.0, 0.0, z_side), 0.45, 5.5, stone, paver, gold)
-		if z_side > 0:
-			arch_col.add_to_group("fg_walls")
-	Geo.box(self, Vector3(-12.0, 4.8, 0), Vector3(1.2, 0.6, 5.5), gold)
-	gate = Geo.box(self, Vector3(-12.0, 2.0, 0), Vector3(0.2, 4.0, 4.8), Geo.material(Color("367d75"), true))
+	# Grand Sanctum Entrance Gate Archway (rear column and lintel only, no front column blocking camera)
+	Geo.column(self, Vector3(-11.5, 0.0, -2.5), 0.45, 5.5, stone, paver, gold)
+	Geo.box(self, Vector3(-11.5, 4.8, 0.0), Vector3(1.2, 0.6, 5.5), gold)
+	gate = Geo.box(self, Vector3(-11.5, 2.0, 0.0), Vector3(0.2, 4.0, 4.8), Geo.material(Color("367d75"), true))
 	gate.visible = false
 
-	# 3. GRAND SANCTUM ARENA FLOOR (X in [-8, 20], Z in [-7, 7], Y=0.0)
-	Geo.masonry_block(self, Vector3(6, -2.5, 0), Vector3(28, 5.0, 14.5), stone, paver, gold, true)
+	# Obstacle 6: Fragile Bridge into Sanctum Arena: X in [-12.5, -8.0], top Y = 0.0, Z in [-2.5, 2.5]
+	fragile_bridge = Geo.masonry_block(self, Vector3(-10.25, -2.5, 0.0), Vector3(4.5, 5.0, 5.0), stone, paver, gold, true)
+	fragile_bridge.name = "FragileBridge"
+
+	# 3. GRAND SANCTUM ARENA FLOOR (X in [-8.0, 20.0], Z in [-6.0, 6.0], Y = 0.0)
+	Geo.masonry_block(self, Vector3(6.0, -2.5, 0.0), Vector3(28.0, 5.0, 12.5), stone, paver, gold, true)
 	for x_idx: int in 14:
-		for z_idx: int in 7:
-			Geo.box(self, Vector3(-7 + x_idx * 2, 0.012, -6 + z_idx * 2), Vector3(1.96, 0.025, 1.96), paver if (x_idx + z_idx) % 2 == 0 else stone)
+		for z_idx: int in 6:
+			Geo.box(self, Vector3(-7 + x_idx * 2, 0.012, -5 + z_idx * 2), Vector3(1.96, 0.025, 1.96), paver if (x_idx + z_idx) % 2 == 0 else stone)
 
 	# 3 Continuous Rails across Arena floor (Z = -4.0, 0.0, +4.0)
 	for z: float in [-4.0, 0.0, 4.0]:
@@ -202,9 +208,9 @@ func _build_world() -> void:
 		for x_end: float in [-6.8, 18.8]:
 			Geo.box(self, Vector3(x_end, 0.08, z), Vector3(0.45, 0.08, 0.5), gold)
 
-	# Perimeter gold coping curbs
-	for z: float in [-7.1, 7.1]:
-		var curb: Node3D = Geo.box(self, Vector3(6.0, 0.16, z), Vector3(28.0, 0.32, 0.3), gold)
+	# Perimeter gold coping curbs (low curbs at Z = +/-6.2)
+	for z: float in [-6.2, 6.2]:
+		var curb: Node3D = Geo.box(self, Vector3(6.0, 0.08, z), Vector3(28.0, 0.16, 0.3), gold)
 		if z > 0:
 			curb.add_to_group("fg_walls")
 
@@ -213,8 +219,8 @@ func _build_world() -> void:
 		var p_col: Node3D = Geo.box(self, Vector3(14.5, 2.5, z), Vector3(0.8, 5, 0.8), stone)
 		if z > 0:
 			p_col.add_to_group("fg_walls")
-	Geo.box(self, Vector3(14.5, 5, 0), Vector3(1, 0.4, 5.1), gold)
-	exit_seal = Geo.box(self, Vector3(14.5, 2.0, 0), Vector3(0.15, 4.0, 3.4), Geo.material(Color("39685d"), true))
+	Geo.box(self, Vector3(14.5, 5.0, 0.0), Vector3(1.0, 0.4, 5.1), gold)
+	exit_seal = Geo.box(self, Vector3(14.5, 2.0, 0.0), Vector3(0.15, 4.0, 3.4), Geo.material(Color("39685d"), true))
 
 	# Dais and Checkpoint rings
 	var ring: MeshInstance3D = Geo.ring(self, Vector3(9, 0.06, 0), 2.5, 0.035, gold)
@@ -235,9 +241,6 @@ func _physics_process(delta: float) -> void:
 					c.disabled = true
 				var tw := create_tween()
 				tw.tween_property(fragile_bridge, "position:y", fragile_bridge.position.y - 12.0, 1.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-		if player.position.x > -27 and player.is_on_floor(): platform_checkpoint = Vector3(-26, -1.75, 0)
-		if player.position.x > -22 and player.is_on_floor(): platform_checkpoint = Vector3(-21, -1.15, 0)
-		if player.position.x > -17 and player.is_on_floor(): platform_checkpoint = Vector3(-16, -0.55, 0)
 		if player.position.x > -8.0 and player.is_on_floor(): begin_intro()
 	elif state == "draw_weapon":
 		player.armed = true
@@ -279,27 +282,46 @@ func _process(delta: float) -> void:
 func _update_camera(delta: float) -> void:
 	if not is_instance_valid(camera): return
 	var in_arena: bool = state != "approach"
-	var flat: bool = player.mode == 2
-	var goal: Vector3
+	var is_2d: bool = player.mode == 2
+	
+	var blend: float = minf(1.0, delta * 7.0)
+	var target_yaw: float = 0.0 if is_2d else -45.0
+	var target_pitch: float = 0.0 if is_2d else -30.0
+	yaw = lerpf(yaw, target_yaw, blend)
+	pitch = lerpf(pitch, target_pitch, blend)
+	
+	var target_focus: Vector3
 	var target_size: float
+	
 	if not in_arena:
-		# Close tracking during platforming approach - screen filled with rich masonry
-		goal = player.position + Vector3(1.2, 0.9, 0)
-		target_size = 6.8
+		# Approach tracking with look-ahead like Chamber 01
+		var lookahead_x: float = 1.2 if is_2d else 0.8
+		target_focus = player.position + Vector3(lookahead_x, 0.9, 0.0)
+		target_size = 4.8 if is_2d else 5.6
 	else:
 		if state in ["dialogue", "draw_weapon", "revival_dialogue"]:
-			goal = Vector3(2.5, 1.4, 0.0)
+			target_focus = Vector3(1.5, 1.2, 0.0)
 			target_size = 9.2
 		else:
-			# Screen-filling arena framing: frames John & Warden heroically with zero void borders
-			goal = Vector3(2.0, 1.2, 0.0)
-			target_size = 11.6 if not flat else 10.4
-	focus = focus.lerp(goal, minf(delta * 5, 1.0))
-	camera_blend = lerpf(camera_blend, 0.0 if flat else 1.0, minf(delta * 7, 1))
-	var offset: Vector3 = Vector3(0, 0, 20).lerp(Vector3(-10, 13, 15), camera_blend)
-	camera.position = focus + offset
-	camera.look_at(focus)
-	camera.size = lerpf(camera.size, target_size, minf(delta * 5, 1))
+			# Boss arena overview framing John and Warden heroically
+			target_focus = Vector3(2.0, 1.2, 0.0)
+			target_size = 10.4 if is_2d else 11.6
+			
+	focus = focus.lerp(target_focus, minf(1.0, delta * 5.0))
+	
+	var rot_yaw = deg_to_rad(yaw)
+	var rot_pitch = deg_to_rad(pitch)
+	var cam_dist = 22.0
+	
+	var cam_offset = Vector3(
+		sin(rot_yaw) * cos(rot_pitch),
+		-sin(rot_pitch),
+		cos(rot_yaw) * cos(rot_pitch)
+	) * cam_dist
+	
+	camera.position = focus + cam_offset
+	camera.look_at(focus, Vector3.UP)
+	camera.size = lerpf(camera.size, target_size, blend)
 
 func _set_state(value: String) -> void:
 	state = value
@@ -514,12 +536,14 @@ func hurt_player() -> void:
 
 func _fall() -> void:
 	if state == "approach":
-		if fragile_bridge_broken or player.position.x >= -12.5:
+		if fragile_bridge_broken or player.position.x >= -12.0:
 			# Fell through collapsed fragile bridge into boss arena!
 			begin_intro()
 		else:
-			player.reset_at(platform_checkpoint)
-			show_message("The watch catches you. Try the next jump again.")
+			# Fell off parkour platforms into open void -> revive at the very beginning!
+			player.reset_at(START)
+			show_message("The void claims you. Returned to the beginning.")
+			sfx("hurt")
 	else:
 		player.reset_at(CHECKPOINT)
 		player.invulnerable = 0

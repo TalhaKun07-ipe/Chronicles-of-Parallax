@@ -41,6 +41,8 @@ func run_test() -> void:
 	var chamber = active_scene.get_node_or_null("Chamber")
 	var camera = active_scene.get_node_or_null("Camera3D")
 	var hud = active_scene.get_node_or_null("HUD")
+	if hud == null:
+		hud = active_scene.get_node_or_null("CleanHUD")
 	
 	assert(player != null, "Player node must exist in Demo")
 	assert(chamber != null, "Chamber node must exist in Demo")
