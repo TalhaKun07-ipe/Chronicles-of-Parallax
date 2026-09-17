@@ -98,6 +98,10 @@ func _ready() -> void:
 		prompt_label.modulate.a = 0.7
 	fade_rect.modulate.a = 1.0
 	
+	var sm = get_node_or_null("/root/SoundManager")
+	if sm and sm.has_method("play_bgm"):
+		sm.play_bgm("intro_outro", -7.0, true, 0.0, 1.2)
+	
 	# Initial fade in from black
 	var t = create_tween()
 	t.tween_property(fade_rect, "modulate:a", 0.0, 1.0)
@@ -205,7 +209,10 @@ func show_victory_screen() -> void:
 
 func restart_game() -> void:
 	var sm = get_node_or_null("/root/SoundManager")
-	if sm: sm.play_sfx("unlock")
+	if sm:
+		sm.play_sfx("unlock")
+		if sm.has_method("stop_bgm"):
+			sm.stop_bgm(0.7)
 	var t = create_tween()
 	t.tween_property(fade_rect, "modulate:a", 1.0, 0.7)
 	t.tween_callback(func():

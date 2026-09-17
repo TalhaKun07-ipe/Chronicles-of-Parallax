@@ -94,8 +94,8 @@ func _process(delta: float) -> void:
 		subtitle_label.modulate.a = clampf(subtitle_timer / 0.35, 0.0, 1.0)
 	else:
 		subtitle_label.visible = false
-	subtitle_label.size = Vector2(minf(1040, size.x - 80), 55)
-	subtitle_label.position = Vector2((size.x - subtitle_label.size.x) * 0.5, size.y - 145)
+	subtitle_label.size = Vector2(minf(1040, size.x - 80), 52)
+	subtitle_label.position = Vector2((size.x - subtitle_label.size.x) * 0.5, size.y - 205)
 
 	queue_redraw()
 

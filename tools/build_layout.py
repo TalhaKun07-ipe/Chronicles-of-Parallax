@@ -162,7 +162,7 @@ masonry('RelayCourtLanding', 47.5, 52.0, -5.5, 5.0, 3.00, -6.5, material='paver'
 # SECTION F: The Relay Court - Interactive Dimension Puzzle (X in [50, 68])
 # =========================================================================
 # Floor ends at X=62.5 creating a true 6m chasm before Terrace G1 at X=68.5
-masonry('RelayCourtFloor', 50.0, 62.5, -5.5, 5.5, 3.00, -6.5, material='paver')
+masonry('RelayCourtFloor', 52.0, 62.5, -5.5, 5.5, 3.00, -6.5, material='paver')
 masonry('RelayBackWall', 50.0, 68.5, -6.2, -5.5, 7.5, 3.0, material='stone')
 masonry('RelayFrontWall', 50.0, 68.5, 5.5, 6.2, 3.45, -6.5, group='fg_walls', material='stone')
 
@@ -172,10 +172,10 @@ masonry('GrillePierLeftF', 53.0, 54.0, 1.8, 3.0, 7.5, 3.0, material='deep')
 masonry('GrillePierRightF', 53.0, 54.0, 4.0, 5.5, 7.5, 3.0, group='fg_walls', material='deep')
 masonry('GrilleLintelF', 52.8, 54.2, 3.0, 4.0, 7.5, 3.55, group='fg_walls', material='stone')
 
-# North, East, and South Enclosure Walls (Ceiling-high 7.5m, impossible to bypass in 3D or 2D)
-masonry('AlcoveNorthWallF', 53.0, 58.8, 1.8, 2.5, 7.5, 3.0, material='deep')
+# North, East, and South Enclosure Walls (Ceiling-high 7.5m, non-overlapping with grille piers)
+masonry('AlcoveNorthWallF', 54.0, 58.0, 1.8, 2.5, 7.5, 3.0, material='deep')
 masonry('AlcoveEastWallF', 58.0, 58.8, 1.8, 5.5, 7.5, 3.0, material='deep')
-masonry('AlcoveSouthWallF', 53.0, 58.8, 4.8, 5.5, 7.5, 3.0, group='fg_walls', material='stone')
+masonry('AlcoveSouthWallF', 54.0, 58.0, 4.8, 5.5, 7.5, 3.0, group='fg_walls', material='stone')
 
 # Conduit Rail & Docking Nodes
 box('RelayConduit', (54.5, 3.18, 3.5), (6.0, 0.06, 0.12), 'rail', parent='Mechanisms')
@@ -187,8 +187,7 @@ box('RelayTerminalBase', (51.5, 3.30, 1.2), (0.7, 0.6, 0.7), 'shadow', True, par
 box('RelayTerminalSocket', (51.5, 3.625, 1.2), (0.45, 0.05, 0.45), 'rune_off', parent='Mechanisms')
 box('RelayTerminalTrace', (51.5, 3.02, 2.35), (0.08, 0.02, 1.6), 'gold', parent='Details')
 
-# 2. Central Dividing Wall (routes 3D path across depth)
-masonry('RelayCentralWall', 59.0, 61.2, -1.0, 1.8, 7.5, 3.0, material='deep')
+# 2. Structure at bridge platform removed per user request (RelayCentralWall removed)
 
 # 3. Receiver Pedestal at X=59.0, Z=-3.5
 box('ReceiverBase', (59.0, 3.30, -3.5), (0.8, 0.6, 0.8), 'shadow', True, parent='Mechanisms')
@@ -212,8 +211,8 @@ for x in [64.2, 65.6, 67.0]:
 # Terrace G1 on rear lane Z=-3.5
 masonry('TerraceG1', 68.5, 72.5, -5.2, -1.8, 4.20, -6.5, material='paver')
 
-# 3D Transversal Walkway across depth from Z=-3.5 to Z=+2.5 at Y=4.20
-masonry('TransversalWalkwayG', 69.5, 72.5, -2.0, 3.5, 4.20, -6.5, material='paver')
+# 3D Transversal Walkway across depth from Z=-1.8 to Z=+3.5 at Y=4.20
+masonry('TransversalWalkwayG', 69.5, 72.5, -1.8, 3.5, 4.20, -6.5, material='paver')
 for z in [-1.0, 0.5, 2.0]:
     box(f'WalkwayGTrace{z}', (71.0, 4.22, z), (0.08, 0.02, 0.8), 'gold', parent='Details')
 
@@ -243,9 +242,9 @@ masonry('GuardianThreshold', 89.5, 93.0, -5.5, 5.5, 5.80, -6.5, material='paver'
 # =========================================================================
 # SECTION H: Guardian Hall & Exit (X in [90, 112], Y=5.80)
 # =========================================================================
-masonry('GuardianHallFloor', 92.5, 112.0, -5.5, 5.5, 5.80, -6.5, material='paver')
+masonry('GuardianHallFloor', 93.0, 112.0, -5.5, 5.5, 5.80, -6.5, material='paver')
 masonry('GuardianHallBackWall', 89.5, 112.0, -6.2, -5.5, 9.8, 5.8, material='stone')
-masonry('GuardianHallFrontWall', 89.5, 104.0, 5.5, 6.2, 6.25, -6.5, group='fg_walls', material='stone')
+masonry('GuardianHallFrontWall', 89.5, 103.5, 5.5, 6.2, 6.25, -6.5, group='fg_walls', material='stone')
 
 # Enclosed exit vestibule behind archway to prevent falling through
 masonry('ExitVestibuleBack', 111.5, 112.2, -5.5, 5.5, 9.8, 5.8, material='stone')
@@ -304,7 +303,7 @@ terraces = [
     ('GalleryPillarE2', 34.8, 37.0, 3.20),
     ('GalleryPillarE4', 43.5, 45.8, 3.20),
     ('RelayCourtLanding', 47.5, 52.0, 3.00),
-    ('RelayCourtFloor', 50.0, 66.0, 3.00),
+    ('RelayCourtFloor', 52.0, 62.5, 3.00),
     ('RunicBridge', 64.0, 68.0, 3.60),
     ('TerraceG1', 68.5, 72.5, 4.20),
     ('TransversalWalkwayG', 69.5, 72.5, 4.20),
@@ -312,7 +311,7 @@ terraces = [
     ('HighConduitDockG', 78.0, 80.5, 5.20),
     ('SteppingStoneG4', 86.5, 88.5, 5.50),
     ('GuardianThreshold', 89.5, 93.0, 5.80),
-    ('GuardianHallFloor', 92.5, 103.5, 5.80),
+    ('GuardianHallFloor', 93.0, 103.5, 5.80),
 ]
 
 data = {

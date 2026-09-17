@@ -48,13 +48,22 @@ func _ready() -> void:
 			# Dedicated Flat Guardian projectile: travels toward player, becomes ethereal in 2D
 			var spr := Sprite3D.new()
 			spr.texture = load("res://chambers/broken_circuit/assets/sprites/flat_guardian.png")
-			spr.pixel_size = 0.026
+			spr.pixel_size = 0.028
 			spr.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 			spr.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 			spr.position.y = 0.8
 			visual = spr
 			add_child(visual)
-			speed = 6.2
+
+			var eye := OmniLight3D.new()
+			eye.name = "GuardianEye"
+			eye.light_color = Color("d9973e")
+			eye.light_energy = 1.2
+			eye.omni_range = 3.5
+			eye.position.y = 0.95
+			add_child(eye)
+
+			speed = 6.4
 			duration = 4.5
 		"rising_wall":
 			# 3D Lateral Hazard: Physical stone wall rising in player's path
@@ -119,19 +128,43 @@ func _physics_process(delta: float) -> void:
 
 	# Dynamic dimension-reactivity for Flat Guardian projectile
 	if kind == "guardian":
-		var in_2d: bool = is_instance_valid(target) and int(target.get("mode")) == 2
-		if in_2d:
-			collision_layer = 0
-			collision_mask = 0
-			damage_enabled = false
+		var eye: OmniLight3D = get_node_or_null("GuardianEye")
+		if age < warning:
+			# Warning telegraph: lock gaze onto player and pulse warning amber
+			if is_instance_valid(target):
+				var to_player: Vector3 = target.global_position - global_position
+				to_player.y = 0
+				if to_player.length_squared() > 0.01:
+					direction = to_player.normalized()
+			var pulse: float = sin(age * 16.0) * 0.5 + 0.5
+			if eye:
+				eye.light_color = Color("d9973e")
+				eye.light_energy = 1.0 + pulse * 0.8
 			if visual is Sprite3D:
-				visual.modulate = Color(0.4, 0.8, 1.0, 0.28) # Paper-thin ethereal in 2D
+				visual.scale = Vector3.ONE * (1.0 + pulse * 0.08)
+				visual.modulate = Color(1.0, 0.9, 0.7, 1.0)
 		else:
-			collision_layer = 1
-			collision_mask = 1
-			damage_enabled = true
-			if visual is Sprite3D:
-				visual.modulate = Color(1.0, 1.0, 1.0, 1.0) # Solid physical in 3D
+			var in_2d: bool = is_instance_valid(target) and int(target.get("mode")) == 2
+			if in_2d:
+				collision_layer = 0
+				collision_mask = 0
+				damage_enabled = false
+				if visual is Sprite3D:
+					visual.modulate = Color(0.4, 0.8, 1.0, 0.28) # Paper-thin ethereal in 2D
+					visual.scale = Vector3.ONE
+				if eye:
+					eye.light_color = Color(0.4, 0.8, 1.0)
+					eye.light_energy = 0.4
+			else:
+				collision_layer = 1
+				collision_mask = 1
+				damage_enabled = true
+				if visual is Sprite3D:
+					visual.modulate = Color(1.0, 1.0, 1.0, 1.0) # Solid physical in 3D
+					visual.scale = Vector3.ONE
+				if eye:
+					eye.light_color = Color(1.0, 0.2, 0.15) # Fierce crimson in 3D
+					eye.light_energy = 1.6
 
 	if is_dangerous():
 		if not sound_played:
@@ -142,14 +175,31 @@ func _physics_process(delta: float) -> void:
 				"lane": _play_sfx("boss_lane")
 				"slam": _play_sfx("boss_slam")
 				"rising_wall": _play_sfx("stone_grind")
+				"guardian": _play_sfx("transform")
 		if visual is MeshInstance3D:
 			visual.material_override = active_mat
 		if kind == "bolt":
 			global_position += direction * speed * delta
 			visual.rotation += Vector3(1, 2, 1) * delta
 		elif kind == "guardian":
+			# Active charge: target and steer dynamically towards the player
+			if is_instance_valid(target):
+				var to_target: Vector3 = target.global_position - global_position
+				to_target.y = 0
+				# Only home while the player is in front of the charging guardian
+				if direction.dot(to_target) > 0.0 and to_target.length_squared() > 0.2:
+					var target_dir: Vector3 = to_target.normalized()
+					var steer_rate: float = 3.8 # Radians per second (~218 deg/s)
+					var cur_ang: float = atan2(direction.z, direction.x)
+					var tgt_ang: float = atan2(target_dir.z, target_dir.x)
+					var diff_ang: float = wrapf(tgt_ang - cur_ang, -PI, PI)
+					var max_turn: float = steer_rate * delta
+					var new_ang: float = cur_ang + clampf(diff_ang, -max_turn, max_turn)
+					direction = Vector3(cos(new_ang), 0.0, sin(new_ang)).normalized()
+
 			global_position += direction * speed * delta
 			visual.position.y = 0.8 + sin(age * 8.0) * 0.12
+			visual.rotation.z = -direction.z * 0.3
 		elif kind == "rising_wall":
 			var rise: float = clampf((age - warning) / 0.35, 0.0, 1.0)
 			visual.scale = Vector3(1.0, lerpf(0.1, 35.0, rise), 1.0)

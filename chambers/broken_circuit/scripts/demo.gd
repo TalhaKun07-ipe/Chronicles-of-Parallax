@@ -50,10 +50,10 @@ func _ready() -> void:
 	sun.light_color = Color("fff3dd")
 	sun.light_energy = 0.75
 	sun.shadow_enabled = true
-	sun.directional_shadow_max_distance = 80
+	sun.directional_shadow_max_distance = 60
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
-	sun.shadow_bias = 0.02
-	sun.shadow_normal_bias = 1.5
+	sun.shadow_bias = 0.015
+	sun.shadow_normal_bias = 1.0
 	add_child(sun)
 	
 	var fill := DirectionalLight3D.new()
@@ -97,6 +97,10 @@ func _ready() -> void:
 	var transition = get_node_or_null("/root/SceneTransition")
 	if transition and transition.has_method("fade_in_from_black"):
 		transition.fade_in_from_black(0.4)
+
+	var sm = get_node_or_null("/root/SoundManager")
+	if sm and sm.has_method("play_bgm"):
+		sm.play_bgm("gameplay", -8.0, true, 0.0, 1.0)
 		
 	_build_clean_hud()
 	
@@ -392,6 +396,9 @@ func _tone(frequency: float, duration: float) -> void:
 func _enter_axiom_sanctum() -> void:
 	if not is_inside_tree() or get_tree().current_scene != self:
 		return
+	var sm = get_node_or_null("/root/SoundManager")
+	if sm and sm.has_method("stop_bgm"):
+		sm.stop_bgm(0.8)
 	var transition = get_node_or_null("/root/SceneTransition")
 	if transition and transition.has_method("change_chamber"):
 		transition.change_chamber("res://chambers/axiom_warden/AxiomWarden.tscn")

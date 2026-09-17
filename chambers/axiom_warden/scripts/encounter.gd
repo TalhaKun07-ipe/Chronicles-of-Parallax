@@ -410,6 +410,20 @@ func begin_phase() -> void:
 	pattern_end = float(pattern[-1].time) + (2.4 if str(pattern[-1].kind) in ["bolts", "nova", "guardian", "rising_wall"] else 2.2)
 	_set_state("surge" if hits == 5 else "combat")
 	hud.fight_visible = true
+
+	var sm = get_node_or_null("/root/SoundManager")
+	if hits == 5:
+		# 2nd Phase: Final Surge / Revival - start from 38 seconds of the tune, loop seamlessly
+		if sm:
+			if sm.has_method("seek_bgm"):
+				sm.seek_bgm(38.0, 38.0)
+			if sm.has_method("fade_bgm_volume"):
+				sm.fade_bgm_volume(-6.0, 0.4)
+	elif hits == 0:
+		# 1st Phase: Start boss theme from 0.0s at -6.0 dB, looping
+		if sm and sm.has_method("play_bgm"):
+			sm.play_bgm("boss", -6.0, true, 0.0, 0.5, 0.0)
+
 	if hits == 0:
 		show_message("TUTORIAL: Dodge attacks! When the Warden's core opens, switch to 2D with [2] and strike with [F]!", 5.5)
 	elif hits == 5:
@@ -460,10 +474,13 @@ func spawn_attack(kind: String) -> void:
 				h.speed = 7.2 + hits * 0.25
 			show_message("DIMENSIONAL NOVA — Weave between bursts in 3D across depth lanes!")
 		"guardian":
-			# Dedicated Flat Guardian projectile: becomes ethereal in 2D, solid in 3D
-			var h: Hazard = spawn_hazard("guardian", Vector3(9.0, 0.0, player.position.z), 0.90, 4.5)
-			h.direction = Vector3.LEFT
-			h.speed = 6.2
+			# Dedicated Flat Guardian projectile: spawns from Warden, targets player and curves towards them
+			var spawn_pos := Vector3(boss.position.x - 0.6, 0.0, boss.position.z)
+			var h: Hazard = spawn_hazard("guardian", spawn_pos, 0.85, 4.5)
+			var aim: Vector3 = player.position - spawn_pos
+			aim.y = 0
+			h.direction = aim.normalized() if aim.length_squared() > 0.01 else Vector3.LEFT
+			h.speed = 6.4
 			show_message("FLAT GUARDIAN — Flatten into 2D with [2] to pass right through it harmlessly!")
 		"rising_wall":
 			# 3D Lateral Hazard: rising stone barrier player must navigate around
@@ -506,12 +523,19 @@ func try_strike() -> bool:
 		player.locked = true
 		_set_state("false_defeat")
 		show_message("The Warden collapses... but time begins to warp!", 4.0)
+		# 1st phase defeat: decrease music volume smoothly during dialogue & collapse
+		var sm = get_node_or_null("/root/SoundManager")
+		if sm and sm.has_method("fade_bgm_volume"):
+			sm.fade_bgm_volume(-16.0, 1.2)
 	elif hits == 6:
 		boss.set_pose("dead")
 		player.locked = true
 		_set_state("collapse")
 		sfx("victory")
 		show_message("THE AXIOM WARDEN HAS FALLEN! The exit portal is unsealed!", 5.0)
+		var sm = get_node_or_null("/root/SoundManager")
+		if sm and sm.has_method("stop_bgm"):
+			sm.stop_bgm(1.5)
 		var global: Node = get_node_or_null("/root/Global")
 		if global:
 			global.set("rewind_unlocked", false)
@@ -573,6 +597,9 @@ func retry() -> void:
 	player.armed = true
 	boss.core.visible = true
 	_sync_health()
+	var sm = get_node_or_null("/root/SoundManager")
+	if sm and sm.has_method("play_bgm"):
+		sm.play_bgm("boss", -6.0, true, 0.0, 0.3, 0.0, true)
 	begin_phase()
 
 func toggle_pause() -> void:

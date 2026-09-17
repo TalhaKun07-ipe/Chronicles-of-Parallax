@@ -18,6 +18,86 @@ func _ready() -> void:
 	add_child(bgm_player)
 	bgm_player.volume_db = -8.0
 
+const BGM_TRACKS: Dictionary = {
+	"intro_outro": "res://assets/audio/music/intro_and_outro_tune.ogg",
+	"gameplay": "res://assets/audio/music/gameplay_background_tune.ogg",
+	"boss": "res://assets/audio/music/boss_fight_tune.ogg"
+}
+
+var current_bgm_key: String = ""
+var bgm_tween: Tween = null
+
+func play_bgm(track_key_or_path: String, volume_db: float = -8.0, loop: bool = true, loop_offset: float = 0.0, fade_duration: float = 0.6, from_position: float = 0.0, force_restart: bool = false) -> void:
+	var path: String = BGM_TRACKS.get(track_key_or_path, track_key_or_path)
+	if not ResourceLoader.exists(path):
+		push_warning("SoundManager: BGM track not found: " + path)
+		return
+
+	# If the same track is already playing and force_restart is not requested, adjust parameters without restart
+	if current_bgm_key == track_key_or_path and bgm_player.playing and not force_restart:
+		if from_position > 0.0:
+			seek_bgm(from_position, loop_offset)
+		if volume_db != bgm_player.volume_db:
+			fade_bgm_volume(volume_db, fade_duration)
+		return
+
+	var stream = load(path)
+	if stream is AudioStreamOggVorbis:
+		stream.loop = loop
+		stream.loop_offset = loop_offset
+
+	current_bgm_key = track_key_or_path
+
+	if bgm_tween and bgm_tween.is_valid():
+		bgm_tween.kill()
+
+	if fade_duration > 0.0 and bgm_player.playing:
+		bgm_tween = create_tween()
+		bgm_tween.tween_property(bgm_player, "volume_db", -36.0, fade_duration * 0.5)
+		bgm_tween.tween_callback(func():
+			bgm_player.stream = stream
+			bgm_player.play(from_position)
+		)
+		bgm_tween.tween_property(bgm_player, "volume_db", volume_db, fade_duration * 0.5)
+	else:
+		bgm_player.stream = stream
+		bgm_player.volume_db = volume_db
+		bgm_player.play(from_position)
+
+func fade_bgm_volume(target_db: float, duration: float = 0.8) -> void:
+	if not bgm_player: return
+	if bgm_tween and bgm_tween.is_valid():
+		bgm_tween.kill()
+	bgm_tween = create_tween()
+	bgm_tween.tween_property(bgm_player, "volume_db", target_db, duration)
+
+func seek_bgm(position_sec: float, loop_offset: float = -1.0) -> void:
+	if not bgm_player or not bgm_player.playing: return
+	if loop_offset >= 0.0 and bgm_player.stream is AudioStreamOggVorbis:
+		bgm_player.stream.loop = true
+		bgm_player.stream.loop_offset = loop_offset
+	bgm_player.seek(position_sec)
+
+func stop_bgm(fade_duration: float = 0.8) -> void:
+	if not bgm_player or not bgm_player.playing:
+		current_bgm_key = ""
+		return
+	if bgm_tween and bgm_tween.is_valid():
+		bgm_tween.kill()
+	current_bgm_key = ""
+	if fade_duration > 0.0:
+		bgm_tween = create_tween()
+		bgm_tween.tween_property(bgm_player, "volume_db", -40.0, fade_duration)
+		bgm_tween.tween_callback(bgm_player.stop)
+	else:
+		bgm_player.stop()
+
+func get_bgm_playback_position() -> float:
+	return bgm_player.get_playback_position() if bgm_player else 0.0
+
+func is_bgm_playing() -> bool:
+	return bgm_player.playing if bgm_player else false
+
 func play_sfx(sfx_name: String) -> void:
 	var stream = generate_sound(sfx_name)
 	if stream:
