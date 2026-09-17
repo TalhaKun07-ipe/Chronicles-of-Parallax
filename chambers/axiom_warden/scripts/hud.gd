@@ -3,6 +3,7 @@ signal advance_requested
 signal skip_requested
 signal pause_requested
 signal retry_requested
+signal victory_advance_requested
 signal voice_tick
 
 var health: int = 3
@@ -115,6 +116,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif pressed and key == KEY_ENTER and defeated:
 		retry_requested.emit()
 		get_viewport().set_input_as_handled()
+	elif pressed and key in [KEY_SPACE, KEY_ENTER, KEY_Z] and victory:
+		victory_advance_requested.emit()
+		get_viewport().set_input_as_handled()
 	elif pressed and key == KEY_ESCAPE and not defeated and not victory:
 		pause_requested.emit()
 		get_viewport().set_input_as_handled()
@@ -193,5 +197,5 @@ func _draw() -> void:
 		draw_rect(Rect2(Vector2.ZERO, size), Color(0.02, 0.015, 0.01, 0.72))
 		var title: String = "PAUSED" if paused else ("THE WARDEN HAS FALLEN" if victory else "THE WATCH STILL TICKS")
 		label(Vector2(w * 0.27, h * 0.44), title, Color("f4d69d"), 34)
-		var detail: String = "ESC to return" if paused else ("Chamber complete. Time remains sealed for now." if victory else "ENTER to retry at the arena checkpoint")
+		var detail: String = "ESC to return" if paused else ("SPACE or ENTER to proceed to Outro" if victory else "ENTER to retry at the arena checkpoint")
 		label(Vector2(w * 0.27, h * 0.51), detail, Color("e3dbca"), 20)

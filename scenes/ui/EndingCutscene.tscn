@@ -1,0 +1,159 @@
+[gd_scene load_steps=5 format=3 uid="uid://ending_cutscene_scene"]
+
+[ext_resource type="Script" path="res://scripts/ui/EndingCutscene.gd" id="1_ending"]
+[ext_resource type="Texture2D" path="res://assets/ending/ending_panel_1.png" id="2_panel1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_border"]
+bg_color = Color(0.05, 0.035, 0.02, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.66, 0.47, 0.16, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="EndingCutscene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ending")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="PanelContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 36.0
+offset_bottom = 480.0
+grow_horizontal = 2
+
+[node name="CenterPanel" type="PanelContainer" parent="PanelContainer"]
+custom_minimum_size = Vector2(704, 396)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_border")
+
+[node name="PanelTexture" type="TextureRect" parent="PanelContainer/CenterPanel"]
+texture_filter = 0
+layout_mode = 2
+texture = ExtResource("2_panel1")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StoryTextContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -220.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="TextLabel" type="Label" parent="StoryTextContainer"]
+custom_minimum_size = Vector2(960, 120)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.90, 0.65, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/line_spacing = 6
+theme_override_font_sizes/font_size = 22
+text = "With a blinding flash..."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="PromptLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -48.0
+offset_right = -32.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.65, 0.55, 0.40, 1)
+theme_override_font_sizes/font_size = 15
+text = "[SPACE / ENTER] Continue  |  [ESC] Skip"
+horizontal_alignment = 2
+
+[node name="VictoryContainer" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -480.0
+offset_top = -180.0
+offset_right = 480.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="VictoryContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_colors/font_shadow_color = Color(0.66, 0.47, 0.16, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 48
+text = "DEGREES OF ESCAPE"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="VictoryContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.72, 0.45, 1)
+theme_override_font_sizes/font_size = 24
+text = "ALL DEGREES OF FREEDOM RESTORED"
+horizontal_alignment = 1
+
+[node name="CreditsLabel" type="Label" parent="VictoryContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.80, 0.75, 0.65, 1)
+theme_override_constants/line_spacing = 6
+theme_override_font_sizes/font_size = 18
+text = "Intra BUET Robo Challenge 2026 Game Jam
+Theme: Degree of Freedom (1D • 2D • 3D • 4D)
+
+Thank you for playing!"
+horizontal_alignment = 1
+
+[node name="RestartPrompt" type="Label" parent="VictoryContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.6, 1)
+theme_override_font_sizes/font_size = 18
+text = "[ PRESS SPACE OR ENTER TO RETURN TO TITLE ]"
+horizontal_alignment = 1
+
+[node name="FadeRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

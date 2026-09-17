@@ -254,14 +254,12 @@ func _update_controls_label(mode: int) -> void:
 	if not controls_label:
 		return
 	match mode:
-		0:
-			controls_label.text = "SPACE Pulse Energy   •   0/1/2/3 Dimension   •   F Interact"
 		2:
-			controls_label.text = "WASD Move   •   SPACE Jump   •   0/1/2/3 Dimension   •   F Interact"
+			controls_label.text = "WASD Move   •   SPACE Jump   •   1/2/3 Dimension   •   F Interact"
 		3:
-			controls_label.text = "WASD Move Across Depth   •   0/1/2/3 Dimension   •   F Interact"
+			controls_label.text = "WASD Move Across Depth   •   1/2/3 Dimension   •   F Interact"
 		1:
-			controls_label.text = "A/D Slide Along Conduit   •   0/1/2/3 Dimension   •   F Interact"
+			controls_label.text = "A/D Slide Along Conduit   •   1/2/3 Dimension   •   F Interact"
 
 func queue_subtitle(text: String, duration: float = 3.5) -> void:
 	subtitle_queue.append({"text": text, "duration": duration})

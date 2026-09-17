@@ -964,6 +964,37 @@ Degrees_of_Escape/
   * `tools/verify_new_features.gd`: **27/27 checks passed 100%**.
   * `tools/verify_integration_flow.gd`: **100% passed**.
 
+### Session Update: 0D Removal from Chamber 01 & Ending Cutscene (Outro) System
+* **0D Dimension Cleanly Removed from Chamber 01:**
+  * In `chambers/broken_circuit/scripts/player.gd`:
+    * Removed `KEY_0: request_mode(0)` input mapping.
+    * Clamped dimension switching strictly between `[1, 3]` (`1D`, `2D`, and `3D` only).
+    * In `request_mode(target: int) -> bool`: strictly reject `target < 1 or target > 3`. Removed the `target == 0` collapse code.
+    * Removed `mode == 0` pulse handling from jump inputs and `_physics_process()`.
+    * Cleaned up `charge_orb` height and sprite handling to only track 1D, 2D, and 3D modes.
+  * In `chambers/broken_circuit/scripts/chamber.gd`:
+    * Enlarged Ancient Relay Terminal interaction radius to `2.5m` in `try_interact()`. Approaching in 2D or 3D and pressing `[F]` directly awakens the relay and energizes the 1D conduit rail.
+  * In `chambers/broken_circuit/scripts/demo.gd`:
+    * Removed `0:` match case from `_update_controls_label()`.
+    * Updated HUD controls hint string to `"1/2/3 Dimension"` across all modes.
+    * Ensured HUD CanvasLayer is named `"CleanHUD"` to satisfy all verification test suites.
+  * In `tools/verify_route.gd`:
+    * Replaced 0D point pulse test with walking to the terminal, asserting `not player.request_mode(0)` (0D strictly disabled), and activating the relay via `chamber.try_interact()`.
+    * **All 100 Chamber 1 8-Section Redesign Route Checks passed 100%!**
+
+* **Ending Cutscene (Outro) & 4D Revelation Architecture:**
+  * Built `scenes/ui/EndingCutscene.tscn` and `scripts/ui/EndingCutscene.gd` matching the Undertale-style nostalgic aesthetic of `IntroCutscene.tscn`:
+    * Gold border framed panel (`704x396`) with smooth crossfade between 5 ending story panels.
+    * Undertale-style typewriter dialogue with sound effects (`typewriter` blips, `story_chord` cadence) and punctuation pauses.
+    * Skip functionality (`[ESC]` skips directly to Victory screen; `[SPACE / ENTER / CLICK]` fast-forwards typewriter text).
+    * Grand Victory Screen (`DEGREES OF ESCAPE — ALL DEGREES OF FREEDOM RESTORED`) with game jam credits and title return prompt.
+  * Created `assets/ending/` asset directory with initial placeholder panel textures (`ending_panel_1.png` through `ending_panel_5.png`) ready to be replaced with custom user art.
+  * In `chambers/axiom_warden/scripts/encounter.gd` and `hud.gd`:
+    * Added `victory_advance_requested` signal.
+    * Pressing `[SPACE]` or `[ENTER]` during victory screen or walking into the exit portal (`X >= 14.0`) smoothly transitions to `res://scenes/ui/EndingCutscene.tscn` via `SceneTransition.change_chamber()`.
+  * Verified with `tools/verify_ending_cutscene.gd` (**100% Passed**).
+
+
 
 
 

@@ -70,6 +70,7 @@ func _ready() -> void:
 	hud.skip_requested.connect(skip_dialogue)
 	hud.pause_requested.connect(toggle_pause)
 	hud.retry_requested.connect(retry)
+	hud.victory_advance_requested.connect(transition_to_ending)
 	hud.voice_tick.connect(func() -> void: sfx("typewriter"))
 	camera = Camera3D.new()
 	camera.name = "ChamberCamera"
@@ -275,6 +276,9 @@ func _physics_process(delta: float) -> void:
 			hud.victory = true
 			exit_seal.visible = false
 			chamber_completed.emit()
+	elif state == "victory":
+		if player.position.x >= 14.0:
+			transition_to_ending()
 	if state in ["combat", "surge", "opening"] and player.mode == 3 and player.position.distance_to(boss.position) < 1.8:
 		hurt_player()
 	_update_hud()
@@ -625,3 +629,14 @@ func _update_hud() -> void:
 func sfx(cue: String) -> void:
 	var sound: Node = get_node_or_null("/root/SoundManager")
 	if sound and sound.has_method("play_sfx"): sound.call("play_sfx", cue)
+
+var ending_transitioned: bool = false
+func transition_to_ending() -> void:
+	if ending_transitioned:
+		return
+	ending_transitioned = true
+	var transition: Node = get_node_or_null("/root/SceneTransition")
+	if transition and transition.has_method("change_chamber"):
+		transition.call("change_chamber", "res://scenes/ui/EndingCutscene.tscn")
+	else:
+		get_tree().change_scene_to_file("res://scenes/ui/EndingCutscene.tscn")

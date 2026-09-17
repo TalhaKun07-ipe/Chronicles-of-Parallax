@@ -70,13 +70,11 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			return
 	for pair in [["cycle_prev",-1],["cycle_next",1]]:
 		if InputMap.has_action(pair[0]) and event.is_action_pressed(pair[0]):
-			request_mode(clampi(mode + pair[1],0,3))
+			request_mode(clampi(mode + pair[1], 1, 3))
 			return
 	if InputMap.has_action("jump") and event.is_action_pressed("jump"):
 		if mode == 2:
 			jump_buffer = 0.12
-		elif mode == 0:
-			pulse()
 		return
 	if InputMap.has_action("interact_strike") and event.is_action_pressed("interact_strike"):
 		var mapped_message: String = chamber.try_interact(global_position)
@@ -85,17 +83,14 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return
 	match event.physical_keycode:
-		KEY_0: request_mode(0)
 		KEY_1: request_mode(1)
 		KEY_2: request_mode(2)
 		KEY_3: request_mode(3)
-		KEY_Q, KEY_Z: request_mode(maxi(0, mode - 1))
+		KEY_Q, KEY_Z: request_mode(maxi(1, mode - 1))
 		KEY_E, KEY_X: request_mode(mini(3, mode + 1))
 		KEY_SPACE:
 			if mode == 2:
 				jump_buffer = 0.12
-			elif mode == 0:
-				pulse()
 		KEY_F:
 			var message: String = chamber.try_interact(global_position)
 			if not message.is_empty():
@@ -111,23 +106,14 @@ func has_clearance(at: Vector3) -> bool:
 	return get_world_3d().direct_space_state.intersect_shape(query, 1).is_empty()
 
 func request_mode(target: int) -> bool:
+	if target < 1 or target > 3:
+		return false
 	if target == mode:
 		return true
 	jump_buffer = 0.0 # Clear incompatible jump buffers during dimension changes
 	var preserved_vy: float = velocity.y
 	
-	if target == 0:
-		var destination := position
-		if mode == 1:
-			destination.y = float(active_rail.floor_y) + 0.04
-		position = destination
-		shape_node.shape = humanoid
-		shape_node.position.y = 0.2
-		sprite.position.y = 0.2
-		sprite.scale = Vector3(0.35, 0.35, 0.35)
-		velocity = Vector3.ZERO
-		coyote = 0.0
-	elif target == 1:
+	if target == 1:
 		var found: Dictionary = chamber.rail_near(position)
 		if found.is_empty():
 			if not chamber.relay_active:
@@ -211,18 +197,7 @@ func _physics_process(delta: float) -> void:
 		move_input = Vector2(
 			float(action_pressed("move_right") or Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT)) - float(action_pressed("move_left") or Input.is_physical_key_pressed(KEY_A) or Input.is_physical_key_pressed(KEY_LEFT)),
 			float(action_pressed("move_down") or Input.is_physical_key_pressed(KEY_S) or Input.is_physical_key_pressed(KEY_DOWN)) - float(action_pressed("move_up") or Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP)))
-	if mode == 0:
-		if override_jump or (action_pressed("jump") or Input.is_physical_key_pressed(KEY_SPACE)):
-			pulse()
-			override_jump = false
-		if not is_on_floor():
-			velocity.y -= GRAVITY * delta
-		else:
-			velocity.y = 0.0
-		velocity.x = 0.0
-		velocity.z = 0.0
-		move_and_slide()
-	elif mode == 1:
+	if mode == 1:
 		velocity = Vector3(move_input.x * 3.5, 0, 0)
 		move_and_slide()
 		position.x = clampf(position.x, active_rail.start.x, active_rail.end.x)
@@ -287,7 +262,7 @@ func _physics_process(delta: float) -> void:
 	chamber.try_collect(global_position)
 	chamber.try_exit(global_position)
 	charge_orb.visible = chamber.carrying_charge
-	charge_orb.position.y = (0.35 if mode == 0 else (0.5 if mode == 1 else 1.45)) + sin(animation_time * 3) * 0.05
+	charge_orb.position.y = (0.5 if mode == 1 else 1.45) + sin(animation_time * 3) * 0.05
 	
 	# Invulnerability blink
 	if invulnerable_timer > 0.0:
@@ -354,9 +329,7 @@ func respawn() -> void:
 func _update_sprite() -> void:
 	var moving: bool = move_input.length() > 0.1
 	var file: String
-	if mode == 0:
-		file = "john_rod_2d_idle.png"
-	elif mode == 1:
+	if mode == 1:
 		file = "john_rod_1d_rod_active.png" if moving else "john_rod_1d_rod.png"
 	elif mode == 2:
 		if not is_on_floor():

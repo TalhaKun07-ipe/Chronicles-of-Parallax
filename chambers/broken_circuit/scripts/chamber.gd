@@ -182,7 +182,7 @@ func try_pulse(at: Vector3) -> String:
 	return ""
 
 func try_interact(at: Vector3) -> String:
-	if has_node("Markers/Relay") and at.distance_to($Markers/Relay.position) < 2.0:
+	if has_node("Markers/Relay") and at.distance_to($Markers/Relay.position) < 2.5:
 		return activate_relay()
 		
 	if has_node("Markers/Receiver") and at.distance_to($Markers/Receiver.position) < 1.6:

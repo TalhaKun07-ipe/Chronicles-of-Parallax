@@ -159,14 +159,12 @@ func run() -> void:
 	# Walk to Ancient Relay Terminal at X=51.5, Z=1.8 (in front of terminal pedestal)
 	check(await walk(Vector2(51.5, 1.8)), "Steps over to Ancient Relay Terminal")
 	
-	# Awaken relay via 0D Point Pulse
-	check(player.request_mode(0), "Collapses to 0D Point Singularity")
-	player.override_jump = true # Triggers pulse in 0D
-	await frames(5)
-	check(chamber.relay_active, "0D Point Pulse awakens Ancient Relay Terminal!")
+	# Verify 0D is disabled and awaken relay via [F] interaction
+	check(not player.request_mode(0), "0D Mode is strictly disabled in Chamber 01")
+	var relay_msg: String = chamber.try_interact(player.global_position)
+	check(chamber.relay_active, "Pressing [F] interacts with and awakens Ancient Relay Terminal!")
 	
-	# Expand back to 3D and step onto now-energized conduit rail
-	check(player.request_mode(3), "Expands from 0D into 3D")
+	# Step onto now-energized conduit rail
 	check(await walk(Vector2(51.5, 3.5)), "Steps onto energized conduit dock")
 	check(player.request_mode(1), "Flattens to 1D on energized conduit rail")
 	
