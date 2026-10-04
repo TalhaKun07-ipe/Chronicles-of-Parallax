@@ -46,7 +46,7 @@ The core mechanic of *Chronicles of Parallax* directly embodies the GameJam them
 | **1D** | **Line (Conduit)** | 1 Axis of Motion ($X$) | Player collapses into a 1D line along energized conduit rails. Allows slipping through narrow security slits, bypassing heavy barricades, and crossing deep rifts. Cannot jump; lateral depth is locked. |
 | **2D** | **Plane (Orthographic)** | 2 Axes of Motion ($X, Y$) | Player flattens onto a vertical orthographic plane. Depth ($Z$) is locked. Enables running, jumping, and landing on runic platforms that are ethereal in 3D. 3D flat hazards pass harmlessly through the paper-thin player. |
 | **3D** | **Volume (Cartesian)** | 3 Axes of Motion ($X, Y, Z$) | Player expands into full volumetric space. Enables lateral depth navigation around pillars, exploring courtyards, aligning with mechanisms, and carrying energy cores. Jumping is restricted to maintain spatial contrast. |
-| **4D** | **Time (Chrono-Lens)** | 4th Axis ($T$) | Narrative culmination: Upon shattering the Axiom Warden, John restores the Chrono-Lens, discovering that time itself is the ultimate degree of freedom needed to escape the collapsing sanctum. |
+| **4D** | **Time (Chrono-Lens)** | 4th Axis ($T$) | Playable escape ability: hold R to rewind John and chrono-structures up to four seconds; release to create a forward-replaying echo. Restore crumbling floors, ride reversible machinery, solve dual seals, and escape the rising void. |
 
 ---
 
@@ -92,6 +92,17 @@ Enemies and obstacles obey the laws of dimension:
   * *Phase 5 (False Defeat & Revival):* Landing the 5th strike collapses the Warden. The music volume ducks down to `-16 dB` as the sanctum distorts. A dialogue scene triggers, culminating in the Warden's roar: *"LET EVERY DIMENSION BURN."*
   * *Phase 6 (The Final Surge):* The Warden re-ignites in an ultimate dimensional surge. Music immediately seeks to **38.0s** and loops the high-energy battle climax. John must survive simultaneous multi-hazard barrages before delivering the decisive final blow.
 
+### ⏳ Chamber 3: The Unwound Sanctum — Daylight Escape
+Boss defeat restores the Chrono-Lens and leads into a playable four-sector escape:
+1. **Fractured Stair:** Learn player/world rewind across crumbling floors and reachable stone landings.
+2. **Echo Court:** Use a replaying temporal echo and John to activate two physical seals and open a persistent gate.
+3. **Clockwork Span:** Lower a rewindable monolith into a bridge, navigate depth, and ride a reversible lift.
+4. **Daylight Run:** Climb ahead of a rising void, cross the final seal in 1D, and emerge into the illustrated ending.
+
+Hold **R** to rewind; releasing R leaves an echo that repeats the discarded actions and holds its last pose briefly. Energy recharges over time. Time anchors provide safe retries; **Backspace** retries and **Escape** pauses this chamber.
+
+For source playtesting, open `scenes/levels/DaylightEscape.tscn` and press F6. Windows preview launchers are in `../build/TimeRewindPreview`. See [the mechanics and floor design](docs/TIME_REWIND_DESIGN.md).
+
 ### 🌅 Epilogue: The Outro Cutscene
 * **Narrative:** 5 custom nostalgic panels depicting the collapse of the sanctum, the rewinding hands of the Chrono-Lens, John's ascent through the temporal rift, and his triumphant emergence onto the emerald clifftops at dawn.
 
@@ -109,7 +120,9 @@ Enemies and obstacles obey the laws of dimension:
 | **3D Volume Mode** | `3` | Expands into full 3D Cartesian space; navigates depth corridors |
 | **Interact / Strike** | `F` | Awakens relay terminals, deposits charges, and strikes exposed boss core |
 | **Advance Dialogue** | `Space` / `Enter` / Click | Fast-forwards typewriter text or advances to the next story panel |
-| **Pause Game** | `Escape` | Toggles pause menu |
+| **Time Rewind / Echo** | Hold / release `R` | Restores player and chrono-mechanisms; release creates a replaying echo (escape chamber) |
+| **Retry Time Anchor** | `Backspace` | Restarts the escape from the latest anchor |
+| **Pause Game** | `Escape` | Pause menu in boss and escape chambers |
 
 ---
 
@@ -148,6 +161,11 @@ All soundtrack assets are authored in OGG Vorbis format with custom loop headers
 ### Engineering Documentation
 * 📐 **[`HOW_WE_CODE.md`](file:///c:/Users/USER/Desktop/game%20making/Degrees_of_Escape/HOW_WE_CODE.md)** — Comprehensive technical architecture manual detailing the kinematic engine, camera projection math, shader pipelines, and decoupled signals.
 * 📝 **[`GAME_DEV_LOG.md`](file:///c:/Users/USER/Desktop/game%20making/Degrees_of_Escape/GAME_DEV_LOG.md)** — Complete chronological engineering and narrative changelog.
+
+### Time Expansion Verification
+* `tools/verify_time_route.gd`: **125 checks passed**, with real physics and echo-trigger collisions throughout all four sectors.
+* `tools/verify_time_safety.gd`: **17 checks passed**, covering energy, pause, exhaustion, snapshots and death recovery.
+* `tools/verify_time_progression.gd`: **9 checks passed**, covering boss-to-escape-to-ending transitions and 2D-only boss damage.
 
 ### Automated Test Verification Suite
 The repository includes automated headless test scripts that validate game mechanics, physics, and state machines directly in the Godot engine:

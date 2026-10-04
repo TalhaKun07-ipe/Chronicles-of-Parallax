@@ -111,7 +111,9 @@ func start_rewind_loop() -> void:
 	if not rewind_player.playing:
 		var stream = generate_sound("rewind_loop")
 		if stream:
+			stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
 			rewind_player.stream = stream
+			rewind_player.volume_db = -4.0
 			rewind_player.play()
 
 func stop_rewind_loop() -> void:
@@ -127,6 +129,31 @@ func generate_sound(type: String) -> AudioStreamWAV:
 	var num_samples = 0
 	
 	match type:
+		"rewind_loop":
+			num_samples = int(22050 * 0.8)
+			wav.loop_mode = AudioStreamWAV.LOOP_FORWARD
+			wav.loop_end = num_samples
+			for i in range(num_samples):
+				var t = float(i) / 22050.0
+				var freq1 = 280.0 + sin(2.0 * PI * 4.0 * t) * 60.0
+				var freq2 = 140.0 + cos(2.0 * PI * 8.0 * t) * 30.0
+				var flutter = (sin(2.0 * PI * 32.0 * t) * 0.25)
+				var val = (sin(2.0 * PI * freq1 * t) * 0.5 + sin(2.0 * PI * freq2 * t) * 0.5 + flutter)
+				var env = sin(t / 0.8 * PI)
+				var s16 = int(clamp(val * env * 22000.0, -32767, 32767))
+				data.append(s16 & 0xFF)
+				data.append((s16 >> 8) & 0xFF)
+		"rewind_echo":
+			num_samples = int(22050 * 0.45)
+			for i in range(num_samples):
+				var t = float(i) / 22050.0
+				var freq1 = 880.0
+				var freq2 = 1320.0
+				var freq3 = 1760.0
+				var val = (sin(2.0 * PI * freq1 * t) * 0.4 + sin(2.0 * PI * freq2 * t) * 0.3 + sin(2.0 * PI * freq3 * t) * 0.3) * exp(-t * 8.0)
+				var s16 = int(clamp(val * 24000.0, -32767, 32767))
+				data.append(s16 & 0xFF)
+				data.append((s16 >> 8) & 0xFF)
 		"jump":
 			num_samples = int(22050 * 0.15)
 			for i in range(num_samples):
@@ -211,18 +238,6 @@ func generate_sound(type: String) -> AudioStreamWAV:
 				var freq = 220.0 + (t / 0.45) * 440.0
 				var val = (sin(2.0 * PI * freq * t) + 0.3 * sin(4.0 * PI * freq * 2.0 * t)) * (1.0 - t / 0.45)
 				var s16 = int(clamp(val * 20000.0, -32767, 32767))
-				data.append(s16 & 0xFF)
-				data.append((s16 >> 8) & 0xFF)
-		"rewind_loop":
-			num_samples = int(22050 * 0.5)
-			wav.loop_mode = AudioStreamWAV.LOOP_FORWARD
-			wav.loop_end = num_samples
-			for i in range(num_samples):
-				var t = float(i) / 22050.0
-				# Reverse ticking whoosh
-				var freq = 180.0 + (t / 0.5) * 220.0
-				var tick = sin(2.0 * PI * freq * t) * (0.5 + 0.5 * sin(2.0 * PI * 16.0 * t))
-				var s16 = int(clamp(tick * 12000.0, -32767, 32767))
 				data.append(s16 & 0xFF)
 				data.append((s16 >> 8) & 0xFF)
 		"typewriter":

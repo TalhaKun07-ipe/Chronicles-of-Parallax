@@ -1,4 +1,4 @@
-# 🛠️ HOW WE CODE — Degrees of Escape: Technical Architecture & Development Manual
+# 🛠️ HOW WE CODE — Chronicles of Parallax: Technical Architecture & Development Manual
 
 > **Project:** *Degrees of Escape*  
 > **Event:** Intra BUET Robo Challenge 2026 GameJam  
@@ -6,10 +6,12 @@
 > **Engine:** Godot Engine 4.3+ / 4.7.2 (Forward+ / GL Compatibility)  
 > **Target Resolution:** 1280×720 (HD CanvasItems with 4× MSAA 3D + Crisp Nearest-Neighbor Sprites)  
 > **Protagonist:** John Rod (Polished steel wireframe explorer inspired by *JoJo's Bizarre Adventure: The JOJOLands*)  
-> **Git Repository:** `https://github.com/TalhaKun07-ipe/Degrees-of-Escape.git`  
+> **Git Repository:** `https://github.com/TalhaKun07-ipe/Chronicles-of-Parallax.git`
 > **Status:** Authoritative Codebase & Engineering Reference  
 
 ---
+
+> **Current playable architecture (4 October 2026):** Intro → Broken Circuit → Axiom Warden → Daylight Escape → Ending. Boss defeat unlocks time; it no longer jumps directly to the outro. The escape uses `ChronoPlayer`, `RewindController` and `DaylightEscape.gd`, with four sectors and physics-tested parkour. Its snapshot contract, energy rules, collision layers, file ownership and verification are documented in [TIME_REWIND_DESIGN.md](docs/TIME_REWIND_DESIGN.md), the authoritative reference for this expansion. Sections describing the older shared Player, 0D/2.5D, map mode and early chamber layouts remain legacy reference material.
 
 ## 📑 Table of Contents
 1. [Core Architectural Philosophy & Vision](#1-core-architectural-philosophy--vision)
@@ -41,7 +43,7 @@
 
 ### 1.2 Design Pillars
 1. **Geometric Readability Over Surface Clutter:** Mechanics are driven by topological constraints and dimensional transitions, inspired by *1 2 3D* and *FEZ*. The environment is sharp, clean, and immediately readable.
-2. **Asymmetric Causality in Time Manipulation:** Time rewind does not reset the entire game state. Only John Rod and resonant chrono-structures (e.g. `RewindableBridge`) travel back in time. Hazards and boss sentinels operate in real-time.
+2. **Explicit time rules:** In the playable escape, John and chrono-structures rewind together; echoes and the rising void pause. Solved gates and time anchors retain progress. The boss operates before time is unlocked. Legacy rewind experiments are not the escape controller.
 3. **Nostalgic Cinematic Pacing:** Inspired by *Undertale*, narrative beats, cutscenes, and dialogues use high-contrast sepia pixel art, typewriter text crawls, character portraits, and vintage framing.
 4. **Resilient, Decoupled Code Architecture:** Autoload singletons manage shared state via signals. Kinematics, rendering, chamber logic, and UI communicate strictly through loose coupling.
 
@@ -259,7 +261,7 @@ The player controller (`chambers/broken_circuit/scripts/player.gd` and `scripts/
      }
      ```
    * Holding `[R]` or `[SHIFT]` unwinds the ring buffer backwards at 1.5× speed.
-   * Asymmetric causality: John Rod and `RewindableBridge` rewind in time; enemies and hazards move forward in real time.
+   * Playable escape: John, crumbling platforms, the monolith and lift restore their histories together. The void and echoes pause; solved gates remain solved.
 
 ### 5.2 Dual Input Mapping Strategy
 To ensure maximum reliability across both standard play and automated headless test harnesses, player input handlers check both Godot `InputMap` actions and physical key scancodes:
@@ -486,3 +488,16 @@ All retro pixel art and chamber layouts are generated using Python scripts:
 >    git push origin master
 >    ```
 >    Never leave code uncommitted or unpushed to the remote repository.
+
+
+## 14. Playable time escape and reusable chrono mechanisms (4 October 2026)
+
+The canonical escape scene is `scenes/levels/DaylightEscape.tscn`, built by `scripts/levels/DaylightEscape.gd`. Sector builders keep floor layout separate from checkpoint, interaction, camera and completion rules. `ChronoPlayer` uses 1D rails, 2D jump buffering/coyote time, 3D depth movement and a capture/restore snapshot interface. The existing shared Player remains a compatible legacy consumer of RewindController.
+
+RewindController owns a bounded 240-tick history, a four-second delta-based energy budget and held-input release gating. It runs before movement/world entities, sets Global.is_rewinding, and restores player form, lane, position and velocity. Echo creation reverses the discarded history into forward chronological order; one layer-2/mask-0 echo replays it and holds the final pose for three seconds. New rewind/checkpoint/retry clears the echo.
+
+ChronoEntity3D records transforms and subclass state; complete reset restores both. ChronoPlatform and ChronoMonolith use AnimatableBody3D collision, and ChronoLift records its periodic phase and carries riders. SunGate uses real player-mask Areas and occupant sets, opens actual collision, and preserves a committed solution. RisingVoid pauses during rewind, ignores echoes and invokes the playable player's death path. The room supplies four anchors, mechanism resets, a final timed ascent and the real ending transition. Its Global chamber state stores anchor, solved gate and completion.
+
+ChronoHUD observes energy/history, provides contextual controls and pause/retry, and uses the existing watch art. ChronoPostProcess observes the same shared clock and drives the compatible chrono_warp shader under the HUD. Rewind presentation has no authority over simulation energy. Static floor coping uses the existing floor-paver texture and sits above body faces to avoid z-fighting; cutaway boundary visuals keep their collisions. This room uses Compatibility-supported lighting and shadows.
+
+The Warden now rejects every strike mode except 2D, unlocks rewind on final defeat and transitions to DaylightEscape. The outro's initial narration recalls the defeated boss and reclaimed lens after the playable escape. Source-of-truth details and reusable file interfaces are in [docs/TIME_REWIND_DESIGN.md](docs/TIME_REWIND_DESIGN.md). Verification adds 125 route, 17 safety and 9 progression checks to the original suites.

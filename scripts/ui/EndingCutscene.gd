@@ -25,7 +25,7 @@ const PANELS = [
 const STORY_PAGES = [
 	{
 		"panel": 0,
-		"text": "With a blinding flash, the colossal Axiom Warden shatters into fragments of light and ancient dust."
+		"text": "Far below the daylight arch, the Axiom Warden lies scattered in fragments of light and ancient dust."
 	},
 	{
 		"panel": 0,
@@ -33,23 +33,23 @@ const STORY_PAGES = [
 	},
 	{
 		"panel": 1,
-		"text": "John Rod steps forward through the drifting cinders toward the sacred central dais."
+		"text": "John remembers the sacred dais, and the drifting cinders where the Warden had fallen."
 	},
 	{
 		"panel": 1,
-		"text": "Upon the cracked pedestal rests the relic he sought: the ancient Chrono-Lens."
+		"text": "There, upon the cracked pedestal, he had reclaimed the ancient Chrono-Lens."
 	},
 	{
 		"panel": 1,
-		"text": "As his hand closes around the cool bronze casing, the fractured glass mends before his eyes."
+		"text": "The fractured glass had mended in his hand. The watch had given him one final freedom."
 	},
 	{
 		"panel": 2,
-		"text": "Suddenly, the hands of the watch begin to move—spinning counter-clockwise in impossible trajectories!"
+		"text": "With its hands turning backward, he had restored falling stone and walked beside his own echo."
 	},
 	{
 		"panel": 2,
-		"text": "A profound truth resonates through his mind: Line, Plane, and Volume were only spatial boundaries..."
+		"text": "Line, Plane, and Volume had opened the sanctum. His mastery of time had carried him out."
 	},
 	{
 		"panel": 2,
@@ -61,7 +61,7 @@ const STORY_PAGES = [
 	},
 	{
 		"panel": 3,
-		"text": "Holding the Chrono-Lens aloft, John channels the rewind flow, ascending across fractured echoes of reality."
+		"text": "Holding the Chrono-Lens aloft, John leaves the fractured stairs and their shifting echoes behind."
 	},
 	{
 		"panel": 3,

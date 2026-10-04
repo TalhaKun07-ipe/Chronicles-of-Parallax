@@ -274,7 +274,7 @@ func run() -> void:
 	check(encounter.state == "victory" and not encounter.exit_seal.visible, "Collapse completes the chamber")
 
 	var g: Node = root.get_node_or_null("Global")
-	if g: check(not bool(g.get("rewind_unlocked")), "Rewind remains locked")
+	if g: check(bool(g.get("rewind_unlocked")), "Final boss defeat unlocks rewind for the escape chamber")
 
 	# Retry restores this arena rather than replaying the parkour or dialogue.
 	encounter.state = "combat"

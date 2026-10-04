@@ -73,7 +73,7 @@ func _ready() -> void:
 	hud.skip_requested.connect(skip_dialogue)
 	hud.pause_requested.connect(toggle_pause)
 	hud.retry_requested.connect(retry)
-	hud.victory_advance_requested.connect(transition_to_ending)
+	hud.victory_advance_requested.connect(transition_to_escape)
 	hud.voice_tick.connect(func() -> void: sfx("typewriter"))
 	camera = Camera3D.new()
 	camera.name = "ChamberCamera"
@@ -390,7 +390,7 @@ func _physics_process(delta: float) -> void:
 			_set_state("victory")
 			exit_seal.visible = false
 			chamber_completed.emit()
-			transition_to_ending()
+			transition_to_escape()
 	elif state == "victory":
 		pass
 	if state in ["combat", "surge", "opening"] and player.mode == 3 and player.position.distance_to(boss.position) < 1.8:
@@ -636,8 +636,8 @@ func try_strike() -> bool:
 	if player.position.distance_to(Vector3(boss.position.x, player.position.y, boss.position.z)) > 2.8 or absf(player.position.y) > 1.4:
 		show_message("Get closer to the Warden in 2D, then press [F] to strike!", 3.5)
 		return false
-	if player.mode == 3:
-		show_message("3D Armor deflects your strike! You can ONLY damage the boss in 2D with [2]!", 4.0)
+	if player.mode != 2:
+		show_message("The armor deflects your strike! You can ONLY damage the boss in 2D with [2]!", 4.0)
 		sfx("error")
 		return false
 	if not core_open:
@@ -664,13 +664,13 @@ func try_strike() -> bool:
 		player.locked = true
 		_set_state("collapse")
 		sfx("victory")
-		show_message("THE AXIOM WARDEN HAS FALLEN! The exit portal is unsealed!", 5.0)
+		show_message("THE WARDEN HAS FALLEN! The Chrono-Lens is whole. Time itself is yours to command.", 5.0)
 		var sm = get_node_or_null("/root/SoundManager")
 		if sm and sm.has_method("stop_bgm"):
 			sm.stop_bgm(1.5)
 		var global: Node = get_node_or_null("/root/Global")
 		if global:
-			global.set("rewind_unlocked", false)
+			global.call("unlock_rewind")
 	else:
 		boss.set_pose("hit")
 		_set_state("stagger")
@@ -790,12 +790,12 @@ func sfx(cue: String) -> void:
 	if sound and sound.has_method("play_sfx"): sound.call("play_sfx", cue)
 
 var ending_transitioned: bool = false
-func transition_to_ending() -> void:
+func transition_to_escape() -> void:
 	if ending_transitioned:
 		return
 	ending_transitioned = true
 	var transition: Node = get_node_or_null("/root/SceneTransition")
 	if transition and transition.has_method("change_chamber"):
-		transition.call("change_chamber", "res://scenes/ui/EndingCutscene.tscn")
+		transition.call("change_chamber", "res://scenes/levels/DaylightEscape.tscn")
 	elif get_tree() and get_tree().current_scene:
-		get_tree().change_scene_to_file("res://scenes/ui/EndingCutscene.tscn")
+		get_tree().change_scene_to_file("res://scenes/levels/DaylightEscape.tscn")
